@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* src/app/globals.css  (append to yours) */
+:root {
+  --primary: #2563eb;
+  --accent:  #14b8a6;
+  --bg:      #0b1020;
+  --fg:      #e5e7eb;
+  --muted:   #94a3b8;
+  --radius:  1rem;
+}
+
+/* Presets */
+body[data-theme="ocean"]  { --primary:#2563eb; --accent:#22d3ee; --bg:#0b1220; --fg:#e5e7eb; --muted:#94a3b8; --radius:1rem; }
+body[data-theme="sunset"] { --primary:#f97316; --accent:#f43f5e; --bg:#1b0b0b; --fg:#fde68a; --muted:#fca5a5; --radius:1rem; }
+body[data-theme="forest"] { --primary:#16a34a; --accent:#65a30d; --bg:#0b1b13; --fg:#d1fae5; --muted:#a7f3d0; --radius:0.875rem; }
+body[data-theme="slate"]  { --primary:#64748b; --accent:#0ea5e9; --bg:#0b0c0f; --fg:#e2e8f0; --muted:#94a3b8; --radius:0.75rem; }
+
+/* Helpers */
+.theme-card { border-radius: var(--radius); }
+.bg-app     { background: var(--bg);    color: var(--fg); }
+.text-fg    { color: var(--fg); }
+.text-muted { color: var(--muted); }
+.btn {
+  border-radius: calc(var(--radius) - 2px);
+  padding: .625rem .9rem;
+  display:inline-flex; align-items:center; gap:.5rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,.15);
+}
+.btn-primary { background: var(--primary); color: white; }
+.btn-ghost   { border:1px solid color-mix(in srgb, var(--fg) 20%, transparent); color: var(--fg); }
+.section    { padding: clamp(3rem, 6vw, 6rem) 1rem; }
+
+
+/* ============================
+   Responsive Typography
+   ============================ */
+@media (max-width: 768px) {
+  .hero-title {
+    @apply text-3xl;
+  }
+  .hero-subtitle {
+    @apply text-base;
+  }
+  .btn-gold {
+    @apply px-4 py-2 text-sm;
+  }
+  body {
+    @apply text-sm;
+  }
+}
+
+
+/* ============================
+   Custom Utility Classes
+   ============================ */
+@layer utilities {
+
+  .text-highlight {
+    color: var(--color-highlight) !important;
+  }
+
+  .text-accent {
+    color: var(--color-accent) !important;
+  }
+
+  .text-white-custom {
+    color: var(--color-white) !important;
+  }
+
+  .text-purple {
+    color: var(--color-purple) !important;
+  }
+
+  .text-blue {
+    color: var(--color-blue) !important;
+  }
+}
