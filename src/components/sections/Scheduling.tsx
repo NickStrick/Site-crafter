@@ -7,12 +7,13 @@ export function Scheduling({ title = 'Book a call', body, calendlyUrl }: Schedul
   return (
     <AnimatedSection className="section">
       <div className="mx-auto max-w-3xl text-center">
-        <h3 className="text-3xl font-semibold mb-4">{title}</h3>
-        {body ? <p className="text-muted mb-6">{body}</p> : null}
-        <div className="theme-card overflow-hidden shadow-md">
-          <iframe className="w-full min-h-96" src={embed} />
+        <h3 className="text-3xl font-semibold mb-3">{title}</h3>
+        {body && <p className="text-muted mb-6">{body}</p>}
+        <div className="overflow-hidden rounded-[24px] shadow-xl">
+          <iframe className="w-full min-h-[32rem]" src={embed} />
         </div>
       </div>
+
     </AnimatedSection>
   );
 }

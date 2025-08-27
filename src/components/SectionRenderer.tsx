@@ -1,7 +1,7 @@
 // src/components/SectionRenderer.tsx
 'use client';
 import type { AnySection } from '@/types/site';
-import { Header } from './sections/Header';
+import  Navbar  from './sections/Navbar';
 import { Hero } from './sections/Hero';
 import { Features } from './sections/Features';
 import { CTA } from './sections/CTA';
@@ -9,9 +9,11 @@ import { Newsletter } from './sections/Newsletter';
 import { Contact } from './sections/Contact';
 import { Scheduling } from './sections/Scheduling';
 import { Footer } from './sections/Footer';
+import { Testimonials } from './sections/Testimonials';
 
+import { Stats } from './sections/Stats';
 const map = {
-  header: Header,
+  header: Navbar,
   hero: Hero,
   features: Features,
   cta: CTA,
@@ -19,6 +21,8 @@ const map = {
   contact: Contact,
   scheduling: Scheduling,
   footer: Footer,
+  testimonials: Testimonials, 
+  stats: Stats, 
 } as const;
 
 export function SectionRenderer({ section }: { section: AnySection }) {

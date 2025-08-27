@@ -2,27 +2,56 @@
 import type { HeroSection } from '@/types/site';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import AnimatedSection from '@/components/AnimatedSection';
 
 export function Hero({ eyebrow, title, subtitle, primaryCta, secondaryCta, imageUrl }: HeroSection) {
   return (
-    <AnimatedSection className="section bg-app">
-      <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          {eyebrow ? <p className="text-sm font-semibold text-primary mb-2">{eyebrow}</p> : null}
-          <h1 className="text-5xl font-extrabold mb-4 leading-tight">{title}</h1>
-          {subtitle ? <p className="text-lg text-muted mb-8">{subtitle}</p> : null}
-          <div className="flex gap-4">
-            {primaryCta && <Link href={primaryCta.href} className="btn btn-primary">{primaryCta.label}</Link>}
-            {secondaryCta && <Link href={secondaryCta.href} className="btn btn-ghost">{secondaryCta.label}</Link>}
+    <section className="section curve bg-app">
+      <AnimatedSection>
+        <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            {eyebrow ? <p className="h-eyebrow mb-3">{eyebrow}</p> : null}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: .6, ease: 'easeOut', delay: .05 }}
+              className="h-display mb-4"
+            >
+              {title}
+            </motion.h1>
+            {subtitle ? (
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: .15 }}
+                className="h-hero-p text-muted max-w-xl mb-8"
+              >
+                {subtitle}
+              </motion.p>
+            ) : null}
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: .25 }} className="flex gap-4">
+              {primaryCta && <Link href={primaryCta.href} className="btn btn-primary">{primaryCta.label}</Link>}
+              {secondaryCta && <Link href={secondaryCta.href} className="btn btn-ghost">{secondaryCta.label}</Link>}
+            </motion.div>
           </div>
+
+          {imageUrl ? (
+            <motion.div
+              initial={{ opacity: 0, scale: .94, y: 16 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: .6, ease: 'easeOut', delay: .1 }}
+              className="relative"
+            >
+              {/* soft blob shadow */}
+              <div className="absolute -inset-6 rounded-[40px] bg-[color-mix(in_srgb,var(--primary)_18%,transparent)] blur-2xl -z-10" />
+              <div className="overflow-hidden rounded-[32px] shadow-2xl">
+                <Image src={imageUrl} alt="" width={980} height={740} className="w-full h-auto" />
+              </div>
+            </motion.div>
+          ) : null}
         </div>
-        {imageUrl ? (
-          <div className="theme-card overflow-hidden shadow-xl">
-            <Image src={imageUrl} alt="" width={800} height={600} className="w-full h-auto rounded-2xl" />
-          </div>
-        ) : null}
-      </div>
-    </AnimatedSection>
+      </AnimatedSection>
+    </section>
   );
 }

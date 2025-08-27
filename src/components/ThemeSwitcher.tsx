@@ -4,10 +4,11 @@ import { useSite } from '@/context/SiteContext';
 
 export function ThemeSwitcher() {
   const { setStyle } = useSite();
+  const presets = ['ocean','sunset','forest','slate','festival','candy','neon'] as const;
 
   return (
     <div className="fixed bottom-4 right-4 flex gap-2">
-      {(['ocean', 'sunset', 'forest', 'slate'] as const).map(p => (
+      {(presets).map(p => (
         <button
           key={p}
           className="btn btn-ghost"

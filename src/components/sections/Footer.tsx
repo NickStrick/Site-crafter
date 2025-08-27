@@ -11,8 +11,8 @@ export function Footer({ columns = [], legal }: FooterSection) {
           <div key={i}>
             {c.title ? <div className="font-semibold mb-3">{c.title}</div> : null}
             <ul className="space-y-2 text-muted">
-              {c.links.map(l => (
-                <li key={l.href}>
+              {c.links.map((l,i) => (
+                <li key={l.label+i}>
                   <Link className="hover:text-fg transition-colors" href={l.href}>{l.label}</Link>
                 </li>
               ))}

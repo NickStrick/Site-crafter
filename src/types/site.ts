@@ -1,9 +1,22 @@
 // src/types/site.ts
-export type ThemePreset = 'ocean' | 'sunset' | 'forest' | 'slate';
+export type ThemePreset =
+  | 'ocean'
+  | 'sunset'
+  | 'forest'
+  | 'slate'
+  | 'festival'
+  | 'candy'
+  | 'neon';
 
+export type Theme = {
+  preset: ThemePreset;
+  primary?: string;
+  accent?: string;
+  radius?: 'sm' | 'md' | 'lg' | 'xl';
+};
 export type SiteStyle = {
   preset: ThemePreset;
-  primary?: string;   // optional overrides, e.g. '#7c3aed'
+  primary?: string;   
   accent?: string;
   radius?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 };
@@ -18,7 +31,9 @@ export type SectionBase = {
     | 'newsletter'
     | 'contact'
     | 'scheduling'
-    | 'footer';
+    | 'footer'
+    | 'testimonials'
+    | 'stats';
   // visible/editable flags to support your builder UI
   visible?: boolean;
   editable?: boolean;
@@ -102,10 +117,59 @@ export type AnySection =
   | NewsletterSection
   | ContactSection
   | SchedulingSection
-  | FooterSection;
+  | FooterSection
+  | TestimonialsSection
+  | StatsSection;
 
 export type SiteConfig = {
   theme: SiteStyle;
   sections: AnySection[];
   meta?: { title?: string; description?: string; favicon?: string };
+};
+
+
+export type TestimonialItem = {
+  quote: string;
+  name: string;
+  role?: string;
+  avatarUrl?: string; // optional
+};
+
+export type TestimonialsStyle = {
+  variant?: 'card' | 'ink' | 'carousel';   // ink = deep, primary-colored cards
+  columns?: 2 | 3;            // default responsive cols
+  showQuoteIcon?: boolean;    // default true
+  rounded?: 'lg' | 'xl' | '2xl';
+  background?: 'default' | 'band'; // band -> subtle tinted section bg
+};
+
+export type TestimonialsSection = SectionBase & {
+  type: 'testimonials';
+  title?: string;
+  subtitle?: string;
+  items: TestimonialItem[];
+  style?: TestimonialsStyle;
+};
+export type StatItem = {
+  value: number;        // 10_000_000
+  label: string;        // "Users"
+  prefix?: string;      // "$", "~"
+  suffix?: string;      // "+", "%", "k"
+  decimals?: number;    // how many decimals to show when animating
+};
+
+export type StatsStyle = {
+  align?: 'left' | 'center';     // text alignment
+  columns?: 2 | 3 | 4;           // grid columns (responsive adjusts)
+  compact?: boolean;             // smaller spacing/typography
+  divider?: 'none' | 'dot' | 'line';
+  color?: 'default' | 'accent' | 'primary'; // number color
+};
+
+export type StatsSection = SectionBase & {
+  type: 'stats';
+  title?: string;
+  subtitle?: string;
+  items: StatItem[];
+  style?: StatsStyle;
 };

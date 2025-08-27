@@ -2,10 +2,7 @@
 import type { SiteConfig } from "@/types/site";
 
 export const mockSiteConfig: SiteConfig = {
-  theme: {
-    preset: "ocean",
-    radius: "xl",
-  },
+ theme: { preset: 'festival', radius: 'xl' },
   meta: {
     title: "Site-Crafter Demo",
     description: "Composable pages with runtime theming",
@@ -30,7 +27,7 @@ export const mockSiteConfig: SiteConfig = {
       },
     },
     {
-      id: "hero",
+      id: "hero1",
       type: "hero",
       eyebrow: "Freelancer-ready",
       title: "Build client sites in minutes",
@@ -41,6 +38,18 @@ export const mockSiteConfig: SiteConfig = {
       imageUrl:
         "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=1400&auto=format&fit=crop",
     },
+    { id: 'hero2', type: 'hero',
+  eyebrow: 'Freelancer-ready',
+  title: 'Learning is for everyone', // try playful wording
+  subtitle: 'Productize 80–90% of your build. Keep the craft where it matters.',
+  primaryCta: { label: 'Book a free discovery call', href: '#sched' },
+  imageUrl: 'https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=1400&auto=format&fit=crop'
+},
+{ id: 'cta1', type:'cta',
+  title:'A festival of discovery',
+  body:'Ship beautiful websites, then keep iterating with presets.',
+  cta: { label:'See more', href:'#' }
+},
     {
       id: "features",
       type: "features",
@@ -99,6 +108,84 @@ export const mockSiteConfig: SiteConfig = {
       body: "This entire page was rendered from a JSON config.",
       cta: { label: "Start a project", href: "#contact" },
     },
+    {
+  id: 'stats1',
+  type: 'stats',
+  title: 'By the numbers',
+  subtitle: 'Social proof and scale, at a glance.',
+  style: {
+    align: 'center',
+    columns: 4,
+    divider: 'line',      // try 'dot' or 'line'
+    color: 'accent',     // try 'accent' or 'primary'
+    compact: false
+  },
+  items: [
+    { value: 100, label: 'Users', suffix: '+', },
+    { value: 845,    label: 'Happy Customers', suffix: '+', },
+    { value: 8,        label: 'Offices Worldwide' },
+    { value: 60,        label: 'Complete Projects', suffix: '+' },
+  ],
+},
+
+    {
+  id: 'testi',
+  type: 'testimonials',
+  title: 'Our students love us.',
+  subtitle: 'Talk about how successful your students are.',
+  style: {
+    variant: 'card',     // try 'ink'
+    columns: 3,          // try 2
+    showQuoteIcon: true,
+    rounded: 'xl',
+    background: 'default' // or 'band'
+  },
+  items: [
+    {
+      quote:
+        '“Duis blandit lectus ultrices interdum fermentum. Sed dolor metus, cursus id metus at, fermentum bibendum sapien.”',
+      name: 'Mark Rosh',
+      role: 'Founder of Ngma',
+      avatarUrl:
+        'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=200&auto=format&fit=crop',
+    },
+    {
+      quote:
+        '“Vestibulum placerat diam aliquet elit hendrerit lacinia. Ut quam orci, porttitor et nunc non, ullamcorper interdum ipsum.”',
+      name: 'Ameline Joy',
+      role: 'Founder of Ngma',
+      avatarUrl:
+        'https://images.unsplash.com/photo-1544006659-f0b21884ce1d?q=80&w=200&auto=format&fit=crop',
+    },
+    {
+      quote:
+        '“Mauris id tortor non leo aliquet mattis. Integer vitae nulla finibus elit convallis accumsan.”',
+      name: 'Amanda Main',
+      role: 'Founder of Ngma',
+      avatarUrl:
+        'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=200&auto=format&fit=crop',
+    },
+    {
+      quote:
+        '“Vestibulum tincidunt nisl a lorem luctus, ut varius orci mattis. Cras vestibulum volutpat augue.”',
+      name: 'Steven Rosh',
+      role: 'Founder of Ngma',
+      avatarUrl:
+        'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=200&auto=format&fit=crop',
+    },
+    {
+      quote: '“Phasellus ac aliquet diam. Sed pellentesque mattis ultricies.”',
+      name: 'Jane Cooper',
+      role: 'Parent',
+    },
+    {
+      quote:
+        '“Curabitur laoreet, nulla malesuada venenatis condimentum.”',
+      name: 'Tommy Parks',
+      role: 'Student',
+    },
+  ],
+},
     {
       id: "ftr",
       type: "footer",
