@@ -2,7 +2,8 @@
 import type { ContactSection } from '@/types/site';
 import AnimatedSection from '@/components/AnimatedSection';
 
-export function Contact({ title = 'Contact', email, phone, address, mapEmbedUrl }: ContactSection) {
+export function Contact({ title = 'Contact', email, phone, address, mapEmbedUrl, socials }: ContactSection) {
+  console.log('Socials:', socials);
   return (
     <AnimatedSection className="section">
       <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-8">

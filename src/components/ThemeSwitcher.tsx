@@ -4,7 +4,7 @@ import { useSite } from '@/context/SiteContext';
 
 export function ThemeSwitcher() {
   const { setStyle } = useSite();
-  const presets = ['ocean','sunset','forest','slate','festival','candy','neon'] as const;
+  const presets = ['ocean','sunset','forest','slate','festival','candy','neon', 'grove'] as const;
 
   return (
     <div className="fixed bottom-4 right-4 flex gap-2">

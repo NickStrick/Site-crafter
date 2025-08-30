@@ -6,7 +6,8 @@ export type ThemePreset =
   | 'slate'
   | 'festival'
   | 'candy'
-  | 'neon';
+  | 'neon'
+  | 'grove';
 
 export type Theme = {
   preset: ThemePreset;
@@ -33,7 +34,9 @@ export type SectionBase = {
     | 'scheduling'
     | 'footer'
     | 'testimonials'
-    | 'stats';
+    | 'stats'
+    | 'about'
+    | 'disclaimer';
   // visible/editable flags to support your builder UI
   visible?: boolean;
   editable?: boolean;
@@ -67,10 +70,28 @@ export type HeroSection = SectionBase & {
   imageUrl?: string;
 };
 
+// ✅ NEW: About
+export type AboutSection = SectionBase & {
+  type: 'about';
+  title?: string;
+  body: string;           // markdown or plain text
+  imageUrl?: string;      // headshot or supporting image
+  bullets?: string[];     // optional quick facts
+  align?: 'left' | 'right' | 'center'; // image/text alignment
+};
+
+// ✅ NEW: Disclaimer (used in your config)
+export type DisclaimerSection = SectionBase & {
+  type: 'disclaimer';
+  title?: string;
+  body: string;
+  enabled?: boolean;
+};
 export type FeaturesSection = SectionBase & {
   type: 'features';
   title?: string;
-  items: { icon?: string; title: string; body?: string }[];
+  items: { icon?: string; title: string; body?: string; imageUrl?: string; meta?: {} }[];
+  
 };
 
 export type CTASection = SectionBase & {
@@ -94,6 +115,7 @@ export type ContactSection = SectionBase & {
   phone?: string;
   address?: string;
   mapEmbedUrl?: string;
+  socials?: { label: string; href: string }[];
 };
 
 export type SchedulingSection = SectionBase & {
@@ -113,6 +135,8 @@ export type AnySection =
   | HeaderSection
   | HeroSection
   | FeaturesSection
+  | AboutSection       
+  | DisclaimerSection 
   | CTASection
   | NewsletterSection
   | ContactSection
