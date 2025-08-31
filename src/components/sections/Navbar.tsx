@@ -58,7 +58,7 @@ export default function Navbar() {
         <nav className="mx-auto max-w-6xl h-16 px-4 md:px-6 flex items-center">
           {/* Left: Logo */}
           <div className="min-w-0 flex-1">
-            <Link href="/" className="text-lg font-semibold hover:opacity-90">
+            <Link href="/" className="text-lg font-semibold hover:opacity-90 text-[var(--text-1)]">
               {header.logoText ?? 'Site-Crafter'}
             </Link>
           </div>
@@ -77,7 +77,7 @@ export default function Navbar() {
           {/* Right: CTA (optional) & Mobile toggle */}
           <div className="min-w-0 flex-1 flex justify-end items-center gap-3">
             {header.cta ? (
-              <Link href={header.cta.href} className="btn btn-primary hidden md:inline-flex">
+              <Link href={header.cta.href} className="btn-gradient hidden md:inline-flex">
                 {header.cta.label}
               </Link>
             ) : null}
@@ -118,7 +118,7 @@ export default function Navbar() {
             ))}
             {header.cta ? (
               <li className="pt-2">
-                <Link href={header.cta.href} className="btn btn-primary w-full" onClick={onNav}>
+                <Link href={header.cta.href} className="btn-gradient w-full" onClick={onNav}>
                   {header.cta.label}
                 </Link>
               </li>

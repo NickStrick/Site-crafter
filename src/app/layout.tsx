@@ -44,7 +44,7 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-app`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-app   `}>
         <SiteProvider initial={config}>
           <main className="pt-[5.9rem] overflow-hidden">{children}</main>
           {showThemeSwitcher && <ThemeSwitcher />}

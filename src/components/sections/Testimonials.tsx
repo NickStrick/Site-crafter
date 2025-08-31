@@ -21,9 +21,9 @@ export function Testimonials({
   } = style || {};
 
   const cardBase =
-    'p-6 md:p-7 bg-[color-mix(in_srgb,var(--fg)_5%,transparent)] shadow-md';
+    'p-6 md:p-7 bg-[var(--primary)] shadow-md';
   const cardInk =
-    'p-6 md:p-7 text-white bg-[color-mix(in_srgb,var(--primary)_80%,transparent)] shadow-lg';
+    'p-6 md:p-7 text-[var(--text-1)] bg-[var(--primary)] shadow-lg';
   const radius =
     rounded === '2xl' ? 'rounded-3xl' : rounded === 'lg' ? 'rounded-xl' : 'rounded-2xl';
 
@@ -168,7 +168,7 @@ export function Testimonials({
                   {t.role && (
                     <div
                       className={`text-sm ${
-                        variant === 'ink' ? 'text-white/85' : 'text-muted'
+                        variant === 'ink' ? 'text-[var(--text)]/85' : 'text-muted'
                       }`}
                     >
                       {t.role}

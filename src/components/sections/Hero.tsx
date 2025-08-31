@@ -31,8 +31,8 @@ export function Hero({ eyebrow, title, subtitle, primaryCta, secondaryCta, image
               </motion.p>
             ) : null}
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: .25 }} className="flex gap-4">
-              {primaryCta && <Link href={primaryCta.href} className="btn btn-primary">{primaryCta.label}</Link>}
-              {secondaryCta && <Link href={secondaryCta.href} className="btn btn-ghost">{secondaryCta.label}</Link>}
+              {primaryCta && <Link href={primaryCta.href} className="btn-gradient">{primaryCta.label}</Link>}
+              {secondaryCta && <Link href={secondaryCta.href} className="btn-gradient-inverted">{secondaryCta.label}</Link>}
             </motion.div>
           </div>
 

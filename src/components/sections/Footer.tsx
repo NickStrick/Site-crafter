@@ -5,7 +5,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 
 export function Footer({ columns = [], legal }: FooterSection) {
   return (
-    <AnimatedSection className="section bg-[color-mix(in_srgb,var(--bg)_90%,transparent)]">
+    <AnimatedSection className="section bg-gradient-2">
       <div className="mx-auto max-w-6xl grid md:grid-cols-4 gap-8">
         {columns.map((c, i) => (
           <div key={i}>

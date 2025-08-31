@@ -13,7 +13,7 @@ export default function Page() {
   }
 
   return (
-    <main className="bg-app">
+    <main className="bg-main ">
       {config.sections?.length
         ? config.sections.map(s => <SectionRenderer key={s.id} section={s} />)
         : <div className="section">No sections configured.</div>}
