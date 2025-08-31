@@ -3,6 +3,7 @@
 
 import type { SkillsSection } from '@/types/site';
 import AnimatedSection from '@/components/AnimatedSection';
+import Image from "next/image";
 
 export default function Skills({
   title,
@@ -30,7 +31,9 @@ export default function Skills({
               className="skill-item flex flex-col items-center text-center p-6 rounded-xl shadow-sm bg-white/70 backdrop-blur"
             >
               {skill.imageUrl && (
-                <img
+                <Image
+                width={60}
+                height={60}
                   src={skill.imageUrl}
                   alt={skill.title}
                   className="w-12 h-12 mb-4 object-contain"

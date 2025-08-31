@@ -1,7 +1,6 @@
 'use client';
 import type { FeaturesSection } from '@/types/site';
 import AnimatedSection from '@/components/AnimatedSection';
-import { motion } from 'framer-motion';
 
 export function Features({ id, title, items }: FeaturesSection) {
   return (

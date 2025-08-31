@@ -90,11 +90,19 @@ export type DisclaimerSection = SectionBase & {
   body: string;
   enabled?: boolean;
 };
+export type FeatureMeta = { label: string; value: string };
+
 export type FeaturesSection = SectionBase & {
   type: 'features';
   title?: string;
-  items: { icon?: string; title: string; body?: string; link?: string; imageUrl?: string; meta?: {} }[];
-  
+  items: {
+    icon?: string;
+    title: string;
+    body?: string;
+    link?: string;
+    imageUrl?: string;
+    meta?: FeatureMeta[];   // ← was `{}`; now structured array
+  }[];
 };
 
 export type CTASection = SectionBase & {

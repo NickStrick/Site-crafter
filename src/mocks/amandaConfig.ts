@@ -214,7 +214,7 @@ export const mockSiteConfig: SiteConfig = {
           ],
         },
       ],
-      legal: "© 2025 Amanda Grau. All rights reserved.",
+      legal: "© 2025 Amanda Grau. All rights reserved. Designed and developed by Stricker Digital.",
     },
   ],
 };

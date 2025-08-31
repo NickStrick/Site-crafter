@@ -5,20 +5,20 @@ import { motion, useInView, useMotionValue, animate } from 'framer-motion';
 import AnimatedSection from '@/components/AnimatedSection';
 import type { StatsSection, StatItem } from '@/types/site';
 
-function useCountUp(target: number, start = 0) {
-  const nodeRef = useRef<HTMLSpanElement>(null);
-  const mv = useMotionValue(start);
+// function useCountUp(target: number, start = 0) {
+//   const nodeRef = useRef<HTMLSpanElement>(null);
+//   const mv = useMotionValue(start);
 
-  useEffect(() => {
-    const controls = animate(mv, target, { duration: 1.2, ease: 'easeOut' });
-    const unsub = mv.on('change', v => {
-      if (nodeRef.current) nodeRef.current.textContent = Math.floor(v).toString();
-    });
-    return () => { controls.stop(); unsub(); };
-  }, [target]);
+//   useEffect(() => {
+//     const controls = animate(mv, target, { duration: 1.2, ease: 'easeOut' });
+//     const unsub = mv.on('change', v => {
+//       if (nodeRef.current) nodeRef.current.textContent = Math.floor(v).toString();
+//     });
+//     return () => { controls.stop(); unsub(); };
+//   }, [target]);
 
-  return nodeRef;
-}
+//   return nodeRef;
+// }
 
 function StatNumber({ item, inView }: { item: StatItem; inView: boolean }) {
   const { value, prefix = '', suffix = '', decimals = 0 } = item;
@@ -27,15 +27,21 @@ function StatNumber({ item, inView }: { item: StatItem; inView: boolean }) {
 
   useEffect(() => {
     if (!inView) return;
+
     const controls = animate(mv, value, { duration: 1.2, ease: 'easeOut' });
-    const unsub = mv.on('change', v => {
-      if (!nodeRef.current) return;
+    const unsub = mv.on('change', (v) => {
+      const el = nodeRef.current;
+      if (!el) return;
       const num =
         decimals > 0 ? Number(v).toFixed(decimals) : Math.round(v).toString();
-      nodeRef.current.textContent = `${prefix}${num}${suffix ?? ''}`;
+      el.textContent = `${prefix}${num}${suffix ?? ''}`;
     });
-    return () => { controls.stop(); unsub(); };
-  }, [inView, value, prefix, suffix, decimals]);
+
+    return () => {
+      controls.stop();
+      unsub();
+    };
+  }, [inView, value, prefix, suffix, decimals, mv]); // 👈 add mv
 
   return <span ref={nodeRef} />;
 }

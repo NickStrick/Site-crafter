@@ -15,7 +15,7 @@ import { mockSiteConfig } from "@/mocks/amandaConfig";
 
 export const metadata: Metadata = {
   title: "Amanda Grau",
-  description: "Board Certified Behavior Analyst in the Chicago suburbs.",
+  description: "Board Certified Behavior Analyst in the Chicago suburbs. Website creator: Stricker Digital",
 };
 
 async function getSiteConfig(): Promise<SiteConfig> {
