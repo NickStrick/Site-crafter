@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import AnimatedSection from '@/components/AnimatedSection';
 
-export function Hero({ eyebrow, title, subtitle, primaryCta, secondaryCta, imageUrl }: HeroSection) {
+export function Hero({ id, eyebrow, title, subtitle, primaryCta, secondaryCta, imageUrl }: HeroSection) {
   return (
-    <section className="section curve bg-app">
+    <section id={id} className="section curve bg-app bg-gradient-1">
       <AnimatedSection>
-        <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-12 items-center">
+        <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-[10rem] items-center">
           <div>
             {eyebrow ? <p className="h-eyebrow mb-3">{eyebrow}</p> : null}
             <motion.h1
@@ -44,8 +44,8 @@ export function Hero({ eyebrow, title, subtitle, primaryCta, secondaryCta, image
               className="relative"
             >
               {/* soft blob shadow */}
-              <div className="absolute -inset-6 rounded-[40px] bg-[color-mix(in_srgb,var(--primary)_18%,transparent)] blur-2xl -z-10" />
-              <div className="overflow-hidden rounded-[32px] shadow-2xl">
+              <div className="absolute -inset-6 rounded-full bg-[color-mix(in_srgb,var(--primary)_18%,transparent)] blur-2xl -z-10" />
+              <div className="overflow-hidden rounded-full">
                 <Image src={imageUrl} alt="" width={980} height={740} className="w-full h-auto" />
               </div>
             </motion.div>

@@ -3,13 +3,13 @@ import type { FeaturesSection } from '@/types/site';
 import AnimatedSection from '@/components/AnimatedSection';
 import { motion } from 'framer-motion';
 
-export function Features({ title, items }: FeaturesSection) {
+export function Features({ id, title, items }: FeaturesSection) {
   return (
-    <section className="section">
+    <section id={id} className="section sectionAboveWave">
       <div className="mx-auto max-w-6xl">
-        {title ? <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12">{title}</h2> : null}
+        {title ? <AnimatedSection><h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12">{title}</h2></AnimatedSection> : null}
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid gap-8 md:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] place-content-center">
           {items.map((f, i) => {
             const ink = i % 2 === 0; // alternate deep “ink” panels like your screenshots
             return (
@@ -18,10 +18,10 @@ export function Features({ title, items }: FeaturesSection) {
                   <div className="text-2xl font-bold mb-2">{f.title}</div>
                   {f.body ? <p className={`${ink ? 'text-[var(--text-1)]/90' : 'text-muted'}`}>{f.body}</p> : null}
                   <div className="mt-6">
-                    <a className={`inline-flex items-center gap-2 ${ink ? 'text-white' : 'text-fg'} underline cursor-pointer`}>
+                    {f.link?<a href={f.link} className={`inline-flex items-center gap-2 ${ink ? 'text-white' : 'text-fg'} underline cursor-pointer`}>
                       Learn more
                       <span aria-hidden>↗</span>
-                    </a>
+                    </a>:null}
                   </div>
                 </div>
               </AnimatedSection>

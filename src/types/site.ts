@@ -36,7 +36,10 @@ export type SectionBase = {
     | 'testimonials'
     | 'stats'
     | 'about'
-    | 'disclaimer';
+    | 'disclaimer'
+    | 'sectional'
+    | 'skills';
+
   // visible/editable flags to support your builder UI
   visible?: boolean;
   editable?: boolean;
@@ -90,7 +93,7 @@ export type DisclaimerSection = SectionBase & {
 export type FeaturesSection = SectionBase & {
   type: 'features';
   title?: string;
-  items: { icon?: string; title: string; body?: string; imageUrl?: string; meta?: {} }[];
+  items: { icon?: string; title: string; body?: string; link?: string; imageUrl?: string; meta?: {} }[];
   
 };
 
@@ -115,6 +118,7 @@ export type ContactSection = SectionBase & {
   phone?: string;
   address?: string;
   mapEmbedUrl?: string;
+  backgroundUrl?: string; // optional background image
   socials?: { label: string; href: string }[];
 };
 
@@ -131,6 +135,22 @@ export type FooterSection = SectionBase & {
   legal?: string;
 };
 
+export type SectionalSection = SectionBase & {
+  id: string;
+  type: 'sectional';
+  title: string;
+  body?: string;
+  backgroundUrl?: string;   // accepts /public path or external URL
+  overlay?: boolean;        // tint overlay for contrast
+  align?: 'left' | 'center' | 'right';
+  height?: 'sm' | 'md' | 'lg' | 'full'; // hero height presets
+  motion?: {
+    direction?: 'x' | 'y';
+    offset?: number;      // px
+    duration?: number;    // seconds
+  };
+};
+
 export type AnySection =
   | HeaderSection
   | HeroSection
@@ -143,7 +163,9 @@ export type AnySection =
   | SchedulingSection
   | FooterSection
   | TestimonialsSection
-  | StatsSection;
+  | StatsSection
+  | SectionalSection
+  | SkillsSection;
 
 export type SiteConfig = {
   theme: SiteStyle;
@@ -196,4 +218,18 @@ export type StatsSection = SectionBase & {
   subtitle?: string;
   items: StatItem[];
   style?: StatsStyle;
+};
+export type SkillItem = {
+  title: string;
+  body?: string;
+  imageUrl?: string;   // optional icon/logo/photo
+};
+
+export type SkillsSection = SectionBase & {
+  id: string;
+  type: 'skills';
+  title?: string;
+  subtitle?: string;
+  items: SkillItem[];
+  columns?: 2 | 3 | 4; // grid columns (default 3)
 };

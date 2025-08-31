@@ -10,6 +10,10 @@ import { Contact } from './sections/Contact';
 import { Scheduling } from './sections/Scheduling';
 import { Footer } from './sections/Footer';
 import { Testimonials } from './sections/Testimonials';
+import  Sectional  from './sections/Sectional';
+import Skills from './sections/Skills';
+import { Disclaimer } from './sections/Disclaimer';
+import { About } from './sections/About';
 
 import { Stats } from './sections/Stats';
 const map = {
@@ -23,6 +27,10 @@ const map = {
   footer: Footer,
   testimonials: Testimonials, 
   stats: Stats, 
+  disclaimer: Disclaimer,
+  about: About,
+  sectional: Sectional,
+  skills: Skills,
 } as const;
 
 export function SectionRenderer({ section }: { section: AnySection }) {

@@ -3,11 +3,11 @@ import type { CTASection } from '@/types/site';
 import Link from 'next/link';
 import AnimatedSection from '@/components/AnimatedSection';
 
-export function CTA({ title, body, cta }: CTASection) {
+export function CTA({ id, title, body, cta }: CTASection) {
   return (
-    <section className="relative">
+    <section id={id} className="relative">
       {/* top wave */}
-      <div className="text-[var(--primary)] rotate-180" aria-hidden>
+      <div className="text-[var(--bg-2)] top-wave" aria-hidden>
         <svg viewBox="0 0 1440 140" className="w-full h-[70px]" preserveAspectRatio="none">
           <path d="M0,80 C240,140 480,0 720,60 C960,120 1200,20 1440,80 L1440,140 L0,140 Z" fill="currentColor" />
         </svg>
@@ -24,7 +24,7 @@ export function CTA({ title, body, cta }: CTASection) {
       </div>
 
       {/* bottom wave (back to page bg) */}
-      <div className="bg-gradient-1" aria-hidden>
+      <div className="text-[var(--bg-2)] rotate-180 bottom-wave" aria-hidden>
         <svg viewBox="0 0 1440 140" className="w-full h-[70px]" preserveAspectRatio="none">
           <path d="M0,80 C240,140 480,0 720,60 C960,120 1200,20 1440,80 L1440,140 L0,140 Z" fill="currentColor" />
         </svg>

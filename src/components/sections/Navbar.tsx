@@ -55,7 +55,7 @@ export default function Navbar() {
           shadowCls,
         ].join(' ')}
       >
-        <nav className="mx-auto max-w-6xl h-16 px-4 md:px-6 flex items-center">
+        <nav className="mx-auto max-w-6xl h-[5.9rem] px-4 md:px-6 flex items-center">
           {/* Left: Logo */}
           <div className="min-w-0 flex-1">
             <Link href="/" className="text-lg font-semibold hover:opacity-90 text-[var(--text-1)]">
@@ -128,7 +128,7 @@ export default function Navbar() {
       </header>
 
       {/* Spacer so content isn't hidden when sticky */}
-      {sticky && <div aria-hidden className="h-16" />}
+      {sticky && <div aria-hidden className="h-[5.9rem]" />}
     </>
   );
 }

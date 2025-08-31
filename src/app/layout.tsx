@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 import { mockSiteConfig } from "@/mocks/amandaConfig"; 
 
 export const metadata: Metadata = {
-  title: "My Custom Website",
-  description: "Copyright Strickerdigital.com",
+  title: "Amanda Grau",
+  description: "Board Certified Behavior Analyst in the Chicago suburbs.",
 };
 
 async function getSiteConfig(): Promise<SiteConfig> {
@@ -46,7 +46,7 @@ export default async function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-app   `}>
         <SiteProvider initial={config}>
-          <main className="pt-[5.9rem] overflow-hidden">{children}</main>
+          <main className="overflow-hidden">{children}</main>
           {showThemeSwitcher && <ThemeSwitcher />}
         </SiteProvider>
       </body>
