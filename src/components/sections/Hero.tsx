@@ -25,7 +25,7 @@ export function Hero({ id, eyebrow, title, subtitle, primaryCta, secondaryCta, i
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: .15 }}
-                className="h-hero-p text-muted max-w-xl mb-8"
+                className="h-hero-p text-muted text-lg max-w-xl mb-8"
               >
                 {subtitle}
               </motion.p>
@@ -45,7 +45,7 @@ export function Hero({ id, eyebrow, title, subtitle, primaryCta, secondaryCta, i
             >
               {/* soft blob shadow */}
               <div className="absolute -inset-6 rounded-full bg-[color-mix(in_srgb,var(--primary)_18%,transparent)] blur-2xl -z-10" />
-              <div className="overflow-hidden rounded-full">
+              <div className="overflow-hidden rounded-full max-h-[380px] max-w-[380px] mx-auto">
                 <Image src={imageUrl} alt="" width={980} height={740} className="w-full h-auto" />
               </div>
             </motion.div>

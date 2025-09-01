@@ -4,12 +4,17 @@
 
 /* src/app/globals.css  (append to yours) */
 :root {
-  --primary: #2563eb;
-  --accent:  #14b8a6;
-  --bg:      #0b1020;
-  --fg:      #e5e7eb;
-  --muted:   #94a3b8;
-  --radius:  1rem;
+  --primary: #166534;/* deep leaf green */
+    --accent : #65a30d;/* fresh moss */
+    --bg     : #fdfaf4;/* warm cream */
+    --bg-2    : #f8d9a2;/* warm cream */
+    --fg     : #1f2937;/* slate/ink */
+    --muted  : #65a30d;/* bamboo/khaki */
+
+  --band-1:  #d6c7a1;
+  --band-2:  #d6c7a1; 
+  --text-1: rgb(49, 47, 41);
+  --text-2: rgb(49, 47, 41);
 }
 
 /* Presets */
@@ -229,6 +234,9 @@ body[data-theme="grove"]  {
     width: 100vw;
     z-index: 2;
    bottom: calc(100% - 5px);
+}
+.bottom-wave svg, .top-wave svg{
+    width: 100%;
 }
 
 /* ============================
