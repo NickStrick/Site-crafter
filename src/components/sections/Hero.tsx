@@ -30,7 +30,7 @@ export function Hero({ id, eyebrow, title, subtitle, primaryCta, secondaryCta, i
                 {subtitle}
               </motion.p>
             ) : null}
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: .25 }} className="flex gap-4">
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: .25 }} className="flex flex-wrap gap-4">
               {primaryCta && <Link href={primaryCta.href} className="btn-gradient">{primaryCta.label}</Link>}
               {secondaryCta && <Link href={secondaryCta.href} className="btn-gradient-inverted">{secondaryCta.label}</Link>}
             </motion.div>
