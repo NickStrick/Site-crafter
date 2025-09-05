@@ -38,7 +38,9 @@ export type SectionBase = {
     | 'about'
     | 'disclaimer'
     | 'sectional'
-    | 'skills';
+    | 'skills'
+    | 'pricing'
+    | 'share';  // add new section types here
 
   // visible/editable flags to support your builder UI
   visible?: boolean;
@@ -151,7 +153,7 @@ export type SectionalSection = SectionBase & {
   backgroundUrl?: string;   // accepts /public path or external URL
   overlay?: boolean;        // tint overlay for contrast
   align?: 'left' | 'center' | 'right';
-  height?: 'sm' | 'md' | 'lg' | 'full'; // hero height presets
+  height?: 'xs' | 'sm' | 'md' | 'lg' | 'full'; // hero height presets
   motion?: {
     direction?: 'x' | 'y';
     offset?: number;      // px
@@ -173,7 +175,9 @@ export type AnySection =
   | TestimonialsSection
   | StatsSection
   | SectionalSection
-  | SkillsSection;
+  | SkillsSection
+  | PricingSection
+  | ShareSection;
 
 export type SiteConfig = {
   theme: SiteStyle;
@@ -240,4 +244,49 @@ export type SkillsSection = SectionBase & {
   subtitle?: string;
   items: SkillItem[];
   columns?: 2 | 3 | 4; // grid columns (default 3)
+};
+export type PricingPlan = {
+    name: string;
+    price?: string;
+    period?: string;
+    description?: string;
+    features?: string[];
+    cta?: { label?: string; href?: string };
+    featured?: boolean;
+    badge?: string;
+};
+
+export type PricingSection = SectionBase & {
+  id: string;
+  type: 'pricing';
+  title?: string;
+  subtitle?: string;
+  plans: PricingPlan[];
+};
+export type ShareItem = {
+  /** URL to encode in QR. If omitted, use current site URL */
+  value?: string;
+  /** Optional label under the QR code */
+  label?: string;
+  /** Optional size in px (default 220) */
+  size?: number;
+};
+
+export type ShareStyle = {
+  /** layout variant */
+  variant?: 'default' | 'band'; // band = tinted bg
+  /** alignment of text & QR code */
+  align?: 'left' | 'center';
+  /** whether to show action buttons (copy/share/download) */
+  actions?: boolean;
+};
+
+export type ShareSection = SectionBase & {
+  id: string;
+  type: 'share';
+  title?: string;
+  subtitle?: string;
+  /** one or more QR codes */
+  items: ShareItem[];
+  style?: ShareStyle;
 };

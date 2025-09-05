@@ -55,7 +55,7 @@ export default function Navbar() {
           shadowCls,
         ].join(' ')}
       >
-        <nav className="mx-auto max-w-6xl h-[5.9rem] px-4 md:px-6 flex items-center">
+        <nav className="mx-auto max-w-6xl h-[4rem] px-4 md:px-6 flex items-center">
           {/* Left: Logo */}
           <div className="min-w-0 flex-1">
             <Link href="/" className="text-lg font-semibold hover:opacity-90 text-[var(--text-1)]">
@@ -77,15 +77,15 @@ export default function Navbar() {
           {/* Right: CTA (optional) & Mobile toggle */}
           <div className="min-w-0 flex-1 flex justify-end items-center gap-3">
             {header.cta ? (
-              <Link href={header.cta.href} className="btn-gradient hidden md:inline-flex">
+              <Link href={header.cta.href} className="btn-small btn-gradient hidden md:inline-flex">
                 {header.cta.label}
               </Link>
             ) : null}
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-md
-                         border border-[color-mix(in_srgb,var(--fg)_12%,transparent)]"
+              className="md:hidden inline-flex items-center justify-center min-w-9 w-9 h-9 rounded-md
+                         border border-[color-mix(in_srgb,var(--fg)_12%,transparent)] text-[var(--text-1)]"
               aria-expanded={open}
               aria-controls="mobile-nav"
               onClick={() => setOpen(v => !v)}
@@ -99,7 +99,7 @@ export default function Navbar() {
         <div
           id="mobile-nav"
           className={`
-            md:hidden overflow-hidden transition-[max-height]
+            md:hidden overflow-hidden transition-[max-height] text-[var(--text-1)]
             border-t border-[color-mix(in_srgb,var(--fg)_10%,transparent)]
             ${open ? 'max-h-96' : 'max-h-0'}
           `}
@@ -128,7 +128,7 @@ export default function Navbar() {
       </header>
 
       {/* Spacer so content isn't hidden when sticky */}
-      {sticky && <div aria-hidden className="h-[5.9rem]" />}
+      {sticky && <div aria-hidden className="h-[4rem]" />}
     </>
   );
 }

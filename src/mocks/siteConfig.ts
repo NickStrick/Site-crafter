@@ -1,219 +1,199 @@
-// src/mocks/siteConfig.ts
+// src/mocks/siteConfig.NEW.ts
 import type { SiteConfig } from "@/types/site";
 
+// Image imports (replace paths/names as needed)
+import main from "../../public/NEW/main.jpg";
+import bg from "../../public/NEW/bg.jpg";
+import image1 from "../../public/NEW/img1.png";
+import image2 from "../../public/NEW/img2.png";
+import image3 from "../../public/NEW/img3.png";
+import image4 from "../../public/NEW/img4.png";
+
 export const mockSiteConfig: SiteConfig = {
- theme: { preset: 'festival', radius: 'xl' },
+  theme: { preset: "grove", radius: "xl" }, // presets: 'ocean' | 'sunset' | 'forest' | 'slate' | 'festival' | 'candy' | 'neon' | 'grove'
   meta: {
-    title: "Site-Crafter Demo",
-    description: "Composable pages with runtime theming",
+    title: "NEW SITE TITLE",
+    description: "Short 1–2 sentence description for SEO and social.",
     favicon: "/favicon.ico",
   },
   sections: [
+    // HEADER
     {
-      id: 'hdr',
-      type: 'header',
-      logoText: 'Site-Crafter',
+      visible: true,
+      id: "hdr",
+      type: "header",
+      logoText: "Brand / Person",
       links: [
-        { label: 'Features', href: '#features' },
-        { label: 'Newsletter', href: '#newsletter' },
-        { label: 'Contact', href: '#contact' },
+        { label: "About", href: "#about" },
+        { label: "Services", href: "#services" },
+        { label: "Experience", href: "#credentials" },
+        { label: "Contact", href: "#contact" },
       ],
-      cta: { label: 'Book a call', href: '#sched' },
-      style: {
-        sticky: true,     // 👈 flip to false to test non-sticky
-        blur: true,
-        elevation: 'sm',
-        transparent: false,
-      },
+      cta: { label: "Primary CTA", href: "#" },
+      style: { sticky: false, blur: true, elevation: "sm", transparent: false },
     },
+
+    // OPTIONAL FLOATING/SECTIONAL
     {
-      id: "hero1",
+      visible: true,
+      id: "floating",
+      type: "sectional",
+      title: "Punchy headline / value prop",
+      body: "",
+      backgroundUrl: bg.src,
+      overlay: true,
+      height: "sm", // 'sm' | 'md' | 'lg'
+    },
+
+    // HERO
+    {
+      visible: true,
+      id: "hero",
       type: "hero",
-      eyebrow: "Freelancer-ready",
-      title: "Build client sites in minutes",
-      subtitle:
-        "Productize 80–90% of your workflow and keep room for bespoke polish.",
-      primaryCta: { label: "See pricing", href: "#cta-pricing" },
-      secondaryCta: { label: "How it works", href: "#features" },
-      imageUrl:
-        "https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=1400&auto=format&fit=crop",
+      eyebrow: "Short qualifier",
+      title: "Main Headline",
+      subtitle: "Supportive subheadline that explains the value succinctly.",
+      primaryCta: { label: "Primary CTA", href: "#" },
+      secondaryCta: { label: "Secondary CTA", href: "#contact" },
+      imageUrl: main.src,
     },
-    { id: 'hero2', type: 'hero',
-  eyebrow: 'Freelancer-ready',
-  title: 'Learning is for everyone', // try playful wording
-  subtitle: 'Productize 80–90% of your build. Keep the craft where it matters.',
-  primaryCta: { label: 'Book a free discovery call', href: '#sched' },
-  imageUrl: 'https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=1400&auto=format&fit=crop'
-},
-{ id: 'cta1', type:'cta',
-  title:'A festival of discovery',
-  body:'Ship beautiful websites, then keep iterating with presets.',
-  cta: { label:'See more', href:'#' }
-},
+
+    // ABOUT
     {
+      visible: true,
+      id: "about",
+      type: "about",
+      title: "About",
+      body:
+        "1–3 short paragraphs. Keep it friendly and scannable. Can include location, approach, specialties.",
+      imageUrl: "",
+    },
+
+    // FEATURES / PROJECTS / SERVICES
+    {
+      visible: true,
       id: "features",
       type: "features",
-      title: "What you get",
+      title: "What I Do",
       items: [
         {
-          title: "Composable Sections",
-          body: "Header, hero, features, CTA, contact, scheduling, footer.",
+          title: "Service or Project",
+          body: "1–2 sentence description.",
+          imageUrl: image1.src,
+          meta: [
+            { label: "Type", value: "Consulting" },
+            { label: "Status", value: "Open" },
+          ],
         },
         {
-          title: "Live Theming",
-          body: "4 presets + any color override via API/env.",
+          title: "Service or Project",
+          body: "Another description.",
+          imageUrl: image2.src,
         },
-        { title: "Integrations", body: "Calendly scheduling and Google Forms newsletter." },
-        { title: "Typed Config", body: "Backend returns JSON that maps 1:1 to sections." },
-        { title: "Runtime Edits", body: "Swap styles instantly with a small switcher." },
-        { title: "Fast Shipping", body: "Reuse 80–90% across clients, customize the rest." },
       ],
     },
+
+    // CTA (OPTIONAL)
     {
-      id: "cta-pricing",
+      visible: true,
+      id: "cta",
       type: "cta",
-      title: "Ready to ship faster?",
-      body: "Pick a preset, tweak colors, and publish. Perfect for productized freelancing.",
-      cta: { label: "Get started", href: "#newsletter" },
+      title: "Ready to work together?",
+      body: "Short prompt leading into your primary action.",
+      cta: { label: "Get in touch", href: "#contact" },
     },
+
+    // OPTIONAL SECOND SECTIONAL
     {
-      id: "newsletter",
-      type: "newsletter",
-      title: "Join the newsletter",
-      body: "Tips, presets, and new section drops. No spam.",
-      googleFormEmbedUrl:
-        "https://docs.google.com/forms/d/e/1FAIpQLSdEXAMPLE123/viewform?embedded=true",
+      visible: true,
+      id: "floating2",
+      type: "sectional",
+      title: "A short quote or differentiator",
+      body: "- Attribution",
+      backgroundUrl: bg.src,
+      overlay: true,
     },
+
+    // CREDENTIALS (FEATURES-LIKE)
     {
+      visible: true,
+      id: "credentials",
+      type: "features",
+      title: "Degrees, Certifications, & Experience",
+      items: [
+        {
+          title: "Degree or Certification",
+          body: "Issuing institution or summary.",
+          meta: [{ label: "Location", value: "City, ST" }],
+        },
+        { title: "Certification", body: "Issuer / brief summary" },
+        { title: "Experience", body: "Short summary of relevant work." },
+      ],
+    },
+
+    // SKILLS (GRID)
+    {
+      visible: true,
+      id: "skills",
+      type: "skills",
+      title: "Core Skills & Attributes",
+      subtitle: "What I bring to every engagement",
+      items: [
+        { title: "Skill One", body: "Short blurb.", imageUrl: image3.src },
+        { title: "Skill Two", body: "Short blurb.", imageUrl: image4.src },
+      ],
+      columns: 2, // 2 or 3
+    },
+
+    // CONTACT
+    {
+      visible: true,
       id: "contact",
       type: "contact",
       title: "Contact",
       email: "hello@example.com",
-      phone: "(555) 123-4567",
-      address: "123 Main St, Chicago, IL",
-      mapEmbedUrl:
-        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1dChicagoDemo",
+      address: "City, ST",
+      backgroundUrl: bg.src,
+      socials: [
+        { label: "LinkedIn", href: "#" },
+        { label: "Email", href: "mailto:hello@example.com" },
+      ],
     },
-    {
-      id: "sched",
-      type: "scheduling",
-      title: "Book a demo",
-      body: "Pick a time that works for you.",
-      calendlyUrl: "https://calendly.com/your-handle/intro",
-    },
-    {
-      id: "cta-bottom",
-      type: "cta",
-      title: "Like what you see?",
-      body: "This entire page was rendered from a JSON config.",
-      cta: { label: "Start a project", href: "#contact" },
-    },
-    {
-  id: 'stats1',
-  type: 'stats',
-  title: 'By the numbers',
-  subtitle: 'Social proof and scale, at a glance.',
-  style: {
-    align: 'center',
-    columns: 4,
-    divider: 'line',      // try 'dot' or 'line'
-    color: 'accent',     // try 'accent' or 'primary'
-    compact: false
-  },
-  items: [
-    { value: 100, label: 'Users', suffix: '+', },
-    { value: 845,    label: 'Happy Customers', suffix: '+', },
-    { value: 8,        label: 'Offices Worldwide' },
-    { value: 60,        label: 'Complete Projects', suffix: '+' },
-  ],
-},
 
+    // DISCLAIMER (OPTIONAL)
     {
-  id: 'testi',
-  type: 'testimonials',
-  title: 'Our students love us.',
-  subtitle: 'Talk about how successful your students are.',
-  style: {
-    variant: 'carousel',     // try 'ink'
-    columns: 3,          // try 2
-    showQuoteIcon: true,
-    rounded: 'xl',
-    background: 'default' // or 'band'
-  },
-  items: [
-    {
-      quote:
-        '“Duis blandit lectus ultrices interdum fermentum. Sed dolor metus, cursus id metus at, fermentum bibendum sapien.”',
-      name: 'Mark Rosh',
-      role: 'Founder of Ngma',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=200&auto=format&fit=crop',
+      visible: true,
+      id: "disclaimer",
+      type: "disclaimer",
+      title: "Disclaimer",
+      body:
+        "Information on this site is for educational purposes only and is not a substitute for professional advice.",
+      enabled: false,
     },
+
+    // FOOTER
     {
-      quote:
-        '“Vestibulum placerat diam aliquet elit hendrerit lacinia. Ut quam orci, porttitor et nunc non, ullamcorper interdum ipsum.”',
-      name: 'Ameline Joy',
-      role: 'Founder of Ngma',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1544006659-f0b21884ce1d?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      quote:
-        '“Mauris id tortor non leo aliquet mattis. Integer vitae nulla finibus elit convallis accumsan.”',
-      name: 'Amanda Main',
-      role: 'Founder of Ngma',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      quote:
-        '“Vestibulum tincidunt nisl a lorem luctus, ut varius orci mattis. Cras vestibulum volutpat augue.”',
-      name: 'Steven Rosh',
-      role: 'Founder of Ngma',
-      avatarUrl:
-        'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=200&auto=format&fit=crop',
-    },
-    {
-      quote: '“Phasellus ac aliquet diam. Sed pellentesque mattis ultricies.”',
-      name: 'Jane Cooper',
-      role: 'Parent',
-    },
-    {
-      quote:
-        '“Curabitur laoreet, nulla malesuada venenatis condimentum.”',
-      name: 'Tommy Parks',
-      role: 'Student',
-    },
-  ],
-},
-    {
+      visible: true,
       id: "ftr",
       type: "footer",
       columns: [
         {
-          title: "Company",
+          title: "Explore",
           links: [
-            { label: "About", href: "#" },
-            { label: "Careers", href: "#" },
+            { label: "About", href: "#about" },
+            { label: "Services", href: "#features" },
+            { label: "Credentials", href: "#credentials" },
           ],
         },
         {
-          title: "Resources",
+          title: "Connect",
           links: [
-            { label: "Docs", href: "#" },
-            { label: "Blog", href: "#" },
+            { label: "LinkedIn", href: "#" },
+            { label: "Email", href: "mailto:hello@example.com" },
           ],
         },
-        {
-          title: "Legal",
-          links: [
-            { label: "Privacy", href: "#" },
-            { label: "Terms", href: "#" },
-          ],
-        },
-        { title: "Social", links: [{ label: "Twitter/X", href: "#" }] },
       ],
-      legal: "© 2025 Site-Crafter. All rights reserved.",
+      legal: "© 2025 NEW NAME. All rights reserved.",
     },
   ],
 };

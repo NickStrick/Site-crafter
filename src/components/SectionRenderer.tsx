@@ -19,6 +19,8 @@ import { Disclaimer } from './sections/Disclaimer';
 import { About } from './sections/About';
 import Sectional from './sections/Sectional';
 import Skills from './sections/Skills';
+import Pricing from "./sections/Pricing";
+import Share from "./sections/Share";
 
 // Exhaustiveness helper (nice to have)
 function assertNever(x: never): never {
@@ -84,6 +86,12 @@ export function SectionRenderer({ section }: { section: AnySection }) {
     case 'skills': {
       // section is SkillsSection
       return <Skills {...section} />;
+    }
+    case "pricing":{
+      return <Pricing {...section} />;
+    }
+    case "share":{
+      return <Share {...section} />;
     }
     default: {
       // if you ever add a new type and forget to handle it,

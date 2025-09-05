@@ -5,6 +5,20 @@ import { motion } from 'framer-motion';
 import AnimatedSection from '@/components/AnimatedSection';
 import type { TestimonialsSection } from '@/types/site';
 import { useRef, useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faStar } from '@fortawesome/free-solid-svg-icons';
+
+
+// Small helper to render a fixed 5‑star rating
+function Stars() {
+return (
+<div className="flex items-center gap-1 text-yellow-300" aria-label="5 out of 5 stars">
+{Array.from({ length: 5 }).map((_, i) => (
+<FontAwesomeIcon key={i} icon={faStar} className="w-4 h-4" aria-hidden="true" />
+))}
+</div>
+);
+}
 
 export function Testimonials({
   title = 'Our students love us.',
@@ -21,7 +35,7 @@ export function Testimonials({
   } = style || {};
 
   const cardBase =
-    'p-6 md:p-7 bg-[var(--primary)] shadow-md';
+    'p-6 md:p-7 bg-accent-1 shadow-md';
   const cardInk =
     'p-6 md:p-7 text-[var(--text-1)] bg-[var(--primary)] shadow-lg';
   const radius =
@@ -52,7 +66,7 @@ export function Testimonials({
   return (
     <section
       className={[
-        'section',
+        'section !pb-[6rem]',
         background === 'band'
           ? 'bg-[color-mix(in_srgb,var(--primary)_8%,transparent)]'
           : '',
@@ -82,13 +96,13 @@ export function Testimonials({
               {items.map((t, i) => (
                 <motion.figure
                   key={`${t.name}-${i}`}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 1, y: 0, x: 0 }}
+                  whileInView={{ opacity: 1, y: 0,x: 0 }}
                   viewport={{ once: true, amount: 0.25 }}
                   transition={{ duration: 0.4, ease: 'easeOut', delay: i * 0.04 }}
                   className={`${
                     cardBase
-                  } ${radius} snap-center shrink-0 w-[86%]`}
+                  } ${radius} snap-center shrink-0 w-[86%] relative`}
                 >
                   {showQuoteIcon && <div className="text-2xl mb-3 opacity-70">“</div>}
                   <blockquote className="text-[1.05rem] leading-relaxed">{t.quote}</blockquote>
@@ -102,13 +116,14 @@ export function Testimonials({
                         className="rounded-full object-cover"
                       />
                     ) : (
-                      <div className="w-11 h-11 rounded-full bg-[color-mix(in_srgb,var(--fg)_20%,transparent)]" />
+                      <FontAwesomeIcon icon={faUser} className="w-5 h-5 text-[var(--primary)" />
                     )}
                     <div>
                       <div className="font-semibold">{t.name}</div>
                       {t.role && <div className="text-sm text-muted">{t.role}</div>}
                     </div>
                   </figcaption>
+                  <div className="absolute bottom-4 right-4"><Stars /></div>
                 </motion.figure>
               ))}
             </div>
@@ -145,7 +160,7 @@ export function Testimonials({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.05 }}
-              className={`${variant === 'ink' ? cardInk : cardBase} ${radius}`}
+              className={`relative ${variant === 'ink' ? cardInk : cardBase} ${radius}`}
             >
               {showQuoteIcon && <div className="text-2xl mb-3 opacity-70">“</div>}
 
@@ -161,8 +176,9 @@ export function Testimonials({
                     className="rounded-full object-cover"
                   />
                 ) : (
-                  <div className="w-11 h-11 rounded-full bg-[color-mix(in_srgb,var(--fg)_20%,transparent)]" />
-                )}
+                  <FontAwesomeIcon icon={faUser} className="w-11 h-11 overflow-hidden rounded-full bg-[color-mix(in_srgb,var(--bg)_40%,transparent)] text-[var(--bg-2)]" />
+                )} 
+                {/* w-11 h-11 rounded-full bg-[color-mix(in_srgb,var(--fg)_20%,transparent)] */}
                 <div>
                   <div className="font-semibold">{t.name}</div>
                   {t.role && (
@@ -176,6 +192,7 @@ export function Testimonials({
                   )}
                 </div>
               </figcaption>
+              <div className="absolute bottom-4 right-4"><Stars /></div>
             </motion.figure>
           ))}
         </div>

@@ -4,7 +4,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 import { motion } from 'framer-motion';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faMapMarkerAlt, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 
@@ -36,6 +36,12 @@ export function Contact({
         <div>
           <h3 className="text-4xl font-bold mb-4 text-white w-fit m-auto">{title}</h3>
           <ul className="space-y-3 text-xl text-white/90 w-fit m-auto">
+          {address && (
+              <li className="flex items-center gap-3">
+                <FontAwesomeIcon icon={faMapMarkerAlt} className="w-5 h-5" />
+                <span>{address}</span>
+              </li>
+            )}
             {email && (
               <li className="flex items-center gap-3">
                 <FontAwesomeIcon icon={faEnvelope} className="w-5 h-5" />
@@ -44,13 +50,11 @@ export function Contact({
                 </a>
               </li>
             )}
-            {phone && <li>Phone: {phone}</li>}
-            {address && (
-              <li className="flex items-center gap-3">
-                <FontAwesomeIcon icon={faMapMarkerAlt} className="w-5 h-5" />
-                <span>{address}</span>
-              </li>
-            )}
+            {phone && (<li className="flex items-center gap-3">
+              <FontAwesomeIcon icon={faPhone} className="w-5 h-5" />
+                <span>{phone}</span>
+            </li>)}
+            
             {socials &&
               socials.map((s, i) =>
                 s.label.toLowerCase().includes('linkedin') ? (
@@ -60,7 +64,11 @@ export function Contact({
                       {s.label}
                     </a>
                   </li>
-                ) : null
+                ) : <li key={i} className="flex items-center gap-3 pl-[32px]">
+                    <a href={s.href} target="_blank" rel="noopener noreferrer" className='underline'>
+                      {s.label}
+                    </a>
+                  </li>
               )}
           </ul>
         </div>

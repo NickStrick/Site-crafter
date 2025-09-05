@@ -14,7 +14,7 @@ export type SectionalProps = {
   backgroundUrl?: string;       // e.g. "/colorsky.jpg" in /public
   overlay?: boolean;            // default true
   align?: 'left' | 'center' | 'right'; // default 'center'
-  height?: 'sm' | 'md' | 'lg' | 'full'; // default 'lg'
+  height?: 'xs' | 'sm' | 'md' | 'lg' | 'full'; // default 'lg'
   motionOffset?: number;        // default 70
   motionDuration?: number;      // default 0.8
   direction?: 'x' | 'y';        // default 'x'
@@ -41,6 +41,7 @@ export default function Sectional({
     height === 'full' ? 'min-h-screen'
     : height === 'md' ? 'min-h-[45vh]'
     : height === 'sm' ? 'min-h-[30vh]'
+    : height === 'xs' ? 'min-h-[14vh]'
     : 'min-h-[60vh]'; // lg default
 
   const textAlignClass =

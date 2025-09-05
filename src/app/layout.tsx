@@ -11,7 +11,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 // import { mockSiteConfig } from "@/mocks/siteConfig"; 
-import { mockSiteConfig } from "@/mocks/amandaConfig"; 
+import { mockSiteConfig } from "@/mocks/lukeConfig"; 
 
 export const metadata: Metadata = {
   title: "Amanda Grau",

@@ -24,7 +24,7 @@ body[data-theme="ocean"]  {
   --text-2: white;
 }
 body[data-theme="sunset"] { 
-  --primary:#f97316; --accent:#f43f5e; --bg:#1b0b0b; --bg-2:#240808; --fg:#fde68a; --muted:#fca5a5; --radius:1rem; 
+  --primary:#f97316; --accent:#f43f5e; --bg:#1b0b0b; --bg-2:#460b0b; --fg:#fde68a; --muted:#fca5a5; --radius:1rem; 
   --text-1: white;
   --text-2: white;
 }
@@ -285,6 +285,19 @@ body[data-theme="grove"]  {
   .text-blue {
     color: var(--color-blue) !important;
   } */
+   .bg-accent-1{
+     background-image: linear-gradient(
+          to bottom right,
+          var(--primary) 0%,
+          var(--primary) 40%,
+          var(--accent) 70%,
+          var(--accent) 100%
+      );
+      background-size: calc(200% + 4px) calc(100% + 4px);
+      background-position: 0% 100%;
+      color: white;
+    
+   }
   .bg-gradient-1 {
     /* background: linear-gradient(to bottom, var(--bg) 5%, var(--bg-2) 100%); */
         background-image: linear-gradient(to bottom, var(--bg-2) 0.5%, var(--bg) 20%);
@@ -293,6 +306,11 @@ body[data-theme="grove"]  {
   }
   .bg-gradient-2 {
     background-image: linear-gradient(to bottom, var(--bg) 50%, var(--bg-2) 100%);
+    background-size: calc(200% + 4px) calc(160% + 4px);
+      background-position: 0% 28%;
+  }
+  .bg-gradient-2-top {
+    background-image: linear-gradient(to top, var(--bg) 50%, var(--bg-2) 100%);
     background-size: calc(200% + 4px) calc(160% + 4px);
       background-position: 0% 28%;
   }
@@ -328,6 +346,12 @@ body[data-theme="grove"]  {
       animation: btnunhover 2s ;
       animation-play-state: paused;
       color:var(--primary);
+  }
+  .btn-small {
+    @apply inline-block px-4 py-2 text-sm font-semibold rounded-full transition duration-300;
+  }
+  .btn-white-outline{
+     border:2px solid white;
   }
   @keyframes btnunhover {
       0% {
