@@ -85,7 +85,7 @@ export default function Share({
           )}
         </header>
 
-        <div className="grid gap-6 sm:grid-cols-2 items-center">
+        <div className="grid gap-2 sm:grid-cols-2 items-center">
           <div className="card p-6 sm:p-8 text-center">
             {/* The QRCodeCanvas renders a <canvas>; capture it for download */}
             <div className="flex items-center justify-center">
@@ -104,11 +104,8 @@ export default function Share({
 
           <div className="space-y-4">
             <div className="card p-6">
-              <h3 className="text-xl font-semibold">Quick actions</h3>
-              <p className="mt-2 text-sm opacity-80">
-                Use the buttons below to copy the link, or download the QR code image.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-3">
+              {/* <h3 className="text-xl font-semibold">Quick actions</h3> */}
+              <div className=" flex justify-center flex-wrap gap-3">
                 <button onClick={onCopy} className="btn btn-gradient">Copy Link</button>
                 <button onClick={onDownload} className="btn btn-inverted">Download PNG</button>
                 {showOpen && (
