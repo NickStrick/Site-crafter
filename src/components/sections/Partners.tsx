@@ -57,19 +57,19 @@ export default function Partners({ id, title, subtitle, items, style, background
         'section',
       ].join(' ')}
     >
-      <AnimatedSection className="mx-auto max-w-6xl">
-        <div className="text-center max-w-3xl mx-auto mb-10">
+      <div className="mx-auto max-w-6xl">
+        <AnimatedSection className="text-center max-w-3xl mx-auto mb-10">
           {title && <h2 className="text-4xl md:text-5xl font-extrabold">{title}</h2>}
           {subtitle && <p className="text-muted mt-3">{subtitle}</p>}
-        </div>
+        </AnimatedSection>
 
         {variant === 'grid' ? (
           // Simple logo grid
           <div className={`grid gap-6 md:gap-8 ${gridCols}`}>
             {items.map((p, i) => (
-              <div key={`${p.name}-${i}`} className={`card ${radius} p-6 text-center card-outline`}>                
+              <AnimatedSection delay={i * 0.08} key={`${p.name}-${i}`} className={`card ${radius} p-6 text-center card-outline`}>                
                 {p.logoUrl ? (
-                  <div className="mx-auto mb-3">
+                  <div className="mx-auto mb-3" >
                     <Image
                       src={p.logoUrl}
                       alt={p.name}
@@ -95,14 +95,14 @@ export default function Partners({ id, title, subtitle, items, style, background
                     ))}
                   </div>
                 )}
-              </div>
+              </AnimatedSection>
             ))}
           </div>
         ) : (
           // Detailed cards variant
           <div className={`grid gap-6 md:gap-8 ${gridCols}`}>
             {items.map((p, i) => (
-              <div key={`${p.name}-${i}`} className={`card card-outline w-full ${radius} p-6 md:p-7`}>                
+              <AnimatedSection delay={i * 0.08} key={`${p.name}-${i}`} className={`card card-outline w-full ${radius} p-6 md:p-7`}>                
                 <div className="flex items-center gap-4">
                   {p.logoUrl ? (
                     <Image
@@ -133,11 +133,11 @@ export default function Partners({ id, title, subtitle, items, style, background
                     ))}
                   </div>
                 )}
-              </div>
+              </AnimatedSection>
             ))}
           </div>
         )}
-      </AnimatedSection>
+      </div>
     </section>
   );
 }

@@ -132,7 +132,7 @@ useEffect(() => {
       : 'grid-cols-1 md:grid-cols-2';
 
   return (
-    <section id={id} className="section bg-gradient-2-top">
+    <section id={id} className="section bg-gradient-2-top ">
       <AnimatedSection className="mx-auto max-w-6xl">
         {(title || subtitle) && (
           <div className={[align === 'center' ? 'text-center' : 'text-left', 'max-w-3xl mx-auto mb-8'].join(' ')}>
@@ -145,7 +145,7 @@ useEffect(() => {
           {items.map((item, idx) => (
             <div
               key={idx}
-              className={`mx-auto w-full ${roundedCls} shadow-[0_10px_30px_rgba(0,0,0,.15)] relative overflow-hidden`}
+              className={`mx-auto w-full ${roundedCls} shadow-[0_10px_30px_rgba(0,0,0,.15)] relative overflow-hidden border-2 border-solid border-[var(--bg-2)]`}
               style={{ maxWidth: effectiveMax, aspectRatio: aspect, minHeight: 400 }}
             >
               <blockquote
@@ -155,10 +155,9 @@ useEffect(() => {
                 style={{
                   background: '#FFF',
                   border: 0,
-                  margin: 0,
                   padding: 0,
-                  width: '100%',
-                  height: '100%',
+                  width: 'calc(100% + 2px)',
+                  height: 'calc(100% + 2px)',
                   boxShadow: isLandscape ? '0 12px 36px rgba(0,0,0,.22)' : '0 10px 30px rgba(0,0,0,.15)',
                 }}
               />

@@ -422,7 +422,12 @@ body[data-theme="grove"]  {
   }
   
 }
-
+.instagram-media{
+      margin-left: -1px !important;
+    margin-right: -1px !important;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+}
 .instagram-media iframe {
   position: absolute !important;
   inset: 0 !important;
