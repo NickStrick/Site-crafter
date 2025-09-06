@@ -152,6 +152,20 @@ body[data-theme="grove"]  {
       box-shadow: var(--elev-2);
       border: 2px solid var(--bg-2);
     }
+    .card-invert { background-image: linear-gradient(
+          to bottom right,
+          var(--bg-2) 0%,
+          var(--bg) 40%,
+          var(--bg) 70%,
+          var(--bg) 100%
+      );
+      background-size: calc(200% + 4px) calc(100% + 4px);
+      background-position: 0% 100%;
+      color: var(--primary); max-width: 400px; margin: 0 auto;
+      border-radius: var(--round-xl);
+      box-shadow: var(--elev-2);
+      border: 2px solid var(--bg-2);
+    }
 .card-outline { border: 2px solid var(--bg-2); }
 .card-ink { background-image: linear-gradient(
           to bottom right,

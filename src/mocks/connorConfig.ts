@@ -88,7 +88,6 @@ export const mockSiteConfig: SiteConfig = {
   type: "partners",
   title: "Current Bands",
   subtitle: "Chicago performances & collaborators",
-  backgroundClass:'bg-gradient-2-bottom',
   style: { variant: "cards", columns: 3, rounded: "xl", background: "default" },
   items: [
      {
