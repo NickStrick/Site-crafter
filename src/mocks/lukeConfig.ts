@@ -189,7 +189,7 @@ avatarUrl: avatar1.src,
       type: "contact",
       title: "Contact",
       email: "", // optional
-      phone: "630-303-8329",
+      phone: { label: "630-303-8329", href: "tel:16303038329" },
       address: "Chicago, IL",
       backgroundUrl: bg.src,
       socials: [

@@ -9,10 +9,13 @@ export default function Skills({
   title,
   subtitle,
   items,
+  id,
   columns = 3,
+  backgroundClass ='bg-[var(--bg)]',
 }: SkillsSection) {
+  console.log('Skills section render with backgroundClass:', backgroundClass);
   return (
-    <section id="skills" className="py-16 bg-[var(--bg)]">
+    <section id={id} className={`py-16 ${backgroundClass} text-[var(--text-1)] `}>
       <div className="container mx-auto px-4">
         {title && (
           <AnimatedSection><h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12">

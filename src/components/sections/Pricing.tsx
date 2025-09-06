@@ -16,7 +16,7 @@ function cls(...xs: Array<string | false | undefined>) {
 
 export default function Pricing({ id, title, subtitle, plans }: PricingSection) {
   return (
-    <section id={id} className="section ">
+    <section id={id} className="section sectionAboveWavePad">
       <div className="mx-auto max-w-6xl px-4">
         <motion.div
               initial={{ opacity: 0, y: 16 }}

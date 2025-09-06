@@ -11,11 +11,11 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 // import { mockSiteConfig } from "@/mocks/siteConfig"; 
-import { mockSiteConfig } from "@/mocks/lukeConfig"; 
+import { mockSiteConfig } from "@/mocks/connorConfig"; 
 
 export const metadata: Metadata = {
-  title: "Amanda Grau",
-  description: "Board Certified Behavior Analyst in the Chicago suburbs. Website creator: Stricker Digital",
+  title: "Connor Murray - Stage Guitarist & Music Teacher",
+  description: "Stage Guitarist & Music Teacher in Chicago",
 };
 
 async function getSiteConfig(): Promise<SiteConfig> {

@@ -77,7 +77,7 @@ export default function Navbar() {
           {/* Right: CTA (optional) & Mobile toggle */}
           <div className="min-w-0 flex-1 flex justify-end items-center gap-3">
             {header.cta ? (
-              <Link href={header.cta.href} className="btn-small btn-gradient hidden md:inline-flex">
+              <Link href={header.cta.href} className="btn-small text-nowrap btn-gradient hidden md:inline-flex">
                 {header.cta.label}
               </Link>
             ) : null}

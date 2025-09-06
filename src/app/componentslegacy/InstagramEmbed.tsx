@@ -13,7 +13,6 @@ const InstagramEmbed = ({ postUrl }: { postUrl: string }) => {
       document.body.removeChild(script);
     };
   }, []);
-  return(<></>)
   return (
     <div className="w-full max-w-[540px] mx-auto my-4">
       <blockquote

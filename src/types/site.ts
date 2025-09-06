@@ -7,7 +7,8 @@ export type ThemePreset =
   | 'festival'
   | 'candy'
   | 'neon'
-  | 'grove';
+  | 'grove'
+  | 'forest-earthy';
 
 export type Theme = {
   preset: ThemePreset;
@@ -40,11 +41,14 @@ export type SectionBase = {
     | 'sectional'
     | 'skills'
     | 'pricing'
-    | 'share';  // add new section types here
+    | 'share'
+    | 'partners'
+    | 'instagram'; // new
 
   // visible/editable flags to support your builder UI
   visible?: boolean;
   editable?: boolean;
+  backgroundClass?: string; // custom bg class (e.g. "bg-gradient-to-r from-blue-500 to-green-500")
 };
 
 // add this near other shared types
@@ -103,6 +107,7 @@ export type FeaturesSection = SectionBase & {
     body?: string;
     link?: string;
     imageUrl?: string;
+    imageSize?: 'sm' | 'md' | 'lg'; // image size presets
     meta?: FeatureMeta[];   // ← was `{}`; now structured array
   }[];
 };
@@ -125,7 +130,7 @@ export type ContactSection = SectionBase & {
   type: 'contact';
   title?: string;
   email?: string;
-  phone?: string;
+  phone?: { label: string; href: string };
   address?: string;
   mapEmbedUrl?: string;
   backgroundUrl?: string; // optional background image
@@ -177,7 +182,9 @@ export type AnySection =
   | SectionalSection
   | SkillsSection
   | PricingSection
-  | ShareSection;
+  | ShareSection
+  | PartnersSection
+  | InstagramSection;
 
 export type SiteConfig = {
   theme: SiteStyle;
@@ -289,4 +296,50 @@ export type ShareSection = SectionBase & {
   /** one or more QR codes */
   items: ShareItem[];
   style?: ShareStyle;
+};
+
+export type PartnerLink = {
+  type: 'instagram' | 'facebook' | 'linkedin' | 'website' | 'youtube' | 'tiktok' | 'linktree';
+  href: string;
+};
+
+export type PartnerItem = {
+  name: string;
+  description?: string;
+  logoUrl?: string;
+  links?: PartnerLink[];
+};
+
+export type PartnersStyle = {
+  variant?: 'cards' | 'grid';
+  columns?: 2 | 3 | 4;
+  rounded?: 'lg' | 'xl' | '2xl';
+  background?: 'default' | 'band';
+};
+
+export type PartnersSection = SectionBase & {
+  id: string;
+  type: 'partners';
+  title?: string;
+  subtitle?: string;
+  items: PartnerItem[];
+  style?: PartnersStyle;
+};
+
+export type InstagramItem = {
+  url: string; // permalink to a post or reel
+};
+
+// Section config for Instagram embeds
+export type InstagramSection = SectionBase & {
+  id: string;
+  type: 'instagram';
+  title?: string;
+  subtitle?: string;
+  items: InstagramItem[];           // pass one or more items
+  align?: 'left' | 'center';        // heading alignment
+  maxWidth?: number;                // px; default 640
+  rounded?: 'lg' | 'xl' | '2xl';    // rounded corners for embeds
+  columns?: 1 | 2 | 3;              // grid columns when multiple
+  orientation?: 'profile' | 'landscape'; // NEW
 };

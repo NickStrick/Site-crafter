@@ -52,7 +52,9 @@ export function Contact({
             )}
             {phone && (<li className="flex items-center gap-3">
               <FontAwesomeIcon icon={faPhone} className="w-5 h-5" />
-                <span>{phone}</span>
+                <a href={phone.href} target="_blank" rel="noopener noreferrer" className='underline'>
+                      {phone.label}
+                    </a>
             </li>)}
             
             {socials &&

@@ -21,6 +21,8 @@ import Sectional from './sections/Sectional';
 import Skills from './sections/Skills';
 import Pricing from "./sections/Pricing";
 import Share from "./sections/Share";
+import  Partners  from './sections/Partners';
+import InstagramEmbed from './sections/Instagram';
 
 // Exhaustiveness helper (nice to have)
 function assertNever(x: never): never {
@@ -92,6 +94,12 @@ export function SectionRenderer({ section }: { section: AnySection }) {
     }
     case "share":{
       return <Share {...section} />;
+    }
+    case "partners":{
+      return <Partners {...section} />;
+    }
+    case "instagram":{
+      return <InstagramEmbed {...section}/>; 
     }
     default: {
       // if you ever add a new type and forget to handle it,

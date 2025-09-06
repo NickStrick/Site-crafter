@@ -75,7 +75,7 @@ export default function Share({
   };
 
   return (
-    <section id={id} className="section bg-gradient-2-top">
+    <section id={id} className="section ">
       <div className="mx-auto max-w-4xl px-4">
         <header className="mb-8 text-center">
           <span className="h-eyebrow inline-block">Share</span>
