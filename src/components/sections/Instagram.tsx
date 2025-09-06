@@ -13,36 +13,52 @@ import type { InstagramSection } from '@/types/site';
  * - Typed via InstagramSection in src/types/site.ts
  * - NEW: orientation option ('profile' | 'landscape') to adjust sizing/shadows
  */
+type InstagramEmbedAPI = {
+  Embeds?: {
+    process?: () => void;
+  };
+};
 
-const ensureEmbedScript = () => {
+declare global {
+  interface Window {
+    instgrm?: InstagramEmbedAPI;
+  }
+}
+
+// Load or re-process the Instagram embed script
+const ensureEmbedScript = (): void => {
   if (typeof window === 'undefined') return;
-  const existing = document.querySelector("script[src='https://www.instagram.com/embed.js']");
+
+  const existing = document.querySelector<HTMLScriptElement>(
+    "script[src='https://www.instagram.com/embed.js']"
+  );
   if (!existing) {
     const script = document.createElement('script');
     script.src = 'https://www.instagram.com/embed.js';
     script.async = true;
     document.body.appendChild(script);
-  } else if ((window as any).instgrm?.Embeds?.process) {
-    (window as any).instgrm.Embeds.process();
+  } else {
+    window.instgrm?.Embeds?.process?.();
   }
 };
-function fitInstagramIframes(root?: HTMLElement | null) {
+
+// Force injected iframe to fill our aspect-ratio wrapper
+function fitInstagramIframes(root?: HTMLElement | null): void {
   if (!root) return;
-  const frames = root.querySelectorAll<HTMLIFrameElement>("blockquote.instagram-media iframe");
+  const frames = root.querySelectorAll<HTMLIFrameElement>(
+    "blockquote.instagram-media iframe"
+  );
   frames.forEach((f) => {
-    // Strip inline sizes set by IG
-    f.removeAttribute("width");
-    f.removeAttribute("height");
-    // Force-fill our aspect box
+    f.removeAttribute('width');
+    f.removeAttribute('height');
     Object.assign(f.style, {
-      position: "absolute",
-      inset: "0",
-      width: "100%",
-      height: "100%",
-    });
+      position: 'absolute',
+      inset: '0',
+      width: '100%',
+      height: '100%',
+    } as Partial<CSSStyleDeclaration>);
   });
 }
-
 // Helper: compute aspect string
 function getAspect(orientation: 'profile' | 'landscape') {
   return orientation === 'landscape' ? '16 / 9' : '4 / 5';
@@ -63,39 +79,41 @@ export default function Instagram({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    ensureEmbedScript();
-    const iv = setInterval(() => {
-      if ((window as any).instgrm?.Embeds?.process) {
-        clearInterval(iv);
-        setReady(true);
-        (window as any).instgrm.Embeds.process();
-      }
-    }, 200);
-    return () => clearInterval(iv);
-  }, []);
+  ensureEmbedScript();
 
-  useEffect(() => {
+  const iv = window.setInterval(() => {
+    if (window.instgrm?.Embeds?.process) {
+      window.clearInterval(iv);
+      setReady(true);
+      window.instgrm.Embeds.process();
+    }
+  }, 200);
+
+  return () => {
+    window.clearInterval(iv);
+  };
+}, []);
+
+
+useEffect(() => {
   if (!ready) return;
 
-  (window as any).instgrm?.Embeds?.process?.();
-
-  // 1) Immediate pass
+  window.instgrm?.Embeds?.process?.();
   fitInstagramIframes(containerRef.current);
 
-  // 2) Observe new/updated iframes (IG reflows asynchronously)
   const obs = new MutationObserver(() => fitInstagramIframes(containerRef.current));
   if (containerRef.current) {
     obs.observe(containerRef.current, { childList: true, subtree: true });
   }
 
-  // 3) A couple of delayed passes for good measure
-  const t1 = setTimeout(() => fitInstagramIframes(containerRef.current), 250);
-  const t2 = setTimeout(() => fitInstagramIframes(containerRef.current), 1000);
+  const t1 = window.setTimeout(() => fitInstagramIframes(containerRef.current), 250);
+  const t2 = window.setTimeout(() => fitInstagramIframes(containerRef.current), 1000);
 
+  // cleanup
   return () => {
     obs.disconnect();
-    clearTimeout(t1);
-    clearTimeout(t2);
+    window.clearTimeout(t1);
+    window.clearTimeout(t2);
   };
 }, [ready, items]);
 

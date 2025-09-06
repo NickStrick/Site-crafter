@@ -13,7 +13,6 @@ export default function Skills({
   columns = 3,
   backgroundClass ='bg-[var(--bg)]',
 }: SkillsSection) {
-  console.log('Skills section render with backgroundClass:', backgroundClass);
   return (
     <section id={id} className={`py-16 ${backgroundClass} text-[var(--text-1)] `}>
       <div className="container mx-auto px-4">
