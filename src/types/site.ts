@@ -8,7 +8,8 @@ export type ThemePreset =
   | 'candy'
   | 'neon'
   | 'grove'
-  | 'forest-earthy';
+  | 'forest-earthy'
+  | 'lavender';  // new
 
 export type Theme = {
   preset: ThemePreset;
@@ -43,7 +44,10 @@ export type SectionBase = {
     | 'pricing'
     | 'share'
     | 'partners'
-    | 'instagram'; // new
+    | 'instagram'
+    | 'gallery'
+    | 'socials'
+    ;
 
   // visible/editable flags to support your builder UI
   visible?: boolean;
@@ -51,6 +55,28 @@ export type SectionBase = {
   backgroundClass?: string; // custom bg class (e.g. "bg-gradient-to-r from-blue-500 to-green-500")
 };
 
+export type AnySection =
+  | HeaderSection
+  | HeroSection
+  | FeaturesSection
+  | AboutSection       
+  | DisclaimerSection 
+  | CTASection
+  | NewsletterSection
+  | ContactSection
+  | SchedulingSection
+  | FooterSection
+  | TestimonialsSection
+  | StatsSection
+  | SectionalSection
+  | SkillsSection
+  | PricingSection
+  | ShareSection
+  | PartnersSection
+  | InstagramSection
+  | GallerySection
+  | SocialsSection
+  ;
 // add this near other shared types
 export type HeaderStyle = {
   sticky?: boolean;                // default: true
@@ -166,25 +192,7 @@ export type SectionalSection = SectionBase & {
   };
 };
 
-export type AnySection =
-  | HeaderSection
-  | HeroSection
-  | FeaturesSection
-  | AboutSection       
-  | DisclaimerSection 
-  | CTASection
-  | NewsletterSection
-  | ContactSection
-  | SchedulingSection
-  | FooterSection
-  | TestimonialsSection
-  | StatsSection
-  | SectionalSection
-  | SkillsSection
-  | PricingSection
-  | ShareSection
-  | PartnersSection
-  | InstagramSection;
+
 
 export type SiteConfig = {
   theme: SiteStyle;
@@ -342,4 +350,52 @@ export type InstagramSection = SectionBase & {
   rounded?: 'lg' | 'xl' | '2xl';    // rounded corners for embeds
   columns?: 1 | 2 | 3;              // grid columns when multiple
   orientation?: 'profile' | 'landscape'; // NEW
+};
+export type GalleryItem = {
+  imageUrl: string;
+  alt?: string;
+  caption?: string;
+};
+
+export type GalleryStyle = {
+  rounded?: 'lg' | 'xl' | '2xl';
+  columns?: 2 | 3 | 4;       // responsive base; auto scales down on small screens
+  gap?: 'sm' | 'md' | 'lg';   // spacing between items
+};
+
+export type GallerySection = SectionBase & {
+  id: string;
+  type: 'gallery';
+  title?: string;
+  subtitle?: string;
+  items: GalleryItem[];
+  style?: GalleryStyle;
+};
+export type SocialItem = {
+  type:
+    | 'instagram'
+    | 'facebook'
+    | 'linkedin'
+    | 'x'
+    | 'youtube'
+    | 'tiktok'
+    | 'email'
+    | 'website';
+  href: string; // mailto: allowed for email
+  label?: string; // optional label under icon
+};
+
+export type SocialsSection = SectionBase & {
+  id?: string;
+  type?: 'socials';
+  title?: string;
+  subtitle?: string;
+  items: SocialItem[];
+  style?: {
+    background?: 'default' | 'band';
+    rounded?: 'lg' | 'xl' | '2xl';
+    size?: 'sm' | 'md' | 'lg'; // icon button size
+    gap?: 'sm' | 'md' | 'lg';
+    align?: 'left' | 'center';
+  };
 };

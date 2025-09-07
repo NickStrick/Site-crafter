@@ -4,17 +4,20 @@
 
 /* src/app/globals.css  (append to yours) */
 :root {
-  --primary: #166534;/* deep leaf green */
-    --accent : #65a30d;/* fresh moss */
-    --bg     : #fdfaf4;/* warm cream */
-    --bg-2    : #f8d9a2;/* warm cream */
-    --fg     : #1f2937;/* slate/ink */
-    --muted  : #65a30d;/* bamboo/khaki */
+ --primary: #a66cec;    /* vibrant lavender/purple */
+  --accent:  #d26cec;    /* metallic gold */
+  --bg:      #f9f7fb;    /* soft lavender-tinted white */
+  --bg-2:    #fdeb9b;    /* gentle lavender wash */
+  --fg:      #2d2d2d;    /* dark gray for text */
+  --muted:   #9b67cc;    /* muted warm gray */
+  --radius:  1rem;
 
-  --band-1:  #d6c7a1;
-  --band-2:  #d6c7a1; 
-  --text-1: rgb(49, 47, 41);
-  --text-2: rgb(49, 47, 41);
+  --band-1:  #9b5de5;    /* lavender band */
+  --band-2:  #d4af37;    /* gold band */
+
+  --text-1: #2d2d2d;     /* primary text */
+  --text-2: white;       /* inverted text */
+  --text-accent: #d4af37;/* gold as text accent */
 }
 
 /* Presets */
@@ -75,18 +78,35 @@ body[data-theme="festival"] {
 
 body[data-theme="candy"] {
   --primary: #ff1f8f;   /* hot pink */
-  --accent:  #00d2ff;   /* bright cyan */
+  --accent:  #ae00ff;   /* bright cyan */
   --bg:      #fff0f6;
   --bg-2:      #c9aeb9;   /* pastel pink */
   --fg:      #1f1f1f;   /* near-black */
   --muted:   #7d7d7d;
   --radius:  1rem;
   --band-1:  #ff1f8f;
-  --band-2:  #00d2ff;
+  --band-2:  #ae00ff;
   --text-1: black;
   --text-2: white;
   --text-accent: white;
 }
+body[data-theme="lavender"] {
+  --primary: #a66cec;    /* vibrant lavender/purple */
+  --accent:  #d26cec;    /* metallic gold */
+  --bg:      #f9f7fb;    /* soft lavender-tinted white */
+  --bg-2:    #fdeb9b;    /* gentle lavender wash */
+  --fg:      #2d2d2d;    /* dark gray for text */
+  --muted:   #9b67cc;    /* muted warm gray */
+  --radius:  1rem;
+
+  --band-1:  #9b5de5;    /* lavender band */
+  --band-2:  #d4af37;    /* gold band */
+
+  --text-1: #2d2d2d;     /* primary text */
+  --text-2: white;       /* inverted text */
+  --text-accent: #d4af37;/* gold as text accent */
+}
+/* 6bbf59 */
 
 body[data-theme="neon"] {
   --primary: #dbb403;   /* neon green */
@@ -188,7 +208,7 @@ body[data-theme="grove"]  {
 
 /* Section padding + curved edges */
 .section { padding: clamp(3.2rem, 6.2vw, 6rem) 1rem; color:var(--text-1)}
-.sectionAboveWavePad{padding-bottom: 10rem;}
+.sectionAboveWavePad{padding-bottom: 10rem !important;}
 .sectionAboveWave { padding: clamp(3.2rem, 6.2vw, 6rem) 1rem; color:var(--text-1); padding-bottom: 10rem;}
 .curve {
   position: relative;

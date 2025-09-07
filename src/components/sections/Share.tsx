@@ -19,6 +19,7 @@ export type ShareProps = {
   size?: number; // default 220
   /** Add a CTA button to open the link (useful on desktop for preview) */
   showOpen?: boolean;
+  backgroundClass?: string; // default 'bg-[var(--bg)]'
 };
 
 export default function Share({
@@ -28,6 +29,7 @@ export default function Share({
   value,
   size = 220,
   showOpen = false,
+  backgroundClass = "bg-[var(--bg)]",
 }: ShareProps) {
   const [url, setUrl] = useState<string>(value ?? "");
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -75,7 +77,7 @@ export default function Share({
   };
 
   return (
-    <section id={id} className="section ">
+    <section id={id} className={`section ${backgroundClass}`}>
       <div className="mx-auto max-w-4xl px-4">
         <header className="mb-8 text-center">
           <h2 className="text-4xl md:text-5xl font-extrabold">{title}</h2>

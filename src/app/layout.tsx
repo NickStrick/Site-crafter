@@ -11,11 +11,12 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 // import { mockSiteConfig } from "@/mocks/siteConfig"; 
-import { mockSiteConfig } from "@/mocks/connorConfig"; 
+import { mockSiteConfig } from "@/mocks/caroleConfig"; 
 
 export const metadata: Metadata = {
-  title: "Connor Murray - Stage Guitarist & Music Teacher",
-  description: "Stage Guitarist & Music Teacher in Chicago",
+   title: "CM Florals — Floral Design by Carole Murray",
+    description:
+      "CM Florals creates joyful floral design for weddings, holidays, celebrations and everyday gifting across Chicago. Founded by Carole Murray.",
 };
 
 async function getSiteConfig(): Promise<SiteConfig> {

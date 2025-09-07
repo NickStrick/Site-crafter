@@ -15,7 +15,7 @@ export function CTA({ id, title, body, cta }: CTASection) {
 
       <div className="section section-ink">
         <AnimatedSection className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl md:text-4xl font-extrabold">{title}</h2>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text-1)]">{title}</h2>
           {body ? <p className="text-muted mb-7 mt-3">{body}</p> : null}
           <Link href={cta.href} className="btn-gradient">
             {cta.label}

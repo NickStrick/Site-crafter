@@ -16,7 +16,7 @@ export function Features({ id, title, items }: FeaturesSection) {
               <AnimatedSection key={i} delay={i * 0.08}>
                 <div className={`p-7 ${ink ? 'card-ink' : 'card'}`}>
                   {f.imageUrl ? (
-                    <div className={` rounded-[var(--round-xl)] aspect-square overflow-hidden mb-4 mx-auto ${f.imageSize === 'sm' ? 'w-16 h-16' : f.imageSize === 'md' ? 'w-24 h-24' : f.imageSize === 'lg' ? 'w-[100%] h-auto' : 'w-20 h-20' }`}>
+                    <div className={` rounded-[var(--round-xl)] aspect-square overflow-hidden mb-4 mx-auto ${f.imageSize === 'sm' ? 'w-16 h-16' : f.imageSize === 'md' ? 'w-24 h-24' : f.imageSize === 'lg' ? 'w-[100%] h-auto' : 'w-full h-full' }`}>
                       <Image src={f.imageUrl} alt="" width={980} height={740} className="w-full h-auto" loading='eager' />
                       </div>) : null}
                   <div className="text-2xl font-bold mb-2">{f.title}</div>

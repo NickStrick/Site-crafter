@@ -7,7 +7,7 @@ import Image from "next/image";
 export function About({ id, title = 'About', body, imageUrl, bullets, align = 'left', backgroundClass = 'bg-[var(--bg)' }: AboutSection) {
   const imageFirst = align === 'left';
   return (
-    <section id={id} className={`section !py-6 !pt-12 ${backgroundClass}`}>
+    <section id={id} className={`section !py-6 !pt-12 ${backgroundClass} !pb-8`}>
       <div className={`container mx-auto px-4 grid gap-10 ${imageUrl?'md:grid-cols-2':'md:grid-cols-1'} items-center `}>
         {imageUrl && imageFirst && (
           <motion.div
