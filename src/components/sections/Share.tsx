@@ -78,10 +78,9 @@ export default function Share({
     <section id={id} className="section ">
       <div className="mx-auto max-w-4xl px-4">
         <header className="mb-8 text-center">
-          <span className="h-eyebrow inline-block">Share</span>
-          <h2 className="h-display mt-2">{title}</h2>
+          <h2 className="text-4xl md:text-5xl font-extrabold">{title}</h2>
           {subtitle && (
-            <p className="mt-3 h-hero-p opacity-80 max-w-2xl mx-auto">{subtitle}</p>
+            <p className="mt-3 text-muted">{subtitle}</p>
           )}
         </header>
 

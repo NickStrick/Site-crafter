@@ -17,12 +17,12 @@ export default function Skills({
     <section id={id} className={`py-16 ${backgroundClass} text-[var(--text-1)] `}>
       <div className="container mx-auto px-4">
         {title && (
-          <AnimatedSection><h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12">
+          <AnimatedSection><h2 className="text-4xl md:text-5xl font-extrabold text-center mb-8">
             {title}
           </h2></AnimatedSection>
         )}
         {subtitle && (
-          <AnimatedSection><p className="text-center text-lg text-[var(--fg)]/80 mb-8">{subtitle}</p></AnimatedSection>
+          <AnimatedSection><p className="text-center text-muted  mb-8">{subtitle}</p></AnimatedSection>
         )}
 
         <div
