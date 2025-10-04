@@ -1,17 +1,71 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useSite } from '@/context/SiteContext';
 import MediaPicker from './MediaPicker';
+import { getSiteId } from '@/lib/siteId';
+
+type PickerKind = 'generic' | 'video-files' | 'video-posters';
 
 export default function AdminBar() {
+  const { config } = useSite();
   const [open, setOpen] = useState(false);
+  const [kind, setKind] = useState<PickerKind>('generic');
+
+  const siteId = getSiteId();
+  const bucket = process.env.NEXT_PUBLIC_S3_DEFAULT_BUCKET;
+
+  // Does config include a video section?
+  const hasVideo = useMemo(
+    () => !!config?.sections?.some(s => s.type === 'video' && s.visible !== false),
+    [config?.sections]
+  );
+
+  // compute prefix by kind
+  const prefix = useMemo(() => {
+    switch (kind) {
+      case 'video-files':
+        return `configs/${siteId}/videos/`;
+      case 'video-posters':
+        return `configs/${siteId}/assets/`;
+      default:
+        return `configs/${siteId}/assets/`;
+    }
+  }, [kind, siteId]);
 
   return (
     <>
       <div className="fixed right-4 top-4 z-[1000]">
         <div className="card px-4 py-3 flex items-center gap-3">
           <span className="font-semibold">Admin Mode</span>
-          <button className="btn btn-primary" onClick={() => setOpen(true)}>Open Media Picker</button>
+
+          {/* Generic picker (kept from earlier) */}
+          <button
+            className="btn btn-inverted"
+            onClick={() => { setKind('generic'); setOpen(true); }}
+          >
+            Media Picker
+          </button>
+
+          {/* Show these only if a video section exists */}
+          {hasVideo && (
+            <>
+              <button
+                className="btn btn-primary"
+                onClick={() => { setKind('video-files'); setOpen(true); }}
+                title="Upload/select MP4 files for Video sections"
+              >
+                Manage Video Files
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={() => { setKind('video-posters'); setOpen(true); }}
+                title="Upload/select poster images for Video sections"
+              >
+                Manage Video Posters
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -25,13 +79,13 @@ export default function AdminBar() {
             >
               ✕
             </button>
-            {/* You can pass any prefix/bucket here. For now, demo with configs/carole/assets/ */}
+
             <MediaPicker
-              bucket={process.env.NEXT_PUBLIC_S3_DEFAULT_BUCKET}
-              prefix="configs/carole/assets/"
+              bucket={bucket}
+              prefix={prefix}
               onPick={(key) => {
-                // For now we just log; later wire into your form field
-                console.log('Picked media key:', key);
+                // For now: just log. In the config editor, this would set field values (source.key or posterUrl).
+                console.log(`[${kind}] picked:`, key);
                 setOpen(false);
               }}
             />

@@ -49,7 +49,7 @@ export default function Gallery({
 
   return (
     <section id={id} className={`section ${backgroundClass}`}>
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-[95%] md:max-w-[85%]">
         {(title || subtitle) && (
           <AnimatedSection className="text-center max-w-3xl mx-auto mb-8">
             {title && <h2 className="text-4xl md:text-5xl font-extrabold">{title}</h2>}
