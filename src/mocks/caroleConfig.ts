@@ -100,31 +100,41 @@ export const mockSiteConfig: SiteConfig = {
   subtitle: "Selected work — bouquets and event florals",
   style: { columns: 3, rounded: "xl", gap: "md" },
   backgroundClass: 'bg-gradient-2',
-  items: [
-    { imageUrl: booth.src,        alt: "Booth display" },
-    { imageUrl: flowerwall3.src,  alt: "Flower wall 3" },
+  // NEW: load dynamically from S3
+  // source: {
+  //   type: "s3",
+  //   // bucket: "my-bucket-name",
+  //   prefix: "configs/carole/assets/",
+  //   // region: "us-east-2",
+  //   // cdnBase: "https://dxxxxx.cloudfront.net",
+  //   limit: 200,
+  //   recursive: true,
+  // },
+    items: [
+      { imageUrl: booth.src,        alt: "Booth display" },
+      { imageUrl: flowerwall3.src,  alt: "Flower wall 3" },
       { imageUrl: flowerwall2.src,  alt: "Flower wall 2" },
-     
-     { imageUrl: flower8.src,      alt: "Arrangement 7" },
-    
-    { imageUrl: flower2.src,      alt: "Arrangement 1" },
-    
-    { imageUrl: flower3.src,      alt: "Arrangement 2" },
-    { imageUrl: flower4.src,      alt: "Arrangement 3" },
-    { imageUrl: flower5.src,      alt: "Arrangement 4" },
-    { imageUrl: flower6.src,      alt: "Arrangement 5" },
-    { imageUrl: flower7.src,      alt: "Arrangement 6" },
-   
-    
-    { imageUrl: flower11.src,      alt: "Arrangement 11" },
-    { imageUrl: flower9.src,      alt: "Arrangement 9" },
-    {imageUrl: logo2.src,      alt: "Arrangement 0" },
-    { imageUrl: flower10.src,      alt: "Arrangement 10" },
-   
-    { imageUrl: flowerwall.src,   alt: "Flower wall" },
       
-    { imageUrl: flowertable2.src, alt: "Table setup" },
-  ],
+      { imageUrl: flower8.src,      alt: "Arrangement 7" },
+      
+      { imageUrl: flower2.src,      alt: "Arrangement 1" },
+      
+      { imageUrl: flower3.src,      alt: "Arrangement 2" },
+      { imageUrl: flower4.src,      alt: "Arrangement 3" },
+      { imageUrl: flower5.src,      alt: "Arrangement 4" },
+      { imageUrl: flower6.src,      alt: "Arrangement 5" },
+      { imageUrl: flower7.src,      alt: "Arrangement 6" },
+    
+      
+      { imageUrl: flower11.src,      alt: "Arrangement 11" },
+      { imageUrl: flower9.src,      alt: "Arrangement 9" },
+      {imageUrl: logo2.src,      alt: "Arrangement 0" },
+      { imageUrl: flower10.src,      alt: "Arrangement 10" },
+    
+      { imageUrl: flowerwall.src,   alt: "Flower wall" },
+        
+      { imageUrl: flowertable2.src, alt: "Table setup" },
+    ],
 },
     {
       visible: true,

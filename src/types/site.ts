@@ -359,17 +359,32 @@ export type GalleryItem = {
 
 export type GalleryStyle = {
   rounded?: 'lg' | 'xl' | '2xl';
-  columns?: 2 | 3 | 4;       // responsive base; auto scales down on small screens
-  gap?: 'sm' | 'md' | 'lg';   // spacing between items
+  columns?: 2 | 3 | 4;
+  gap?: 'sm' | 'md' | 'lg';
 };
+
+export type GallerySource =
+  | { type: 'static'; items: GalleryItem[] }
+  | {
+      type: 's3';
+      bucket?: string;       // defaults from env
+      prefix?: string;       // e.g. "carole/gallery/"
+      region?: string;       // defaults from env
+      cdnBase?: string;      // e.g. CloudFront domain (optional)
+      limit?: number;        // optional cap
+      recursive?: boolean;   // default true
+    };
 
 export type GallerySection = SectionBase & {
   id: string;
   type: 'gallery';
   title?: string;
   subtitle?: string;
-  items: GalleryItem[];
   style?: GalleryStyle;
+  backgroundClass?: string;
+  /** choose either source or items for backwards-compat */
+  source?: GallerySource;
+  items?: GalleryItem[];
 };
 export type SocialItem = {
   type:

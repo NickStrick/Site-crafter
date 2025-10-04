@@ -1,5 +1,5 @@
 // src/components/SectionRenderer.tsx
-'use client';
+// 'use client';
 
 import type {
   AnySection,
@@ -23,7 +23,8 @@ import Pricing from "./sections/Pricing";
 import Share from "./sections/Share";
 import  Partners  from './sections/Partners';
 import InstagramEmbed from './sections/Instagram';
-import Gallery from './sections/Gallery';
+// import Gallery from './sections/Gallery';
+import GalleryClient from './sections/Gallery.client'; // ✅ client fetch
 import Socials from './sections/Socials';
 
 // Exhaustiveness helper (nice to have)
@@ -104,7 +105,7 @@ export function SectionRenderer({ section }: { section: AnySection }) {
       return <InstagramEmbed {...section}/>; 
     }
     case "gallery":{
-      return <Gallery {...section}/>; 
+      return <GalleryClient {...section}/>; 
     }
     case "socials":{
       return <Socials {...section}/>; 
