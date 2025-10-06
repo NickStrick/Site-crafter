@@ -50,7 +50,7 @@ export async function getGalleryFromS3(
   }
 
   const s3 = client();
-  let items: GalleryItem[] = [];
+  const items: GalleryItem[] = [];
   let ContinuationToken: string | undefined = undefined;
 
   do {
@@ -75,9 +75,7 @@ export async function getGalleryFromS3(
       });
       if (items.length >= limit) break;
     }
-    ContinuationToken = res.IsTruncated
-      ? res.NextContinuationToken
-      : undefined;
+    ContinuationToken = res.IsTruncated ? res.NextContinuationToken : undefined;
   } while (ContinuationToken && items.length < limit);
 
   return items;

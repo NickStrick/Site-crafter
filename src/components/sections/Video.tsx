@@ -42,7 +42,6 @@ export default function Video({
   const aspect  = aspectMap[(style?.aspect as AspectKey) ?? '16/9'];
 const rounded = roundMap[(style?.rounded as RoundKey) ?? 'xl'];
 const shadow  = shadowMap[(style?.shadow  as ShadowKey) ?? 'md'];
-const band    = style?.background === 'band';
 
 
   // resolve poster

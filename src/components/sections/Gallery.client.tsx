@@ -12,13 +12,14 @@ function isS3Source(src?: GallerySource): src is Extract<GallerySource, { type: 
   return !!src && src.type === 's3';
 }
 
+type GalleryListResponse = { items?: GalleryItem[] };
+
 export default function GalleryClient({ source, items: initialItems, ...rest }: Props) {
   const [items, setItems] = useState<GalleryItem[]>(initialItems ?? []);
   const [error, setError] = useState<string | null>(null);
 
   // Narrow once and memoize
   const s3 = useMemo(() => (isS3Source(source) ? source : undefined), [source]);
-  const [loading, setLoading] = useState<boolean>(!!s3);
 
   useEffect(() => {
     if (!s3) return; // static/manual mode → nothing to fetch
@@ -31,28 +32,31 @@ export default function GalleryClient({ source, items: initialItems, ...rest }: 
 
     (async () => {
       try {
-        setLoading(true);
         setError(null);
         const res = await fetch(`/api/gallery?${qs.toString()}`, {
           signal: controller.signal,
           cache: 'no-store',
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data: { items: GalleryItem[] } = await res.json();
+        const data = (await res.json()) as GalleryListResponse;
         setItems(data.items ?? []);
-      } catch (e) {
-        if ((e as any)?.name !== 'AbortError') {
-          setError((e as Error).message ?? 'Failed to load gallery');
+      } catch (e: unknown) {
+        if (e && typeof e === 'object' && 'name' in e && (e as { name: string }).name === 'AbortError') {
+          return;
         }
-      } finally {
-        setLoading(false);
+        const msg =
+          e instanceof Error
+            ? e.message
+            : typeof e === 'string'
+            ? e
+            : 'Failed to load gallery';
+        setError(msg);
       }
     })();
 
     return () => controller.abort();
-  }, [s3?.prefix, s3?.limit, s3?.recursive, s3 ? 's3' : 'static']);
+  }, [s3]); // s3 is memoized → stable deps
 
-  // Optional: loading/error UI (simple)
   if (error) {
     return (
       <section className="section">
