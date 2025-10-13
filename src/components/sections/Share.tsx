@@ -108,9 +108,9 @@ export default function Share({
               {/* <h3 className="text-xl font-semibold">Quick actions</h3> */}
               <div className=" flex justify-center flex-wrap gap-3">
                 <button onClick={onCopy} className="btn btn-gradient">Copy Link</button>
-                <button onClick={onDownload} className="btn btn-inverted">Download PNG</button>
+                <button onClick={onDownload} className="btn btn-gradient-inverted">Download PNG</button>
                 {showOpen && (
-                  <a href={url} target="_blank" rel="noreferrer" className="btn btn-inverted">
+                  <a href={url} target="_blank" rel="noreferrer" className="btn btn-gradient-inverted">
                     Open Link
                   </a>
                 )}

@@ -91,7 +91,7 @@ export default function Socials({
                 className={`group inline-flex flex-col items-center ${gapCls}`}
               >
                 <span
-                  className={`card-ink ${rounded} ${iconSizeCls} text-4xl inline-flex items-center justify-center !shadow-[var(--elev-2)] transition-transform duration-200 group-hover:scale-[1.04]`}
+                  className={`btn-gradient btn-gradient-icon ${rounded} ${iconSizeCls} text-4xl inline-flex items-center justify-center !shadow-[var(--elev-2)] bg-[length:150%] transition-border duration-200 border-[2px] border-transparent hover:border-white`}
                   aria-label={s.label ?? s.type}
                 >
                   <FontAwesomeIcon icon={ICONS[s.type]} />

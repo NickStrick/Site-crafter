@@ -26,7 +26,7 @@ import carole from "../../public/carole/carole2.jpg";
 const phoneHref = "tel:17732094805";
 
 export const mockSiteConfig: SiteConfig = {
-  theme: { preset: "lavender", radius: "xl" },
+  theme: { preset: "lavender", radius: "full" },
   meta: {
     title: "CM Florals — Floral Design by Carole Murray",
     description:

@@ -39,6 +39,7 @@ function radiusToPx(r: NonNullable<SiteStyle['radius']>) {
     case 'lg': return '14px';
     case 'xl': return '18px';
     case '2xl': return '24px';
+    case 'full': return '9999px';
     default: return '16px';
   }
 }

@@ -21,7 +21,7 @@ export type SiteStyle = {
   preset: ThemePreset;
   primary?: string;   
   accent?: string;
-  radius?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  radius?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
 };
 
 export type SectionBase = {
