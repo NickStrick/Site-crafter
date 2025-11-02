@@ -439,7 +439,8 @@ body[data-theme="grove"]  {
       }
   }
    .btn-gradient:hover, .btn-gradient-inverted:hover {
-      border-color: var(--bg);
+      /* border-color: var(--bg); */
+      border-color: white;
       cursor: pointer;
        animation: btnhover 2s forwards;
   }
@@ -460,4 +461,8 @@ body[data-theme="grove"]  {
   inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
+}
+.card-screen-height{
+  max-height: calc(100vh - 20px);
+  overflow-y: auto;
 }
