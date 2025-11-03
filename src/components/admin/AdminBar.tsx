@@ -44,14 +44,14 @@ export default function AdminBar() {
             onClick={() => setShowConfig(true)}
             title="Edit site config (sections, fields, media links)"
           >
-            Edit Config
+            Edit Sections
           </button>
 
           <button
             className="btn btn-inverted"
             onClick={() => { setKind('generic'); setOpenPicker(true); }}
           >
-            Media Picker
+            Media Files
           </button>
 
           {hasVideo && (

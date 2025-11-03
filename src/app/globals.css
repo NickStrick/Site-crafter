@@ -466,3 +466,17 @@ body[data-theme="grove"]  {
   max-height: calc(100vh - 20px);
   overflow-y: auto;
 }
+.edit-modal .card{
+  max-width: 900px;
+}
+.edit-modal input,
+.edit-modal textarea,
+.edit-modal select{
+  padding: 0.4rem;
+  border: 2px solid var(--muted);
+  border-radius: 4px;
+}
+
+.move-btn{
+  padding:5px 8px
+}
