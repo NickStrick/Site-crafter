@@ -2,6 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import type { HeaderSection, HeaderStyle } from '@/types/site';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+
 
 export type EditorProps<T> = {
   section: T;
@@ -154,7 +157,7 @@ export function EditHeader({
                   disabled={i === 0}
                   title="Move up"
                 >
-                  ↑
+                   <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
                 </button>
                 <button
                   type="button"
@@ -163,7 +166,7 @@ export function EditHeader({
                   disabled={i === localLinks.length - 1}
                   title="Move down"
                 >
-                  ↓
+                  <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                 </button>
                 <button
                   type="button"

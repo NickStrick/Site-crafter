@@ -3,7 +3,8 @@
 import { useCallback } from 'react';
 import type { PartnersSection, PartnersStyle, PartnerItem, PartnerLink } from '@/types/site';
 import type { EditorProps } from './types';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 // small immutable helper (keeps parity with your other editors)
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
@@ -231,7 +232,7 @@ export default function EditPartners({
                   disabled={idx === 0}
                   title="Move up"
                 >
-                  ↑
+                   <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
                 </button>
                 <button
                   className="btn btn-ghost"
@@ -239,7 +240,7 @@ export default function EditPartners({
                   disabled={idx === items.length - 1}
                   title="Move down"
                 >
-                  ↓
+                  <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                 </button>
                 <button className="btn btn-ghost" onClick={() => removePartner(idx)} title="Remove">
                   Remove
@@ -332,7 +333,7 @@ export default function EditPartners({
                       disabled={lIdx === 0}
                       title="Move up"
                     >
-                      ↑
+                       <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
                     </button>
                     <button
                       className="btn btn-ghost"
@@ -340,7 +341,7 @@ export default function EditPartners({
                       disabled={lIdx === (p.links?.length ?? 1) - 1}
                       title="Move down"
                     >
-                      ↓
+                      <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                     </button>
                     <button
                       className="btn btn-ghost"

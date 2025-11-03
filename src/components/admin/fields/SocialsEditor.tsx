@@ -3,7 +3,8 @@
 import { useCallback, useMemo } from 'react';
 import type { SocialsSection, SocialItem } from '@/types/site';
 import type { EditorProps } from './types';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 // tiny immutable helper consistent with your other editors
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
@@ -239,7 +240,7 @@ export default function EditSocials({
                 disabled={i === 0}
                 title="Move up"
               >
-                ↑
+                 <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
               </button>
               <button
                 className="btn btn-ghost"
@@ -247,7 +248,7 @@ export default function EditSocials({
                 disabled={i === items.length - 1}
                 title="Move down"
               >
-                ↓
+                <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
               </button>
               <button
                 className="btn btn-ghost"

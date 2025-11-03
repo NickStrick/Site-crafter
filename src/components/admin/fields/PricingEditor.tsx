@@ -3,7 +3,8 @@
 import { useCallback } from 'react';
 import type { PricingSection, PricingPlan } from '@/types/site';
 import type { EditorProps } from './types';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 // tiny immutable helper (matches your other editors)
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
@@ -169,7 +170,7 @@ export default function EditPricing({
                   disabled={i === 0}
                   title="Move up"
                 >
-                  ↑
+                   <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
                 </button>
                 <button
                   className="btn btn-ghost"
@@ -177,7 +178,7 @@ export default function EditPricing({
                   disabled={i === plans.length - 1}
                   title="Move down"
                 >
-                  ↓
+                  <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                 </button>
                 <button className="btn btn-ghost" onClick={() => removePlan(i)} title="Remove">
                   Remove
@@ -296,7 +297,7 @@ export default function EditPricing({
                       disabled={fi === 0}
                       title="Move up"
                     >
-                      ↑
+                       <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
                     </button>
                     <button
                       className="btn btn-ghost"
@@ -304,7 +305,7 @@ export default function EditPricing({
                       disabled={fi === (p.features?.length ?? 0) - 1}
                       title="Move down"
                     >
-                      ↓
+                       <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                     </button>
                     <button
                       className="btn btn-ghost"

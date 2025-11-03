@@ -3,7 +3,8 @@
 import { useCallback } from 'react';
 import type { StatsSection, StatsStyle, StatItem } from '@/types/site';
 import type { EditorProps } from './types';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 // keep parity with your other editors
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
@@ -182,7 +183,7 @@ export default function EditStats({
                   disabled={idx === 0}
                   title="Move up"
                 >
-                  ↑
+                   <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
                 </button>
                 <button
                   className="btn btn-ghost"
@@ -190,7 +191,7 @@ export default function EditStats({
                   disabled={idx === items.length - 1}
                   title="Move down"
                 >
-                  ↓
+                  <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                 </button>
                 <button className="btn btn-ghost" onClick={() => removeItem(idx)} title="Remove">
                   Remove

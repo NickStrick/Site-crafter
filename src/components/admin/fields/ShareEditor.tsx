@@ -3,7 +3,8 @@
 import { useCallback } from 'react';
 import type { ShareSection, ShareItem, ShareStyle } from '@/types/site';
 import type { EditorProps } from './types';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 // tiny immutable helper (matches your other editors)
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
@@ -155,7 +156,7 @@ export default function EditShare({
                   disabled={i === 0}
                   title="Move up"
                 >
-                  ↑
+                   <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
                 </button>
                 <button
                   className="btn btn-ghost"
@@ -163,7 +164,7 @@ export default function EditShare({
                   disabled={i === items.length - 1}
                   title="Move down"
                 >
-                  ↓
+                  <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                 </button>
                 <button className="btn btn-ghost" onClick={() => removeItem(i)} title="Remove">
                   Remove

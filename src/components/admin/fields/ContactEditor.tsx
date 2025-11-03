@@ -3,6 +3,8 @@
 import { useCallback } from 'react';
 import type { ContactSection } from '@/types/site';
 import type { EditorProps } from './types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 // tiny immutable helper (kept consistent with your other editors)
 function deepClone<T>(obj: T): T {
@@ -186,7 +188,7 @@ export default function EditContact({
                 disabled={i === 0}
                 title="Move up"
               >
-                ↑
+                 <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
               </button>
               <button
                 className="btn btn-ghost"
@@ -194,7 +196,7 @@ export default function EditContact({
                 disabled={i === socials.length - 1}
                 title="Move down"
               >
-                ↓
+                <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
               </button>
               <button className="btn btn-ghost" onClick={() => removeSocial(i)} title="Remove">
                 Remove
