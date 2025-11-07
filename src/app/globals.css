@@ -480,3 +480,15 @@ body[data-theme="grove"]  {
 .move-btn{
   padding:5px 8px
 }
+input:read-only{
+  background-color: transparent;
+  border:1px solid gray !important;
+  outline: none !important;
+}
+input:read-only:focus{
+  cursor: not-allowed;
+}
+input:read-only:focus{
+   border:1px solid gray !important;
+   outline: none !important;
+}

@@ -1,13 +1,23 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { FooterSection } from '@/types/site';
 import type { EditorProps } from './types';
+import { useSite } from '@/context/SiteContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faTrash } from '@fortawesome/free-solid-svg-icons';
+
 // tiny immutable helper (kept consistent with other editors)
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
+}
+
+// infer mode from href
+function hrefKind(href?: string) {
+  if (!href) return { kind: 'external' as const, sectionId: '' };
+  if (href.startsWith('/#')) return { kind: 'internal' as const, sectionId: href.slice(2) };
+  if (href.startsWith('#')) return { kind: 'internal' as const, sectionId: href.slice(1) };
+  return { kind: 'external' as const, sectionId: '' };
 }
 
 export default function EditFooter({
@@ -15,6 +25,8 @@ export default function EditFooter({
   onChange,
 }: EditorProps<FooterSection>) {
   const columns = section.columns ?? [];
+  const { config } = useSite();
+  const allSections = useMemo(() => config?.sections ?? [], [config?.sections]);
 
   const setField = useCallback(
     <K extends keyof FooterSection>(key: K, value: FooterSection[K]) => {
@@ -163,7 +175,7 @@ export default function EditFooter({
                   disabled={ci === 0}
                   title="Move column up"
                 >
-                  ↑
+                  <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
                 </button>
                 <button
                   className="btn btn-ghost"
@@ -171,7 +183,7 @@ export default function EditFooter({
                   disabled={ci === columns.length - 1}
                   title="Move column down"
                 >
-                  ↓
+                  <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                 </button>
                 <button
                   className="btn btn-ghost"
@@ -191,48 +203,93 @@ export default function EditFooter({
                   </button>
                 </div>
 
-                {links.map((lnk, li) => (
-                  <div
-                    key={`footer-col-${ci}-link-${li}`}
-                    className="grid md:grid-cols-[1fr_1fr_auto_auto_auto] gap-2"
-                  >
-                    <input
-                      className="input"
-                      placeholder="Label"
-                      value={lnk.label}
-                      onChange={(e) => updateLink(ci, li, { label: e.target.value })}
-                    />
-                    <input
-                      className="input"
-                      placeholder="Href (/about, https://, mailto:, tel:)"
-                      value={lnk.href}
-                      onChange={(e) => updateLink(ci, li, { href: e.target.value })}
-                    />
-                    <button
-                      className="btn btn-ghost"
-                      onClick={() => moveLink(ci, li, li - 1)}
-                      disabled={li === 0}
-                      title="Move up"
+                {links.map((lnk, li) => {
+                  const { kind, sectionId } = hrefKind(lnk.href);
+
+                  return (
+                    <div
+                      key={`footer-col-${ci}-link-${li}`}
+                      className="grid md:grid-cols-[1fr_auto_1fr_auto_auto_auto] gap-2"
                     >
-                       <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
-                    </button>
-                    <button
-                      className="btn btn-ghost"
-                      onClick={() => moveLink(ci, li, li + 1)}
-                      disabled={li === links.length - 1}
-                      title="Move down"
-                    >
-                      <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
-                    </button>
-                    <button
-                      className="btn btn-ghost"
-                      onClick={() => removeLink(ci, li)}
-                      title="Remove"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ))}
+                      {/* Label */}
+                      <input
+                        className="input"
+                        placeholder="Label"
+                        value={lnk.label}
+                        onChange={(e) => updateLink(ci, li, { label: e.target.value })}
+                      />
+
+                      {/* Mode */}
+                      <select
+                        className="select w-36"
+                        value={kind}
+                        onChange={(e) => {
+                          const nextKind = e.target.value as 'internal' | 'external';
+                          if (nextKind === 'internal') {
+                            const first = allSections[0]?.id ?? '';
+                            updateLink(ci, li, { href: first ? `/#${first}` : '' });
+                          } else {
+                            updateLink(ci, li, { href: '' });
+                          }
+                        }}
+                      >
+                        <option value="internal">Internal</option>
+                        <option value="external">External</option>
+                      </select>
+
+                      {/* Target */}
+                      {kind === 'internal' ? (
+                        <select
+                          className="select"
+                          value={sectionId}
+                          onChange={(e) => {
+                            const id = e.target.value;
+                            updateLink(ci, li, { href: id ? `/#${id}` : '' });
+                          }}
+                        >
+                          <option value="">— Select section —</option>
+                          {allSections.map((s) => (
+                            <option key={s.id} value={s.id}>
+                              {s.type.charAt(0).toUpperCase() + s.type.slice(1)} • {s.id}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          className="input"
+                          placeholder="Href (/about, https://, mailto:, tel:)"
+                          value={lnk.href}
+                          onChange={(e) => updateLink(ci, li, { href: e.target.value })}
+                        />
+                      )}
+
+                      {/* Reorder / Remove */}
+                      <button
+                        className="btn btn-ghost"
+                        onClick={() => moveLink(ci, li, li - 1)}
+                        disabled={li === 0}
+                        title="Move up"
+                      >
+                        <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
+                      </button>
+                      <button
+                        className="btn btn-ghost"
+                        onClick={() => moveLink(ci, li, li + 1)}
+                        disabled={li === links.length - 1}
+                        title="Move down"
+                      >
+                        <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
+                      </button>
+                      <button
+                        className="btn btn-ghost"
+                        onClick={() => removeLink(ci, li)}
+                        title="Remove"
+                      >
+                        <FontAwesomeIcon icon={faTrash} className="text-sm" />
+                      </button>
+                    </div>
+                  );
+                })}
 
                 {links.length === 0 && (
                   <div className="text-sm text-muted">No links yet. Click “Add link”.</div>

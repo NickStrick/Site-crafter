@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { HeaderSection, HeaderStyle } from '@/types/site';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
-
+import { useSite } from '@/context/SiteContext';
 
 export type EditorProps<T> = {
   section: T;
@@ -31,10 +31,21 @@ function makeLocalLinks(links: HeaderSection['links']): LocalNavLink[] {
   return base.map((l) => ({ ...l, _id: crypto.randomUUID() }));
 }
 
+// infer mode from href
+function hrefKind(href?: string) {
+  if (!href) return { kind: 'external' as const, sectionId: '' };
+  if (href.startsWith('/#')) return { kind: 'internal' as const, sectionId: href.slice(2) };
+  if (href.startsWith('#')) return { kind: 'internal' as const, sectionId: href.slice(1) };
+  return { kind: 'external' as const, sectionId: '' };
+}
+
 export function EditHeader({
   section,
   onChange,
 }: EditorProps<HeaderSection>) {
+  const { config } = useSite(); // 👈 get sections without changing props
+  const allSections = useMemo(() => config?.sections ?? [], [config?.sections]);
+
   const [localLinks, setLocalLinks] = useState<LocalNavLink[]>(() =>
     makeLocalLinks(section.links)
   );
@@ -68,7 +79,7 @@ export function EditHeader({
   const addLink = () => {
     const next = [
       ...localLinks,
-      { _id: crypto.randomUUID(), label: 'New', href: '/' },
+      { _id: crypto.randomUUID(), label: 'New', href: '' },
     ];
     commitLinks(next);
   };
@@ -133,52 +144,102 @@ export function EditHeader({
         )}
 
         <div className="space-y-2">
-          {localLinks.map((lnk, i) => (
-            <div key={'linkid-' + i} className="card p-3 flex flex-col gap-2">
-              <div className="grid grid-cols-2 gap-2">
-                <input
-                  className="input w-full"
-                  value={lnk.label}
-                  onChange={(e) => updateLink(lnk._id, { label: e.target.value })}
-                  placeholder="Label (e.g., Home)"
-                />
-                <input
-                  className="input w-full"
-                  value={lnk.href}
-                  onChange={(e) => updateLink(lnk._id, { href: e.target.value })}
-                  placeholder="/, #about, /contact, https://…"
-                />
+          {localLinks.map((lnk, i) => {
+            const { kind, sectionId } = hrefKind(lnk.href);
+
+            return (
+              <div key={'linkid-' + i} className="card p-3 flex flex-col gap-2">
+                <div className="grid grid-cols-2 gap-2">
+                  {/* Label */}
+                  <input
+                    className="input w-full"
+                    value={lnk.label}
+                    onChange={(e) => updateLink(lnk._id, { label: e.target.value })}
+                    placeholder="Label (e.g., Home)"
+                  />
+
+                  {/* Mode selector + target */}
+                  <div className="flex gap-2">
+                    {/* Mode */}
+                    <select
+                      className="select w-36"
+                      value={kind}
+                      onChange={(e) => {
+                        const nextKind = e.target.value as 'internal' | 'external';
+                        if (nextKind === 'internal') {
+                          // switch to internal: default to first section or blank
+                          const first = allSections[0]?.id ?? '';
+                          updateLink(lnk._id, { href: first ? `/#${first}` : '' });
+                        } else {
+                          // switch to external: keep existing external or blank
+                          updateLink(lnk._id, { href: '' });
+                        }
+                      }}
+                    >
+                      <option value="internal">Internal (section)</option>
+                      <option value="external">External URL</option>
+                    </select>
+
+                    {/* Target */}
+                    {kind === 'internal' ? (
+                      <select
+                        className="select flex-1"
+                        value={sectionId}
+                        onChange={(e) => {
+                          const id = e.target.value;
+                          updateLink(lnk._id, { href: id ? `/#${id}` : '' });
+                        }}
+                      >
+                        <option value="">— Select section —</option>
+                        <option value="/">Home • Top of page</option>
+                        {allSections.map((s) => (
+                          <option key={s.id} value={s.id}>
+                            {s.type.charAt(0).toUpperCase() + s.type.slice(1)} • {s.id}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        className="input flex-1"
+                        value={lnk.href}
+                        onChange={(e) => updateLink(lnk._id, { href: e.target.value })}
+                        placeholder="https://…, /contact, mailto:…, tel:…"
+                      />
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() => moveLink(lnk._id, -1)}
+                    disabled={i === 0}
+                    title="Move up"
+                  >
+                    <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={() => moveLink(lnk._id, +1)}
+                    disabled={i === localLinks.length - 1}
+                    title="Move down"
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost text-red-600 ml-auto"
+                    onClick={() => removeLink(lnk._id)}
+                    title="Remove"
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  className="btn btn-ghost"
-                  onClick={() => moveLink(lnk._id, -1)}
-                  disabled={i === 0}
-                  title="Move up"
-                >
-                   <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-ghost"
-                  onClick={() => moveLink(lnk._id, +1)}
-                  disabled={i === localLinks.length - 1}
-                  title="Move down"
-                >
-                  <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-ghost text-red-600 ml-auto"
-                  onClick={() => removeLink(lnk._id)}
-                  title="Remove"
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
