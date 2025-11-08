@@ -505,3 +505,9 @@ max-height: calc(100vh - 135px);
   position: fixed;
     right: calc(4% + 40px);
 }
+.fa-trash{
+  color:rgb(255, 90, 90);
+}
+.fa-plus{
+  color:rgb(70, 211, 70);
+}

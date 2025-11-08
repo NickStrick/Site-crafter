@@ -314,39 +314,44 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
                     // type="button"
                     onClick={() => setSelectedIndex(i)}
                     className={[
-                      'card p-3 w-full text-left flex items-start justify-between gap-2 transition',
+                      'card p-3 w-full text-left flex items-start justify-between gap-2 transition hover:cursor-pointer',
                       isSelected ? 'outline outline-2 outline-primary bg-black/5' : 'hover:bg-black/5',
                     ].join(' ')}
                     aria-current={isSelected ? 'true' : undefined}
                   >
+                    <div className="flex flex-row gap-3">
+                      <div className="flex flex-col gap-1">
+                        <button
+                          className="btn btn-ghost px-2 py-1"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            moveUp(i);
+                          }}
+                          disabled={i === 0}
+                          title="Move up"
+                        >
+                          <FontAwesomeIcon icon={faChevronUp} className="text-xs" />
+                        </button>
+                        <button
+                          className="btn btn-ghost px-2 py-1"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            moveDown(i);
+                          }}
+                          disabled={i === draft.sections.length - 1}
+                          title="Move down"
+                        >
+                          <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
+                        </button>
+                      </div>
                     <div className="min-w-0">
                       <div className="font-medium">{s.type}</div>
                       <div className="text-xs text-muted break-all">{s.id}</div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <button
-                        className="btn btn-ghost px-2 py-1"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          moveUp(i);
-                        }}
-                        disabled={i === 0}
-                        title="Move up"
-                      >
-                        <FontAwesomeIcon icon={faChevronUp} className="text-xs" />
-                      </button>
-                      <button
-                        className="btn btn-ghost px-2 py-1"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          moveDown(i);
-                        }}
-                        disabled={i === draft.sections.length - 1}
-                        title="Move down"
-                      >
-                        <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
-                      </button>
                     </div>
+                    <button className="btn btn-ghost" onClick={() => removeSection(i)} title={"Remove section"}>
+                        <FontAwesomeIcon icon={faTrash} className="text-sm" />
+                      </button>
                   </div>
                 );
               })}
