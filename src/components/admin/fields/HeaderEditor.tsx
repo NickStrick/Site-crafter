@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { HeaderSection, HeaderStyle } from '@/types/site';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faTrash, faPlus} from '@fortawesome/free-solid-svg-icons';
 import { useSite } from '@/context/SiteContext';
 
 export type EditorProps<T> = {
@@ -135,7 +135,7 @@ export function EditHeader({
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium">Navigation Links</label>
           <button className="btn btn-inverted" type="button" onClick={addLink}>
-            + Add Link
+            <FontAwesomeIcon icon={faPlus} className="text-xs" />Add Link
           </button>
         </div>
 
@@ -234,7 +234,7 @@ export function EditHeader({
                     onClick={() => removeLink(lnk._id)}
                     title="Remove"
                   >
-                    Remove
+                    <FontAwesomeIcon icon={faTrash} className="text-sm" />
                   </button>
                 </div>
               </div>
@@ -249,6 +249,7 @@ export function EditHeader({
           <label className="text-sm font-medium">CTA (optional)</label>
           {cta && (
             <button type="button" className="btn btn-ghost text-red-600" onClick={clearCta}>
+              <FontAwesomeIcon icon={faTrash} className="text-sm" />
               Remove CTA
             </button>
           )}

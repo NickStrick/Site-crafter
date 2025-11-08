@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import type { PartnersSection, PartnersStyle, PartnerItem, PartnerLink } from '@/types/site';
 import type { EditorProps } from './types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 // small immutable helper (keeps parity with your other editors)
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
@@ -215,7 +215,7 @@ export default function EditPartners({
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium">Partners ({items.length})</div>
         <button className="btn btn-ghost" onClick={addPartner}>
-          Add Partner
+          <FontAwesomeIcon icon={faPlus} className="text-xs" />Add Partner
         </button>
       </div>
 
@@ -243,7 +243,7 @@ export default function EditPartners({
                   <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                 </button>
                 <button className="btn btn-ghost" onClick={() => removePartner(idx)} title="Remove">
-                  Remove
+                  <FontAwesomeIcon icon={faTrash} className="text-sm" />
                 </button>
               </div>
             </div>
@@ -294,7 +294,7 @@ export default function EditPartners({
             <div className="flex items-center justify-between">
               <div className="text-sm font-medium">Links ({p.links?.length ?? 0})</div>
               <button className="btn btn-ghost" onClick={() => addLink(idx)}>
-                Add Link
+                <FontAwesomeIcon icon={faPlus} className="text-xs" />Add Link
               </button>
             </div>
 
@@ -348,7 +348,7 @@ export default function EditPartners({
                       onClick={() => removeLink(idx, lIdx)}
                       title="Remove"
                     >
-                      Remove
+                      <FontAwesomeIcon icon={faTrash} className="text-sm" />
                     </button>
                   </div>
                 ))}

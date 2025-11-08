@@ -5,7 +5,7 @@ import type { FooterSection } from '@/types/site';
 import type { EditorProps } from './types';
 import { useSite } from '@/context/SiteContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 // tiny immutable helper (kept consistent with other editors)
 function deepClone<T>(obj: T): T {
@@ -153,7 +153,7 @@ export default function EditFooter({
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium">Columns</div>
         <button className="btn btn-ghost" onClick={addColumn}>
-          Add column
+          <FontAwesomeIcon icon={faPlus} className="text-xs" />Add column
         </button>
       </div>
 
@@ -190,7 +190,7 @@ export default function EditFooter({
                   onClick={() => removeColumn(ci)}
                   title="Remove column"
                 >
-                  Remove
+                  <FontAwesomeIcon icon={faTrash} className="text-sm" />
                 </button>
               </div>
 
@@ -199,7 +199,7 @@ export default function EditFooter({
                 <div className="flex items-center justify-between">
                   <div className="text-xs opacity-70">Links</div>
                   <button className="btn btn-ghost" onClick={() => addLink(ci)}>
-                    Add link
+                    <FontAwesomeIcon icon={faPlus} className="text-xs" />Add link
                   </button>
                 </div>
 

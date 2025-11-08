@@ -8,6 +8,8 @@ import type {
   GalleryStyle,
 } from '@/types/site';
 import type { EditorProps } from './types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';  
 
 // tiny immutable helper
 function deepClone<T>(obj: T): T {
@@ -122,10 +124,10 @@ export default function EditGallery({
             </div>
             <div className="flex gap-2">
               <button className="btn btn-inverted" onClick={addFromPicker}>
-                Add from S3
+                <FontAwesomeIcon icon={faPlus} className="text-xs" />Add from S3
               </button>
               <button className="btn btn-ghost" onClick={addManual}>
-                Add manual
+                <FontAwesomeIcon icon={faPlus} className="text-xs" />Add manual
               </button>
             </div>
           </div>
@@ -163,7 +165,7 @@ export default function EditGallery({
                     onChange(copy);
                   }}
                 >
-                  Remove
+                  <FontAwesomeIcon icon={faTrash} className="text-sm" />
                 </button>
               </div>
             ))}

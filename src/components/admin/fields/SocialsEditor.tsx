@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react';
 import type { SocialsSection, SocialItem } from '@/types/site';
 import type { EditorProps } from './types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 // tiny immutable helper consistent with your other editors
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
@@ -190,6 +190,7 @@ export default function EditSocials({
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium">Links ({items.length})</div>
         <button className="btn btn-ghost" onClick={addItem}>
+          <FontAwesomeIcon icon={faPlus} className="text-xs" />
           Add link
         </button>
       </div>
@@ -255,7 +256,7 @@ export default function EditSocials({
                 onClick={() => removeItem(i)}
                 title="Remove"
               >
-                Remove
+                <FontAwesomeIcon icon={faTrash} className="text-sm" />
               </button>
             </div>
           </div>

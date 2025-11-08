@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import type { StatsSection, StatsStyle, StatItem } from '@/types/site';
 import type { EditorProps } from './types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 // keep parity with your other editors
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
@@ -166,6 +166,7 @@ export default function EditStats({
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium">Stats ({items.length})</div>
         <button className="btn btn-ghost" onClick={addItem}>
+          <FontAwesomeIcon icon={faPlus} className="text-xs" />
           Add Stat
         </button>
       </div>
@@ -194,7 +195,7 @@ export default function EditStats({
                   <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                 </button>
                 <button className="btn btn-ghost" onClick={() => removeItem(idx)} title="Remove">
-                  Remove
+                  <FontAwesomeIcon icon={faTrash} className="text-sm" />
                 </button>
               </div>
             </div>

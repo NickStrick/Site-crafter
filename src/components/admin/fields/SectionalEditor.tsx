@@ -3,6 +3,8 @@
 import type { SectionalSection } from '@/types/site';
 // ⬇️ Adjust this import if your shared types file lives elsewhere
 import type { EditorProps } from './types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 
 export function EditSectional({
   section,
@@ -132,6 +134,7 @@ export function EditSectional({
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium">Motion (parallax/slide)</label>
           <button type="button" className="btn btn-ghost" onClick={clearMotion}>
+            <FontAwesomeIcon icon={faRotateLeft} className="text-sm" />
             Reset motion
           </button>
         </div>

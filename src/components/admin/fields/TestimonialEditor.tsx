@@ -1,7 +1,7 @@
 // --- add near your other imports ---
 import type { AnySection, TestimonialsSection, TestimonialItem } from '@/types/site';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 // If you already have EditorProps / EditorSharedProps and deepClone in this file, reuse them.
 // Otherwise, keep the same shapes you used for Hero/Gallery/Video editors:
 type EditorSharedProps = {
@@ -93,7 +93,8 @@ export function EditTestimonials({
       <div className="flex items-center justify-between">
         <div className="font-medium">Items ({items.length})</div>
         <button className="btn btn-inverted" onClick={addItem}>
-          + Add Testimonial
+          <FontAwesomeIcon icon={faPlus} className="text-xs" />
+          Add Testimonial
         </button>
       </div>
 
@@ -125,7 +126,7 @@ export function EditTestimonials({
                   onClick={() => removeItem(i)}
                   title="Remove"
                 >
-                  Remove
+                  <FontAwesomeIcon icon={faTrash} className="text-xs" />
                 </button>
               </div>
             </div>

@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import type { ShareSection, ShareItem, ShareStyle } from '@/types/site';
 import type { EditorProps } from './types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 // tiny immutable helper (matches your other editors)
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
@@ -140,7 +140,10 @@ export default function EditShare({
       {/* Items header */}
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium">QR Codes ({items.length})</div>
-        <button className="btn btn-ghost" onClick={addItem}>Add QR</button>
+        <button className="btn btn-ghost" onClick={addItem}>
+          <FontAwesomeIcon icon={faPlus} className="text-xs" />
+          Add QR
+          </button>
       </div>
 
       {/* Items list */}
@@ -167,7 +170,7 @@ export default function EditShare({
                   <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
                 </button>
                 <button className="btn btn-ghost" onClick={() => removeItem(i)} title="Remove">
-                  Remove
+                  <FontAwesomeIcon icon={faTrash} className="text-sm" />
                 </button>
               </div>
             </div>

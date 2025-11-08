@@ -8,7 +8,7 @@ import MediaPicker from './MediaPicker';
 import { SECTION_REGISTRY, getAllowedSectionTypes } from './configRegistry';
 import { getEditorForSection } from './EditSections';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 // -----------------------------
 // Utilities
@@ -213,22 +213,11 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
       <>
         <div className="flex items-center justify-between">
           <div className="font-semibold">{section.type.toUpperCase()}</div>
-          <div className="flex items-center gap-2">
-            <button
-              className="btn btn-ghost flex items-center aspect-square gap-1"
-              onClick={() => moveUp(index)}
-              disabled={index === 0}
-              title="Move up"
-            >
-              <FontAwesomeIcon icon={faChevronUp} className="text-sm" />
-            </button>
-            <button
-              className="btn btn-ghost flex items-center aspect-square gap-1"
-              onClick={() => moveDown(index)}
-              disabled={!!draft && index === draft.sections.length - 1}
-              title="Move down"
-            >
-              <FontAwesomeIcon icon={faChevronDown} className="text-sm" />
+          <div className="pt-2 flex items-center gap-2">
+            <div className="flex-1" />
+            <button className="btn btn-ghost" onClick={() => removeSection(index)}>
+              <FontAwesomeIcon icon={faTrash} className="text-sm" />
+              Remove section
             </button>
           </div>
         </div>
@@ -268,13 +257,6 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
             </div>
           )}
 
-          {/* Row actions */}
-          <div className="pt-2 flex items-center gap-2">
-            <div className="flex-1" />
-            <button className="btn btn-ghost" onClick={() => removeSection(index)}>
-              Remove section
-            </button>
-          </div>
         </div>
       </>
     );
@@ -305,8 +287,8 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
       <div className="card p-4 relative w-fit !max-w-full pr-[70px] overflow-hidden card-screen-height">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
-          <div className="font-semibold text-lg">Edit Site Config</div>
-          <div className="flex items-center gap-2">
+          <div className="font-semibold text-lg">Edit Site Content</div>
+          <div className="flex items-center gap-2 save-config-btns">
             {error && <div className="text-red-600 text-sm mr-3">{error}</div>}
             <button className="btn btn-ghost" onClick={onClose}>
               Cancel
@@ -327,9 +309,9 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
               {draft.sections.map((s, i) => {
                 const isSelected = i === selectedIndex;
                 return (
-                  <button
+                  <div
                     key={s.id}
-                    type="button"
+                    // type="button"
                     onClick={() => setSelectedIndex(i)}
                     className={[
                       'card p-3 w-full text-left flex items-start justify-between gap-2 transition',
@@ -365,7 +347,7 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
                         <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
                       </button>
                     </div>
-                  </button>
+                  </div>
                 );
               })}
               {draft.sections.length === 0 && (
@@ -375,7 +357,9 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
 
             {/* Quick add (dynamic) */}
             <div className="pt-4 border-t">
-              <div className="text-sm opacity-70 mb-2">Add section</div>
+              <div className="text-sm opacity-70 mb-2">
+                <FontAwesomeIcon icon={faPlus} className="text-xs" />
+                Add section</div>
               <div className="flex flex-wrap gap-2">
                 {getAllowedSectionTypes().map((t) => (
                   <button
@@ -391,9 +375,9 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
           </div>
 
           {/* Right: Only the selected editor */}
-          <div className="md:col-span-2 p-4 space-y-4">
+          <div className="md:col-span-2 p-4 space-y-4 right-editor-container">
             {selected ? (
-              <div key={selected.id} className="card p-4 space-y-3">
+              <div key={selected.id} className="card p-4 space-y-3 right-editor-card">
                 {renderEditor(selected, selectedIndex, (next) => updateSection(selectedIndex, next))}
               </div>
             ) : (

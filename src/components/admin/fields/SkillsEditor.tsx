@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import type { SkillsSection, SkillItem } from '@/types/site';
 import type { EditorProps } from './types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 // small immutable helper (kept consistent with your other editors)
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
@@ -109,6 +109,7 @@ export default function EditSkills({
       <div className="flex items-center justify-between">
         <div className="text-sm font-medium">Items ({items.length})</div>
         <button className="btn btn-ghost" onClick={addItem}>
+          <FontAwesomeIcon icon={faPlus} className="text-xs" />
           Add item
         </button>
       </div>
@@ -145,7 +146,7 @@ export default function EditSkills({
                 onClick={() => removeItem(i)}
                 title="Remove item"
               >
-                Remove
+                <FontAwesomeIcon icon={faTrash} className="text-sm" />
               </button>
             </div>
 

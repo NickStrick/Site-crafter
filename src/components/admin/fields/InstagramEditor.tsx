@@ -3,6 +3,8 @@
 import { useCallback } from 'react';
 import type { InstagramSection } from '@/types/site';
 import type { EditorProps } from './types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function deepClone<T>(v: T): T {
   return JSON.parse(JSON.stringify(v)) as T;
@@ -73,7 +75,7 @@ export default function EditInstagram({
         <div className="flex items-center justify-between">
           <div className="font-medium">Items ({items.length})</div>
           <button type="button" className="btn btn-inverted" onClick={addItem}>
-            Add URL
+            <FontAwesomeIcon icon={faPlus} className="text-xs" />Add URL
           </button>
         </div>
 
@@ -92,7 +94,7 @@ export default function EditInstagram({
                 onClick={() => removeItem(i)}
                 aria-label="Remove"
               >
-                Remove
+                <FontAwesomeIcon icon={faTrash} className="text-sm" />
               </button>
             </div>
           ))}

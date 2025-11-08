@@ -3,6 +3,8 @@
 import { useCallback } from 'react';
 import type { FeaturesSection, FeatureMeta, GalleryItem } from '@/types/site';
 import type { EditorProps } from './types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 // tiny immutable helper
 function deepClone<T>(obj: T): T {
@@ -123,7 +125,7 @@ export default function EditFeatures({
       <div className="flex items-center justify-between">
         <div className="font-medium">Items ({items.length})</div>
         <button className="btn btn-inverted" onClick={addItem}>
-          Add item
+          <FontAwesomeIcon icon={faPlus} className="text-xs" />Add item
         </button>
       </div>
 
@@ -146,7 +148,7 @@ export default function EditFeatures({
                   ↓
                 </button>
                 <button className="btn btn-ghost" onClick={() => removeItem(i)}>
-                  Remove
+                  <FontAwesomeIcon icon={faTrash} className="text-sm" />
                 </button>
               </div>
             </div>
@@ -238,7 +240,7 @@ export default function EditFeatures({
               <div className="flex items-center justify-between">
                 <div className="text-sm font-medium">Meta (label/value pairs)</div>
                 <button className="btn btn-ghost" onClick={() => addMeta(i)}>
-                  Add meta
+                  <FontAwesomeIcon icon={faPlus} className="text-xs" />Add meta
                 </button>
               </div>
 
@@ -258,7 +260,7 @@ export default function EditFeatures({
                       onChange={(e) => updateMeta(i, mi, { value: e.target.value })}
                     />
                     <button className="btn btn-ghost" onClick={() => removeMeta(i, mi)}>
-                      Remove
+                      <FontAwesomeIcon icon={faTrash} className="text-sm" />
                     </button>
                   </div>
                 ))}

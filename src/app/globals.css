@@ -492,3 +492,16 @@ input:read-only:focus{
    border:1px solid gray !important;
    outline: none !important;
 }
+.right-editor-container{
+  position: fixed;
+    right: 2%;
+    width: 64%;
+}
+.right-editor-card{
+max-height: calc(100vh - 135px);
+    overflow: auto;
+}
+.save-config-btns{
+  position: fixed;
+    right: calc(4% + 40px);
+}

@@ -2,6 +2,8 @@
 
 import type { AboutSection } from '@/types/site';
 import type { EditorProps } from './types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export function EditAbout({
   section,
@@ -90,7 +92,7 @@ export function EditAbout({
         <div className="flex items-center justify-between">
           <label className="text-sm font-medium">Bullets (quick facts)</label>
           <button type="button" className="btn btn-inverted" onClick={addBullet}>
-            Add bullet
+            <FontAwesomeIcon icon={faPlus} className="text-xs" />Add bullet
           </button>
         </div>
 
@@ -113,7 +115,7 @@ export function EditAbout({
                 onClick={() => removeBullet(i)}
                 aria-label="Remove bullet"
               >
-                Remove
+                <FontAwesomeIcon icon={faTrash} className="text-sm" />
               </button>
             </div>
           ))}
