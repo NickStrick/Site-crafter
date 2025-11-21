@@ -48,6 +48,7 @@ export type SectionBase = {
     | 'gallery'
     | 'socials'
     | 'video'
+    | 'productListings'
     ;
 
   // visible/editable flags to support your builder UI
@@ -78,6 +79,7 @@ export type AnySection =
   | GallerySection
   | SocialsSection
   | VideoSection
+  | ProductListingsSection; 
   ;
 // add this near other shared types
 export type HeaderStyle = {
@@ -455,4 +457,82 @@ export type VideoSection = SectionBase & {
   muted?: boolean;
   loop?: boolean;
   style?: VideoStyle;
+};
+
+export type Money = {
+  amount: number;        // 1999 (cents) or 19.99 as number — choose one style; below we assume cents
+  currency?: string;     // 'USD' default
+};
+
+export type ProductImage = {
+  url: string;           // full URL or S3 key resolved at render
+  alt?: string;
+};
+
+export type ProductSpec = {
+  label: string;
+  value: string;
+};
+
+export type ProductColor = { name: string; hex?: string; imageUrl?: string };
+export type ProductSize  = { label: string; value?: string };
+
+
+export type Product = {
+  id: string;            // stable id/slug
+  name: string;
+  subtitle?: string;
+  sku?: string;
+
+  // pricing (use cents to avoid float issues)
+  price: number;         // e.g. 2999 == $29.99
+  compareAtPrice?: number;
+  currency?: string;     // default 'USD'
+
+  thumbnailUrl?: string;
+  images?: ProductImage[];
+
+  summary?: string;      // short blurb
+  description?: string;  // long description (markdown/plain)
+
+  features?: string[];   // bullet points
+  specs?: ProductSpec[]; // table
+
+  badges?: string[];     // e.g. "New", "Bestseller"
+  tags?: string[];
+
+  stock?: 'in_stock' | 'low_stock' | 'out_of_stock';
+  quantityAvailable?: number;
+
+  digital?: boolean;     // digital product?
+  weightKg?: number;
+  widthCm?: number;
+  heightCm?: number;
+  depthCm?: number;
+  shippingClass?: string;
+
+  // where Buy Now leads (until payments are integrated)
+  purchaseUrl?: string;  // external checkout or link
+  ctaLabel?: string;     // default "Buy Now"
+  
+   colors?: ProductColor[];
+  sizes?: ProductSize[];           // e.g. ['S','M','L','XL']
+  maxQuantity?: number;          // default 10
+};
+
+export type ProductListingsStyle = {
+  columns?: 1 | 2 | 3;           // default responsive columns, desktop cap at 3
+  cardVariant?: 'default' | 'ink';
+  showBadges?: boolean;
+};
+
+export type ProductListingsSection = SectionBase & {
+  id: string;
+  type: 'productListings';
+  title?: string;
+  subtitle?: string;
+  products: Product[];
+  style?: ProductListingsStyle;
+  showAllThreshold?: number;     // default 3 — show "Show all" if > threshold
+  buyCtaFallback?: string;       // default "Buy Now"
 };

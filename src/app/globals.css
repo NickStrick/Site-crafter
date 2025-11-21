@@ -75,13 +75,13 @@ body[data-theme="festival"] {
 }
 
 body[data-theme="candy"] {
-  --primary: #ff1f8f;   /* hot pink */
+  --primary: #227a73;   /* hot pink */
   --accent:  #ae00ff;   /* bright cyan */
   --bg:      #fff0f6;
   --bg-2:      #c9aeb9;   /* pastel pink */
   --fg:      #1f1f1f;   /* near-black */
-  --muted:   #7d7d7d;
-  --band-1:  #ff1f8f;
+  --muted:   #292929;
+  --band-1:  #227a73;
   --band-2:  #ae00ff;
   --text-1: black;
   --text-2: white;
@@ -510,4 +510,11 @@ max-height: calc(100vh - 135px);
 }
 .fa-plus{
   color:rgb(70, 211, 70);
+}
+.card-modal{
+  max-width: 1500px;
+  min-height:60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center ;
 }

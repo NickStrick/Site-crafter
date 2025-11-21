@@ -395,7 +395,7 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
       {/* Media Picker Overlay */}
       {pickerOpen && (
         <div className="fixed inset-0 z-[1300] bg-black/60 flex items-center justify-center p-4">
-          <div className="card p-4 relative w-fit max-w-[95vw] pr-[70px]">
+          <div className="card p-4 relative w-fit max-w-[95vw] pr-[70px] max-h-[90vh] overflow-auto">
             <button
               onClick={handleCancelPick}
               className="absolute right-3 top-3 btn btn-ghost"

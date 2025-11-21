@@ -6,7 +6,7 @@ import type { PartnersSection } from '@/types/site';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebook, faLinkedin, faYoutube, faTiktok, faLinktree } from '@fortawesome/free-brands-svg-icons';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
-
+import { resolveAssetUrl } from '@/lib/assetUrl';
 /**
  * Partners component
  * - Displays a list of partners/bands/businesses with logo, name, and social links
@@ -66,12 +66,14 @@ export default function Partners({ id, title, subtitle, items, style, background
         {variant === 'grid' ? (
           // Simple logo grid
           <div className={`grid gap-6 md:gap-8 ${gridCols}`}>
-            {items.map((p, i) => (
+            {items.map((p, i) => {
+              let logoUrl = `${resolveAssetUrl(p.logoUrl?p.logoUrl:'')}`;
+              return (
               <AnimatedSection delay={i * 0.08} key={`${p.name}-${i}`} className={`card ${radius} p-6 text-center card-outline`}>                
-                {p.logoUrl ? (
+                {logoUrl ? (
                   <div className="mx-auto mb-3" >
                     <Image
-                      src={p.logoUrl}
+                      src={logoUrl}
                       alt={p.name}
                       width={120}
                       height={120}
@@ -96,7 +98,7 @@ export default function Partners({ id, title, subtitle, items, style, background
                   </div>
                 )}
               </AnimatedSection>
-            ))}
+            )})}
           </div>
         ) : (
           // Detailed cards variant
@@ -104,9 +106,9 @@ export default function Partners({ id, title, subtitle, items, style, background
             {items.map((p, i) => (
               <AnimatedSection delay={i * 0.08} key={`${p.name}-${i}`} className={`card card-outline w-full ${radius} p-6 md:p-7`}>                
                 <div className="flex items-center gap-4">
-                  {p.logoUrl ? (
+                  {`${resolveAssetUrl(p.logoUrl?p.logoUrl:'')}` ? (
                     <Image
-                      src={p.logoUrl}
+                      src={`${resolveAssetUrl(p.logoUrl?p.logoUrl:'')}`}
                       alt={p.name}
                       width={64}
                       height={64}

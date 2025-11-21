@@ -23,6 +23,7 @@ import EditShare from './fields/ShareEditor';
 import EditScheduling from './fields/SchedulingEditor';
 import EditNewsletter from './fields/NewsletterEditor';
 import EditDisclaimer from './fields/DisclaimerEditor';
+import EditProductListings from './fields/EditProductListings';
 
 // -----------------------------
 // Shared types & helpers
@@ -71,7 +72,7 @@ export const SECTION_EDITORS: Partial<Record<AnySection['type'], EditorComponent
   scheduling: EditScheduling,
   newsletter: EditNewsletter,
   disclaimer: EditDisclaimer,
-
+  productListings: EditProductListings
   // Add more as you implement them…
 };
 

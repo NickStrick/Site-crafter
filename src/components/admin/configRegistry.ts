@@ -22,6 +22,7 @@ import type {
   GallerySection,
   SocialsSection,
   VideoSection,
+  ProductListingsSection
 } from '@/types/site';
 
 const newId = (p: string) => `${p}-${Math.random().toString(36).slice(2, 7)}`;
@@ -339,6 +340,39 @@ export const SECTION_REGISTRY: SectionRegistry = {
       style: { aspect: '16/9', rounded: 'xl', shadow: 'md', background: 'default' },
     }),
   },
+    productListings: {
+    label: 'Product Listings',
+    allowed: true,
+    create: (id = `productListings-${crypto.randomUUID().slice(0,6)}`): ProductListingsSection => ({
+      id,
+      type: 'productListings',
+      title: 'Our Products',
+      subtitle: 'Browse our offerings.',
+      products: [
+        {
+          id: 'prod-1',
+          name: 'Sample Product',
+          subtitle: 'A great item',
+          price: 2999,
+          compareAtPrice: 3999,
+          currency: 'USD',
+          thumbnailUrl: 'configs/your-site/assets/sample-product.jpg',
+          summary: 'Short summary of the product.',
+          description: 'Longer description that appears in the modal.',
+          features: ['Quality materials', 'Great design', '2-year warranty'],
+          specs: [{ label: 'Color', value: 'Lavender' }, { label: 'Size', value: 'Standard' }],
+          badges: ['New'],
+          stock: 'in_stock',
+          purchaseUrl: 'https://example.com/checkout?product=prod-1',
+          ctaLabel: 'Buy Now',
+        },
+      ],
+      style: { columns: 3, cardVariant: 'default', showBadges: true },
+      showAllThreshold: 3,
+      buyCtaFallback: 'Buy Now',
+    }),
+    // No Editor yet — your ConfigModal will show "No editor implemented…" until we add one.
+  } as SectionRegistryItem<ProductListingsSection>,
 };
 
 // Helper to get an array of allowed types

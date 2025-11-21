@@ -67,7 +67,7 @@ export default function Navbar() {
           <ul className="hidden md:flex flex-1 justify-center gap-6 text-muted">
             {(header.links ?? []).map(l => (
               <li key={l.href}>
-                <Link href={l.href} className="hover:text-fg transition-colors">
+                <Link href={l.href} className="hover:text-fg transition-colors  text-nowrap">
                   {l.label}
                 </Link>
               </li>
@@ -109,7 +109,7 @@ export default function Navbar() {
               <li key={l.href}>
                 <Link
                   href={l.href}
-                  className="block py-2 text-fg/80 hover:text-fg"
+                  className="block py-2 text-fg/80 hover:text-fg  text-nowrap"
                   onClick={onNav}
                 >
                   {l.label}
