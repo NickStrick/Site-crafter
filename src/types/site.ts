@@ -9,7 +9,8 @@ export type ThemePreset =
   | 'neon'
   | 'grove'
   | 'forest-earthy'
-  | 'lavender';  // new
+  | 'lavender'
+  | 'sue';  // new
 
 export type Theme = {
   preset: ThemePreset;

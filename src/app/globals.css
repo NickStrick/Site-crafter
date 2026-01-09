@@ -117,6 +117,19 @@ body[data-theme="neon"] {
   --text-2: white;
   --text-accent: black;
 }
+body[data-theme="sue"] {
+  --primary: #cf31ff;   /* neon green */
+  --accent:  #d10088;   /* magenta */
+  --bg:      #181818; 
+  --bg-2    : #7300a0;
+  --fg:      #e5e7eb;   /* light gray text */
+  --muted:   #9ca3af;
+  --band-1:  #d10088;
+  --band-2:  #d10088;   /* neon violet for contrast */
+  --text-1: white;
+  --text-2: white;
+  --text-accent: black;
+}
 body[data-theme="grove"]  {
     --primary: #166534;/* deep leaf green */
     --accent : #65a30d;/* fresh moss */
@@ -167,6 +180,19 @@ body[data-theme="grove"]  {
       box-shadow: var(--elev-2);
       border: 2px solid var(--bg-2);
     }
+    .card-2 { background-image: linear-gradient(
+          to bottom right,
+          var(--bg) 0%,
+          var(--accent) 40%,
+          var(--accent) 70%,
+          var(--accent) 100%
+      );
+      background-size: calc(200% + 4px) calc(100% + 4px);
+      background-position: 0% 100%; max-width: 400px; margin: 0 auto;
+      border-radius: var(--round-xl);
+      box-shadow: var(--elev-2);
+      border: 2px solid var(--accent);
+    }
     .card-invert { background-image: linear-gradient(
           to bottom right,
           var(--bg-2) 0%,
@@ -182,6 +208,7 @@ body[data-theme="grove"]  {
       border: 2px solid var(--bg-2);
     }
 .card-outline { border: 2px solid var(--bg-2); }
+.card-outline-2 { border: 2px solid var(--accent); }
 .card-ink { background-image: linear-gradient(
           to bottom right,
           var(--primary) 0%,

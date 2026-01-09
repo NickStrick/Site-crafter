@@ -225,7 +225,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
             )}
 
             {/* Quantity */}
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <label className="block text-sm font-medium">Quantity</label>
               <input
                 type="number"
@@ -234,7 +234,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                 value={quantity}
                 onChange={(e) => setQuantity(Math.max(1, Number(e.target.value) || 1))}
               />
-            </div>
+            </div> */}
 
             {/* Features */}
             {product.features && product.features.length > 0 && (

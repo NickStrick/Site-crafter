@@ -15,7 +15,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 // import { mockSiteConfig } from "@/mocks/siteConfig";
-import { mockSiteConfig } from "@/mocks/fernandoConfig";
+import { mockSiteConfig } from "@/mocks/sueConfig";
 
 export const metadata: Metadata = {
   title: "CM Florals — Floral Design by Carole Murray",

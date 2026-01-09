@@ -28,7 +28,7 @@ export function Testimonials({
   style,
 }: TestimonialsSection) {
   const {
-    variant = 'card',
+    variant = 'carousel',
     columns = 3,
     showQuoteIcon = true,
     rounded = 'xl',
@@ -36,9 +36,9 @@ export function Testimonials({
   } = style || {};
 
   const cardBase =
-    'p-6 md:p-7 bg-accent-1 shadow-md';
+    'p-6 md:p-7 card-2 card-outline-2 shadow-md';
   const cardInk =
-    'p-6 md:p-7 text-[var(--text-1)] bg-[var(--primary)] shadow-lg';
+    'p-6 md:p-7 text-[var(--text-1)] card-2 card-outline-2 shadow-lg';
   const radius =
     rounded === '2xl' ? 'rounded-3xl' : rounded === 'lg' ? 'rounded-xl' : 'rounded-2xl';
 
