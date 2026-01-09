@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import type {
   ProductListingsSection,
   Product,
@@ -66,13 +66,17 @@ function withLocalIds(p: Product): LocalProduct {
 }
 
 function stripLocalIds(p: LocalProduct): Product {
-  const { _id, images, specs, colors, sizes, ...rest } = p as any;
+  const { images, specs, colors, sizes, ...rest } = p;
   return {
     ...rest,
-    images: images?.map(({ _id: __, ...img  }: LocalImage) => img) ?? [],
-    specs:  specs?.map(({ _id: __, ...sp   }: LocalSpec)  => sp)  ?? [],
-    colors: colors?.map(({ _id: __, ...c   }: LocalColor) => c)   ?? [],
-    sizes:  sizes?.map(({ _id: __, ...s    }: LocalSize)  => s)   ?? [],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    images: images?.map(({ _id, ...img }: LocalImage) => img) ?? [],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    specs: specs?.map(({ _id, ...sp }: LocalSpec) => sp) ?? [],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    colors: colors?.map(({ _id, ...c }: LocalColor) => c) ?? [],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    sizes: sizes?.map(({ _id, ...s }: LocalSize) => s) ?? [],
   };
 }
 
@@ -109,7 +113,7 @@ export default function EditProductListings({
   );
 
   // section fields
-  const style = section.style ?? { columns: 3, cardVariant: 'default', showBadges: true };
+  const style = useMemo(() => section.style ?? { columns: 3 as const, cardVariant: 'default' as const, showBadges: true }, [section.style]);
 
   const setSectionField = useCallback(
     <K extends keyof ProductListingsSection>(key: K, value: ProductListingsSection[K]) => {
@@ -120,7 +124,7 @@ export default function EditProductListings({
 
   const setStyle = useCallback(
     (patch: Partial<NonNullable<ProductListingsSection['style']>>) => {
-      setSectionField('style', { ...style, ...patch });
+      setSectionField('style', { ...style, ...patch } as NonNullable<ProductListingsSection['style']>);
     },
     [setSectionField, style]
   );

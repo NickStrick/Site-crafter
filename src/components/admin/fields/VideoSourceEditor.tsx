@@ -156,17 +156,16 @@ export default function VideoSourceEditor({
       )}
 
       {/* optional poster chooser */}
-      {onPickPoster && (
+            {onPickPoster && (
         <div>
           <label className="block text-xs opacity-70">Poster (optional)</label>
           <div className="flex gap-2">
             <button
               type="button"
               className="btn btn-ghost"
-              onClick={() => onPickPoster((keyOrUrl) => {
-                // parent should set section.posterUrl
-                // we only surface the picker trigger here
-              })}
+                    onClick={() => onPickPoster(() => {
+                      // parent will receive the picked key/url via the provided callback
+                    })}
             >
               Choose Poster…
             </button>

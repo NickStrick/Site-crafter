@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
-import type { FeaturesSection, FeatureMeta, GalleryItem } from '@/types/site';
+import type { FeaturesSection, FeatureMeta } from '@/types/site';
 import type { EditorProps } from './types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';

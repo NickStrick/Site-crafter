@@ -1,7 +1,7 @@
 // src/context/SiteContext.tsx
 'use client';
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import type { SiteConfig, SiteStyle, ThemePreset } from '@/types/site';
 
 type Ctx = {
@@ -37,7 +37,7 @@ export function SiteProvider({
   const [config, _setConfig] = useState<SiteConfig>(initial);
 
   // expose full-replacement setter while preserving previous API
-  const setConfig = (next: SiteConfig) => _setConfig(next);
+  const setConfig = useCallback((next: SiteConfig) => _setConfig(next), []);
 
   // apply data-theme + runtime CSS vars (unchanged from your version)
   useEffect(() => {
@@ -48,11 +48,12 @@ export function SiteProvider({
     if (config.theme.primary) b.style.setProperty('--primary', config.theme.primary);
     if (config.theme.accent)  b.style.setProperty('--accent',  config.theme.accent);
     if (config.theme.radius)  b.style.setProperty('--radius',  radiusToPx(config.theme.radius));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config?.theme]);
 
   // keep your existing style-updater helper
-  const setStyle = (update: Partial<SiteStyle>) =>
-    _setConfig(prev => ({ ...prev, theme: { ...prev.theme, ...update } }));
+  const setStyle = useCallback((update: Partial<SiteStyle>) =>
+    _setConfig(prev => ({ ...prev, theme: { ...prev.theme, ...update } })), []);
 
   const value = useMemo<Ctx>(
     () => ({
@@ -61,7 +62,7 @@ export function SiteProvider({
       setStyle,
       isLoading: !config,
     }),
-    [config]
+    [config, setConfig, setStyle]
   );
 
   return <SiteCtx.Provider value={value}>{children}</SiteCtx.Provider>;

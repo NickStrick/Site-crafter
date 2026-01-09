@@ -46,33 +46,31 @@ export type EditorProps<T extends AnySection> = EditorSharedProps & {
 // -----------------------------
 // Registry
 // -----------------------------
-export type EditorComponent<T extends AnySection = AnySection> = (
-  props: EditorProps<T>
-) => JSX.Element;
+export type EditorComponent<T extends AnySection = AnySection> = (props: EditorProps<T>) => JSX.Element;
 
-export const SECTION_EDITORS: Partial<Record<AnySection['type'], EditorComponent<any>>> = {
-  hero: EditHero,
-  gallery: EditGallery,
-  video: EditVideo,
+export const SECTION_EDITORS: Partial<Record<AnySection['type'], EditorComponent<AnySection>>> = {
+  hero: EditHero as EditorComponent<AnySection>,
+  gallery: EditGallery as EditorComponent<AnySection>,
+  video: EditVideo as EditorComponent<AnySection>,
 
   // Starter extra editors
-  cta: EditCTA,
-  about: EditAbout,
-  header: EditHeader,
-  sectional: EditSectional,
-  testimonials: EditTestimonials,
-  features: EditFeatures,
-  contact: EditContact,
-  footer: EditFooter,
-  stats: EditStats,
-  instagram: EditInstagram, 
-  pricing: EditPricing,
-  partners: EditPartners,
-  share: EditShare,
-  scheduling: EditScheduling,
-  newsletter: EditNewsletter,
-  disclaimer: EditDisclaimer,
-  productListings: EditProductListings
+  cta: EditCTA as EditorComponent<AnySection>,
+  about: EditAbout as EditorComponent<AnySection>,
+  header: EditHeader as EditorComponent<AnySection>,
+  sectional: EditSectional as EditorComponent<AnySection>,
+  testimonials: EditTestimonials as EditorComponent<AnySection>,
+  features: EditFeatures as EditorComponent<AnySection>,
+  contact: EditContact as EditorComponent<AnySection>,
+  footer: EditFooter as EditorComponent<AnySection>,
+  stats: EditStats as EditorComponent<AnySection>,
+  instagram: EditInstagram as EditorComponent<AnySection>, 
+  pricing: EditPricing as EditorComponent<AnySection>,
+  partners: EditPartners as EditorComponent<AnySection>,
+  share: EditShare as EditorComponent<AnySection>,
+  scheduling: EditScheduling as EditorComponent<AnySection>,
+  newsletter: EditNewsletter as EditorComponent<AnySection>,
+  disclaimer: EditDisclaimer as EditorComponent<AnySection>,
+  productListings: EditProductListings as EditorComponent<AnySection>
   // Add more as you implement them…
 };
 

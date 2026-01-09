@@ -48,7 +48,7 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
   useEffect(() => {
     if (!draft) return;
     setSelectedIndex((i) => clamp(i, 0, Math.max(0, draft.sections.length - 1)));
-  }, [draft?.sections.length]);
+  }, [draft]);
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -246,8 +246,8 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
           {/* Type-specific */}
           {Editor ? (
             <Editor
-              section={section as any}
-              onChange={(s) => onChange(s as AnySection)}
+              section={section as AnySection}
+              onChange={(s: AnySection) => onChange(s)}
               openMediaPicker={openMediaPicker}
               siteId={siteId}
             />

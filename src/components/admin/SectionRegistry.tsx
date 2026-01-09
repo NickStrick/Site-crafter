@@ -24,7 +24,7 @@ type RegistryItem<T extends AnySection> = {
 const rid = (p: string) => `${p}-${Math.random().toString(36).slice(2, 8)}`;
 
 /** Minimal registry: add more types later; generic fallback will handle the rest */
-export const sectionRegistry: Partial<Record<AnySection['type'], RegistryItem<any>>> = {
+export const sectionRegistry: Partial<Record<AnySection['type'], RegistryItem<AnySection>>> = {
   hero: {
     label: 'Hero',
     allowed: true,

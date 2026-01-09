@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    // Allow builds to complete while addressing lint warnings/errors
-    ignoreDuringBuilds: true,
-  },
+  // eslint: {
+  //   // Allow builds to complete while addressing lint warnings/errors
+  //   ignoreDuringBuilds: true,
+  // },
   images: {
     remotePatterns: [
       {

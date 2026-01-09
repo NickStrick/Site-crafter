@@ -1,11 +1,6 @@
 // src/app/api/admin/config/[siteId]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  S3Client,
-  GetObjectCommand,
-  PutObjectCommand,
-  NoSuchKey,
-} from '@aws-sdk/client-s3';
+import { S3Client, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 
 // --- super lightweight "admin" guard (same header you've been using) ---
 function assertAdmin(req: NextRequest): NextResponse | null {
@@ -30,20 +25,21 @@ function keyFor(siteId: string) {
 }
 
 // Helper for AWS SDK v3 body -> string
-async function streamToString(stream: any): Promise<string> {
+async function streamToString(stream: unknown): Promise<string> {
   if (!stream) return '';
-  // Node.js Readable
-  if (typeof stream.on === 'function') {
+  // Node.js Readable (has .on)
+  if (typeof stream === 'object' && stream !== null && 'on' in stream && typeof (stream as Record<string, unknown>).on === 'function') {
     return await new Promise<string>((resolve, reject) => {
       const chunks: Buffer[] = [];
-      stream.on('data', (chunk: Buffer) => chunks.push(chunk));
-      stream.on('error', reject);
-      stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
+      const s = stream as NodeJS.ReadableStream;
+      s.on('data', (chunk: Buffer) => chunks.push(chunk));
+      s.on('error', reject);
+      s.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
     });
   }
   // Web ReadableStream
-  if (typeof stream.getReader === 'function') {
-    const reader = stream.getReader();
+  if (typeof stream === 'object' && stream !== null && 'getReader' in stream && typeof (stream as Record<string, unknown>).getReader === 'function') {
+    const reader = (stream as ReadableStream<Uint8Array>).getReader();
     const chunks: Uint8Array[] = [];
     while (true) {
       const { value, done } = await reader.read();
@@ -77,22 +73,18 @@ export async function GET(
   const Key = keyFor(siteId);
 
   try {
-    const out = await s3.send(
-      new GetObjectCommand({ Bucket: BUCKET, Key })
-    );
-    const text = await streamToString(out.Body as any);
+    const out = await s3.send(new GetObjectCommand({ Bucket: BUCKET, Key }));
+    const text = await streamToString(out.Body);
     // validate it’s JSON
     const json = JSON.parse(text);
     return NextResponse.json(json, { status: 200 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     // If not found, return 404
-    if (err?.name === 'NoSuchKey' || err?.$metadata?.httpStatusCode === 404) {
+    const e = err as { name?: string; $metadata?: { httpStatusCode?: number }; message?: string };
+    if (e?.name === 'NoSuchKey' || e?.$metadata?.httpStatusCode === 404) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
-    return NextResponse.json(
-      { error: err?.message || 'Read failed' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: e?.message || 'Read failed' }, { status: 500 });
   }
 }
 
@@ -127,17 +119,12 @@ export async function PUT(
     );
 
     return NextResponse.json(parsed, { status: 200 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     // bad JSON?
     if (err instanceof SyntaxError) {
-      return NextResponse.json(
-        { error: 'Body must be valid JSON' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Body must be valid JSON' }, { status: 400 });
     }
-    return NextResponse.json(
-      { error: err?.message || 'Write failed' },
-      { status: 500 }
-    );
+    const e = err as { message?: string };
+    return NextResponse.json({ error: e?.message || 'Write failed' }, { status: 500 });
   }
 }

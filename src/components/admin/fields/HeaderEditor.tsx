@@ -60,7 +60,7 @@ export function EditHeader({
   // Push localLinks back to section when they change
   const commitLinks = (next: LocalNavLink[]) => {
     setLocalLinks(next);
-    const stripped: NavLink[] = next.map(({ _id, ...rest }) => rest);
+    const stripped: NavLink[] = next.map(({ ...rest }) => rest);
     onChange({ ...section, links: stripped });
   };
 

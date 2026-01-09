@@ -67,7 +67,7 @@ export default function Partners({ id, title, subtitle, items, style, background
           // Simple logo grid
           <div className={`grid gap-6 md:gap-8 ${gridCols}`}>
             {items.map((p, i) => {
-              let logoUrl = `${resolveAssetUrl(p.logoUrl?p.logoUrl:'')}`;
+              const logoUrl = `${resolveAssetUrl(p.logoUrl?p.logoUrl:'')}`;
               return (
               <AnimatedSection delay={i * 0.08} key={`${p.name}-${i}`} className={`card ${radius} p-6 text-center card-outline`}>                
                 {logoUrl ? (

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
+import Image from 'next/image';
 import type { ProductListingsSection, Product } from '@/types/site';
 import AnimatedSection from '@/components/AnimatedSection';
 import { motion } from 'framer-motion';
@@ -84,7 +85,7 @@ export default function ProductListings({
 
                   {/* Image */}
                   {thumb ? (
-                    <img src={thumb} alt={p.name} className="w-full h-auto rounded-xl mb-4 mt-3" />
+                    <Image src={thumb} alt={p.name} className="w-full h-auto rounded-xl mb-4 mt-3" width={400} height={300} />
                   ) : (
                     <div className="w-full aspect-[4/3] bg-black/10 rounded-xl mb-4" />
                   )}

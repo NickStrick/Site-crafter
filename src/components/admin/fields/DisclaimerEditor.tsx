@@ -3,10 +3,7 @@
 import type { DisclaimerSection } from '@/types/site';
 import type { EditorProps } from './types';
 
-// Kept for parity with your other editors
-function deepClone<T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj)) as T;
-}
+// (no local utilities required)
 
 export default function EditDisclaimer({
   section,

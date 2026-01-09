@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
+import Image from 'next/image';
 import type { Product } from '@/types/site';
 import { motion } from 'framer-motion';
 import { resolveAssetUrl } from '@/lib/assetUrl';
@@ -21,10 +22,14 @@ function formatPrice(cents: number, currency = 'USD') {
 type NormColor = { name: string; hex?: string; imageUrl?: string };
 function normalizeColors(colors: Product['colors']): NormColor[] {
   if (!Array.isArray(colors)) return [];
-  return colors.map((c) => {
+  return colors.map((c: unknown) => {
     if (c && typeof c === 'object') {
-      const { name = '', hex, imageUrl } = c as any;
-      return { name: String(name ?? ''), hex: hex ?? undefined, imageUrl: imageUrl ?? undefined };
+      const obj = c as Record<string, unknown>;
+      return {
+        name: String(obj.name ?? ''),
+        hex: typeof obj.hex === 'string' ? obj.hex : undefined,
+        imageUrl: typeof obj.imageUrl === 'string' ? obj.imageUrl : undefined,
+      };
     }
     return { name: String(c) };
   });
@@ -34,10 +39,13 @@ function normalizeColors(colors: Product['colors']): NormColor[] {
 type NormSize = { label: string; value?: string };
 function normalizeSizes(sizes: Product['sizes']): NormSize[] {
   if (!Array.isArray(sizes)) return [];
-  return sizes.map((s) => {
+  return sizes.map((s: unknown) => {
     if (s && typeof s === 'object') {
-      const { label = '', value } = s as any;
-      return { label: String(label ?? ''), value: value ? String(value) : undefined };
+      const obj = s as Record<string, unknown>;
+      return {
+        label: String(obj.label ?? ''),
+        value: typeof obj.value === 'string' ? obj.value : undefined,
+      };
     }
     return { label: String(s) };
   });
@@ -52,8 +60,6 @@ export default function ProductDetailModal({ product, onClose }: Props) {
     currency = 'USD',
     images = [],
     description,
-    features,
-    specs,
     badges,
     purchaseUrl,
     ctaLabel = 'Buy Now',
@@ -74,8 +80,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
 
   // Variant selection
   const [selectedColor, setSelectedColor] = useState<NormColor | null>(colors[0] ?? null);
-  const [selectedSize,  setSelectedSize]  = useState<NormSize  | null>(sizes[0]  ?? null);
-  const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize]   = useState<NormSize  | null>(sizes[0]  ?? null);
 
   const canBuy = !!purchaseUrl && (product.stock ?? 'in_stock') !== 'out_of_stock';
 
@@ -100,10 +105,13 @@ export default function ProductDetailModal({ product, onClose }: Props) {
           {/* Media */}
           <div className="p-4 md:p-6 border-b md:border-b-0 md:border-r">
             {mainImage ? (
-              <img
+              <Image
                 src={mainImage}
                 alt={images[mainIndex]?.alt ?? name}
                 className="w-full h-auto rounded-xl"
+                width={400}
+                height={400}
+                style={{ width: '100%', height: 'auto' }}
               />
             ) : (
               <div className="w-full aspect-[4/3] bg-black/10 rounded-xl" />
@@ -114,6 +122,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                 {images.slice(0, 5).map((im, idx) => {
                   const resolved = resolveAssetUrl(im.url);
                   const isActive = idx === mainIndex;
+                  if (!resolved) return null;
                   return (
                     <button
                       type="button"
@@ -124,10 +133,12 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                       }`}
                       aria-label={`Show image ${idx + 1}`}
                     >
-                      <img
+                      <Image
                         src={resolved}
                         alt={im.alt ?? `${name} ${idx + 1}`}
                         className="w-full h-auto block"
+                        width={80}
+                        height={80}
                       />
                     </button>
                   );

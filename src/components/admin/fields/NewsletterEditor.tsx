@@ -3,10 +3,6 @@
 import type { NewsletterSection } from '@/types/site';
 import type { EditorProps } from './types';
 
-function deepClone<T>(v: T): T {
-  return JSON.parse(JSON.stringify(v)) as T;
-}
-
 export default function EditNewsletter({
   section,
   onChange,

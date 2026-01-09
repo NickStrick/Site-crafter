@@ -33,7 +33,7 @@ export type SectionRegistryItem<T extends AnySection> = {
   create: () => T;
 };
 
-export type SectionRegistry = Record<AnySection['type'], SectionRegistryItem<any>>;
+export type SectionRegistry = Record<AnySection['type'], SectionRegistryItem<AnySection>>;
 
 // ✅ All existing section types included & allowed: true
 export const SECTION_REGISTRY: SectionRegistry = {
