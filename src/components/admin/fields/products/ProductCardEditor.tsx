@@ -11,7 +11,7 @@ import ProductBadgesTagsEditor from './ProductBadgesTagsEditor';
 type VariantColor = { _id: string; name: string; hex?: string; imageUrl?: string };
 type VariantSize  = { _id: string; label: string; value?: string };
 
-type LocalProduct = Product & {
+type LocalProduct = Omit<Product, 'colors' | 'sizes'> & {
   _id: string; // stable editor-only key for the card
   images: Array<{ _id: string; url: string; alt?: string }>;
   specs: Array<{ _id: string; label: string; value: string }>;

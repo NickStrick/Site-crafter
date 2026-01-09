@@ -65,7 +65,7 @@ async function streamToString(stream: any): Promise<string> {
 // GET -> read the current config from S3
 export async function GET(
   req: NextRequest,
-  { params }: { params: { siteId: string } }
+  { params }: { params: Promise<{ siteId: string }> }
 ) {
   const guard = assertAdmin(req);
   if (guard) return guard;
@@ -73,7 +73,7 @@ export async function GET(
   if (!BUCKET) {
     return NextResponse.json({ error: 'Missing bucket' }, { status: 500 });
   }
-  const siteId = params.siteId;
+  const siteId = (await params).siteId;
   const Key = keyFor(siteId);
 
   try {
@@ -99,7 +99,7 @@ export async function GET(
 // PUT -> write the config JSON to S3
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { siteId: string } }
+  { params }: { params: Promise<{ siteId: string }> }
 ) {
   const guard = assertAdmin(req);
   if (guard) return guard;
@@ -108,7 +108,7 @@ export async function PUT(
     return NextResponse.json({ error: 'Missing bucket' }, { status: 500 });
   }
 
-  const siteId = params.siteId;
+  const siteId = (await params).siteId;
   const Key = keyFor(siteId);
 
   try {
