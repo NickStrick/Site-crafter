@@ -26,6 +26,7 @@ export function Testimonials({
   subtitle,
   items,
   style,
+  id
 }: TestimonialsSection) {
   const {
     variant = 'carousel',
@@ -66,6 +67,7 @@ export function Testimonials({
 
   return (
     <section
+    id={id}
       className={[
         'section !pb-[6rem]',
         background === 'band'
