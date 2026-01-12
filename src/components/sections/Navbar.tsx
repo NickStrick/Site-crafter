@@ -58,7 +58,7 @@ export default function Navbar() {
         <nav className="mx-auto max-w-6xl h-[4rem] px-4 md:px-6 flex items-center">
           {/* Left: Logo */}
           <div className="min-w-0 flex-1">
-            <Link href="/" className="text-lg font-semibold hover:opacity-90 text-[var(--text-1)]">
+            <Link href="/" className="text-lg font-semibold hover:opacity-90 text-[var(--text-1)] gradient-text">
               {header.logoText ?? 'Site-Crafter'}
             </Link>
           </div>

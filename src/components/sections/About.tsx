@@ -9,9 +9,15 @@ import { resolveAssetUrl } from '@/lib/assetUrl';
 export function About({ id, title = 'About', body, imageUrl, bullets, align = 'left', backgroundClass = 'bg-[var(--bg)' }: AboutSection) {
   const imageFirst = align === 'left';
   const imgUrl = resolveAssetUrl(imageUrl);
+  const hasWaves = backgroundClass.includes('bg-solid-primary');
   return (
-    <section id={id} className={`section !py-6 !pt-12 ${backgroundClass} !pb-8`}>
-      <div className={`container mx-auto px-4 grid gap-10 ${imgUrl?'md:grid-cols-2':'md:grid-cols-1'} items-center `}>
+    <section id={id} className={`relative  !py-6 !pt-12 ${backgroundClass} !pb-8`}>
+      {hasWaves && <div className="text-[var(--bg-2)] top-wave" aria-hidden>
+        <svg viewBox="0 0 1440 140" className="w-full h-[70px]" preserveAspectRatio="none">
+          <path d="M0,80 C240,140 480,0 720,60 C960,120 1200,20 1440,80 L1440,140 L0,140 Z" fill="var(--primary)" />
+        </svg>
+      </div>}
+      <div className={`section container mx-auto px-4 grid gap-10 ${imgUrl?'md:grid-cols-2':'md:grid-cols-1'} items-center ${hasWaves?'!text-[var(--text-2)]':''}`}>
         {imgUrl && imageFirst && (
           <motion.div
               initial={{ opacity: 0, scale: .94, y: 16 }}
@@ -26,7 +32,7 @@ export function About({ id, title = 'About', body, imageUrl, bullets, align = 'l
           </motion.div>
         )}
         <AnimatedSection className="mx-auto max-w-6xl">
-          {title && <h2 className="text-3xl font-semibold mb-4 text-center text-muted">{title}</h2>}
+          {title && <h2 className="text-3xl font-semibold mb-4 text-center ">{title}</h2>}
           <p className="text-lg leading-relaxed indent-[50px]">{body}</p>
           {bullets && bullets.length > 0 && (
             <ul className="mt-6 space-y-2 list-disc pl-5">
@@ -50,6 +56,11 @@ export function About({ id, title = 'About', body, imageUrl, bullets, align = 'l
             </motion.div>
         )}
       </div>
+      {hasWaves && <div className="text-[var(--bg-2)] rotate-180 bottom-wave" aria-hidden>
+        <svg viewBox="0 0 1440 140" className="w-full h-[70px]" preserveAspectRatio="none">
+          <path d="M0,80 C240,140 480,0 720,60 C960,120 1200,20 1440,80 L1440,140 L0,140 Z" fill="var(--primary)" />
+        </svg>
+      </div>}
     </section>
   );
 }

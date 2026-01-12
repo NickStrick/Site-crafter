@@ -4,20 +4,17 @@
 
 /* src/app/globals.css  (append to yours) */
 :root {
- --primary: #a66cec;    /* vibrant lavender/purple */
-  --accent:  #d26cec;    /* metallic gold */
-  --bg:      #f9f7fb;    /* soft lavender-tinted white */
-  --bg-2:    #fdeb9b;    /* gentle lavender wash */
-  --fg:      #2d2d2d;    /* dark gray for text */
-  --muted:   #9b67cc;    /* muted warm gray */
-  --radius:  9999px;
-
-  --band-1:  #9b5de5;    /* lavender band */
-  --band-2:  #d4af37;    /* gold band */
-
-  --text-1: #2d2d2d;     /* primary text */
-  --text-2: white;       /* inverted text */
-  --text-accent: #d4af37;/* gold as text accent */
+ --primary: #ae00ff;   /* hot pink */
+  --accent:  #fa5dff;   /* bright cyan */
+  --bg:      #fff0f6;
+  --bg-2:      #c9aeb9;   /* pastel pink */
+  --fg:      #1f1f1f;   /* near-black */
+  --muted:   #292929;
+  --band-1:  #fa5dff;
+  --band-2:  #ae00ff;
+  --text-1: black;
+  --text-2: white;
+  --text-accent: white;
 }
 
 /* Presets */
@@ -75,13 +72,13 @@ body[data-theme="festival"] {
 }
 
 body[data-theme="candy"] {
-  --primary: #227a73;   /* hot pink */
-  --accent:  #ae00ff;   /* bright cyan */
+  --primary: #ae00ff;   /* hot pink */
+  --accent:  #0093ce;   /* bright cyan */
   --bg:      #fff0f6;
   --bg-2:      #c9aeb9;   /* pastel pink */
   --fg:      #1f1f1f;   /* near-black */
   --muted:   #292929;
-  --band-1:  #227a73;
+  --band-1:  #0093ce;
   --band-2:  #ae00ff;
   --text-1: black;
   --text-2: white;
@@ -309,6 +306,9 @@ body[data-theme="grove"]  {
     z-index: 2;
     margin-top: -5px;
 }
+.bg-solid-primary .bottom-wave{
+    margin-top: 1.3rem;
+}
 
 .top-wave{
   position: absolute;
@@ -379,6 +379,19 @@ body[data-theme="grove"]  {
       color: white;
     
    }
+   .bg-solid-primary {
+    background-image: linear-gradient(to bottom, var(--bg) 50%, var(--bg-2) 100%);
+    background-image: linear-gradient(
+          to bottom right,
+          var(--primary) 0%,
+           var(--primary) 20%,
+          var(--primary) 50%,
+          var(--primary) 100%
+      );
+    background-size: calc(200% + 4px) calc(160% + 4px);
+      background-position: 0% 28%;
+      color: var(--text-2) !important;
+  }
   .bg-gradient-1 {
     /* background: linear-gradient(to bottom, var(--bg) 5%, var(--bg-2) 100%); */
         background-image: linear-gradient(to bottom, var(--bg-2) 0.5%, var(--bg) 20%);
@@ -544,4 +557,25 @@ max-height: calc(100vh - 135px);
   display: flex;
   justify-content: center;
   align-items: center ;
+}
+.card-glow {
+  position: relative;
+}
+
+.card-glow::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  opacity: 0.4;
+  filter: blur(10px);
+  z-index: -1;
+  border-radius: 16px;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
