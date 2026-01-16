@@ -4,18 +4,45 @@
 
 /* src/app/globals.css  (append to yours) */
 :root {
- --primary: #ae00ff;   /* hot pink */
-  --accent:  #fa5dff;   /* bright cyan */
-  --bg:      #fff0f6;
-  --bg-2:      #c9aeb9;   /* pastel pink */
-  --fg:      #1f1f1f;   /* near-black */
-  --muted:   #292929;
-  --band-1:  #fa5dff;
-  --band-2:  #ae00ff;
+ --primary: #ff3c00;   /* vivid orange */
+  --accent:  #ffae00;   /* electric blue */
+  --bg:      #fff7ec; 
+   --bg-2:      #ffb96a;  /* soft cream backdrop */
+  --fg:      #330000;   /* deep slate ink */
+  --muted:   #8b0000;
+  /* optional band colors for wavy sections */
+  --band-1:  #ff3c00;
+  --band-2:  #ffae00;
   --text-1: black;
   --text-2: white;
   --text-accent: white;
 }
+
+.loading-span{
+  width: 100vw;
+  min-height: 60vh;
+  font-size: 3rem;
+  color: var(--muted);
+  text-align: center;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: loading 0.6s ;
+  animation-play-state:running;
+}
+@keyframes loading {
+      0% {
+         opacity: 1;
+      }
+      50% {
+         opacity: 0.3;
+      }
+      100% {
+          opacity: 1;
+          /* background-size: 300% 100%; Expand as it moves */
+      }
+  }
 
 /* Presets */
 body[data-theme="ocean"]  { 
@@ -57,14 +84,14 @@ body[data-theme="slate"]  {
 }
 
 body[data-theme="festival"] {
-  --primary: #ff7a00;   /* vivid orange */
+  --primary: #ff3c00;   /* vivid orange */
   --accent:  #ffae00;   /* electric blue */
   --bg:      #fff7ec; 
-   --bg-2:      #ebc68f;  /* soft cream backdrop */
-  --fg:      #102a43;   /* deep slate ink */
-  --muted:   #5b7a9a;
+   --bg-2:      #ffb96a;  /* soft cream backdrop */
+  --fg:      #330000;   /* deep slate ink */
+  --muted:   #8b0000;
   /* optional band colors for wavy sections */
-  --band-1:  #ff7a00;
+  --band-1:  #ff3c00;
   --band-2:  #ffae00;
   --text-1: black;
   --text-2: white;
@@ -99,8 +126,33 @@ body[data-theme="lavender"] {
   --text-2: white;       /* inverted text */
   --text-accent: #d4af37;/* gold as text accent */
 }
+body[data-theme="splunk"] {
+  --primary: #ff0f7b;   /* neon green */
+  --accent:  #fc790e;   /* magenta */
+  --bg:      #181818; 
+  --bg-2    : #750035;
+  --fg:      #e5e7eb;   /* light gray text */
+  --muted:   #9ca3af;
+  --band-1:  #fc790e;
+  --band-2:  #fc790e;   /* neon violet for contrast */
+  --text-1: white;
+  --text-2: white;
+  --text-accent: black;
+}
 /* 6bbf59 */
-
+body[data-theme="irish"] {
+  --primary: #dbb403;   /* neon green */
+  --accent:  #009c27;   /* magenta */
+  --bg:      #181818; 
+  --bg-2    : #374739;
+  --fg:      #e5e7eb;   /* light gray text */
+  --muted:   #9ca3af;
+  --band-1:  #009c27;
+  --band-2:  #009c27;   /* neon violet for contrast */
+  --text-1: white;
+  --text-2: white;
+  --text-accent: black;
+}
 body[data-theme="neon"] {
   --primary: #dbb403;   /* neon green */
   --accent:  #fc790e;   /* magenta */
@@ -120,7 +172,7 @@ body[data-theme="sue"] {
   --bg:      #181818; 
   --bg-2    : #7300a0;
   --fg:      #e5e7eb;   /* light gray text */
-  --muted:   #9ca3af;
+  --muted:   #dd85bb;
   --band-1:  #d10088;
   --band-2:  #d10088;   /* neon violet for contrast */
   --text-1: white;
@@ -172,10 +224,11 @@ body[data-theme="grove"]  {
       );
       background-size: calc(200% + 4px) calc(100% + 4px);
       background-position: 0% 100%;
-      color: var(--primary); max-width: 400px; margin: 0 auto;
+      color: var(--text-2); max-width: 400px; margin: 0 auto;
       border-radius: var(--round-xl);
       box-shadow: var(--elev-2);
       border: 2px solid var(--bg-2);
+      min-height: 100%;
     }
     .card-2 { background-image: linear-gradient(
           to bottom right,
@@ -218,6 +271,7 @@ body[data-theme="grove"]  {
       color: white; max-width: 400px; margin: 0 auto;
       border-radius: var(--round-xl);
       box-shadow: var(--elev-1);
+      min-height: 100%;
     }
 
 /* Big headings */
@@ -226,7 +280,7 @@ body[data-theme="grove"]  {
 .h-hero-p { font-size: clamp(1.05rem, 1.4vw, 1.3rem); }
 
 /* Section padding + curved edges */
-.section { padding: clamp(3.2rem, 6.2vw, 6rem) 1rem; color:var(--text-1)}
+.section { padding: clamp(3.2rem, 6.2vw, 6rem) 1rem; color:var(--text-1); position: relative; }
 .sectionAboveWavePad{padding-bottom: 10rem !important;}
 .sectionAboveWave { padding: clamp(3.2rem, 6.2vw, 6rem) 1rem; color:var(--text-1); padding-bottom: 10rem;}
 .curve {
@@ -405,13 +459,25 @@ body[data-theme="grove"]  {
   }
   .bg-gradient-2-top {
     background-image: linear-gradient(to top, var(--bg) 50%, var(--bg-2) 100%);
-    background-size: calc(200% + 4px) calc(160% + 4px);
-      background-position: 0% 28%;
+    background-size: calc(200% + 4px) calc(110% + 4px);
+      background-position: 0% 0%;
   }
   .bg-gradient-2-bottom {
     background-image: linear-gradient(to bottom, var(--bg) 50%, var(--bg-2) 100%);
     background-size: calc(200% + 4px) calc(160% + 4px);
       background-position: 0% 72%;
+  }
+  .bg-gradient-3 {
+    /* background: linear-gradient(to bottom, var(--bg) 5%, var(--bg-2) 100%); */
+        background-image: linear-gradient(to bottom, var(--bg-2) 0.5%, var(--bg) 20%);
+    background-size: calc(200% + 4px) calc(160% + 4px);
+    background-position: 0% 22%;
+  }
+  .bg-gradient-3-top {
+    /* background: linear-gradient(to bottom, var(--bg) 5%, var(--bg-2) 100%); */
+        background-image: linear-gradient(to top, var(--bg-2) 0.5%, var(--bg) 20%);
+    background-size: calc(200% + 4px) calc(160% + 4px);
+    background-position: 0% 78%;
   }
   .btn-gradient {
     @apply inline-block px-8 py-4 text-[1.1rem] font-bold text-white tracking-wide rounded-full transition duration-300;

@@ -15,12 +15,11 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 // import { mockSiteConfig } from "@/mocks/siteConfig";
-import { mockSiteConfig } from "@/mocks/IselaConfig";
+import { mockSiteConfig } from "@/mocks/fernandoConfig";
 
 export const metadata: Metadata = {
-  title: "CM Florals — Floral Design by Carole Murray",
-  description:
-    "CM Florals creates joyful floral design for weddings, holidays, celebrations and everyday gifting across Chicago. Founded by Carole Murray.",
+  title: mockSiteConfig.meta?.title || "Stricker Digital Websites",
+  description: mockSiteConfig.meta?.description || "Stricker Digital Websites",
 };
 
 

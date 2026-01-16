@@ -3,13 +3,16 @@ import type { FeaturesSection } from '@/types/site';
 import AnimatedSection from '@/components/AnimatedSection';
 import Image from 'next/image';
 import { resolveAssetUrl } from '@/lib/assetUrl';
+import {SeperatorWave} from '@/components/SeperatorWave';
 
-export function Features({ id, title, items }: FeaturesSection) {
+export function Features({ id, title, items, backgroundClass, topWaveType, bottomWaveType }: FeaturesSection) {
   return (
-    <section id={id} className="section">
+  <div className='relative'>
+    <SeperatorWave type={topWaveType} flip={false} color={'var(--bg)'} />
+    <section id={id} className={`section ${backgroundClass}`}>
       <div className="mx-auto max-w-6xl">
         {title ? <AnimatedSection><h2 className="text-4xl md:text-5xl font-extrabold text-center mb-12">{title}</h2></AnimatedSection> : null}
-
+    
         <div className="grid gap-8 md:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] place-content-center">
           {items.map((f, i) => {
             const fimgUrl = resolveAssetUrl(f.imageUrl);
@@ -36,5 +39,7 @@ export function Features({ id, title, items }: FeaturesSection) {
         </div>
       </div>
     </section>
+    <SeperatorWave type={bottomWaveType} flip={true} color={'var(--bg)'} />
+    </div>
   );
 }

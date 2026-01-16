@@ -15,6 +15,8 @@ import {
 import { faEnvelope, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import type { SocialsSection, SocialItem } from '@/types/site';
 
+import {SeperatorWave} from '@/components/SeperatorWave';
+
 const ICONS: Record<SocialItem['type'], IconDefinition> = {
   instagram: faInstagram,
   facebook: faFacebook,
@@ -44,6 +46,8 @@ export default function Socials({
   subtitle,
   items,
   style,
+  topWaveType,
+  bottomWaveType
 }: SocialsSection) {
   const rounded =
     style?.rounded === '2xl' ? '!rounded-full' : style?.rounded === 'lg' ? '!rounded-full' : '!rounded-full';
@@ -52,6 +56,8 @@ export default function Socials({
   const align = style?.align ?? 'center';
 
   return (
+    <div className='relative'>
+      <SeperatorWave type={topWaveType} flip={false} color={'var(--bg)'} />
     <section
       id={id}
       className={[
@@ -103,7 +109,11 @@ export default function Socials({
             </motion.li>
           ))}
         </motion.ul>
+        
       </AnimatedSection>
+      
     </section>
+    <SeperatorWave type={bottomWaveType} flip={true} color={'var(--bg)'}/>
+    </div>
   );
 }

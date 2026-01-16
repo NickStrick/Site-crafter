@@ -1,7 +1,13 @@
 import type { SiteConfig } from "@/types/site";
 
+const LINKEDIN = "https://www.linkedin.com/in/fernando-rayas-357aa210/";
+const CDOTS_WEBSITE = "https://www.connectingdotsforlatinx.com";
+const EMAIL = "mrrayas1@gmail.com"
+
+import backdropImg from "../../public/backdrop.jpg";
+
 export const mockSiteConfig: SiteConfig = {
-  theme: { preset: "grove", radius: "xl" },
+  theme: { preset: "festival", radius: "xl" },
   meta: {
     title: "Fernando Rayas — Connecting Dots for Latinx Professionals",
     description:
@@ -105,6 +111,7 @@ export const mockSiteConfig: SiteConfig = {
           ],
         },
       ],
+      bottomWaveType: "1-hill",
     },
 
     // SECTIONAL (core values)
@@ -127,6 +134,7 @@ export const mockSiteConfig: SiteConfig = {
       type: "features",
       visible: true,
       title: "Connecting Dots for Latinx Professionals",
+      topWaveType: "1-hill",
       items: [
         {
           title: "Community First",
@@ -225,7 +233,7 @@ export const mockSiteConfig: SiteConfig = {
       title: "Partnering for Purpose",
       body:
         "Let’s collaborate on initiatives that uplift leaders and strengthen our communities.",
-      cta: { label: "Start a conversation", href: "mailto:hello@connectingdotsforlatinx.com" },
+      cta: { label: "Start a conversation", href: `mailto:${EMAIL}` },
     },
 
     // SOCIALS
@@ -235,6 +243,7 @@ export const mockSiteConfig: SiteConfig = {
       visible: true,
       title: "Connect Online",
       subtitle: "Follow my work and stay involved",
+      bottomWaveType: "1-hill",
       items: [
         {
           type: "linkedin",
@@ -253,7 +262,7 @@ export const mockSiteConfig: SiteConfig = {
         },
         {
           type: "email",
-          href: "mailto:hello@connectingdotsforlatinx.com",
+          href: EMAIL,
           label: "Email",
         },
       ],
@@ -272,8 +281,7 @@ export const mockSiteConfig: SiteConfig = {
       type: "contact",
       visible: true,
       title: "Get in Touch",
-      email: "hello@connectingdotsforlatinx.com",
-      phone: { label: "(312) 555-0123", href: "tel:+13125550123" },
+      email: EMAIL,
       address: "Cicero, Illinois, United States",
       socials: [
         {
@@ -285,6 +293,24 @@ export const mockSiteConfig: SiteConfig = {
           href: "https://www.connectingdotsforlatinx.com",
         },
       ],
+      backgroundUrl: backdropImg.src,
+    },
+    // ======================
+    // SHARE
+    // ======================
+    {
+      visible: true,
+      id: "share",
+      type: "share",
+      title: "Share my profile",
+      subtitle: "Scan to view LinkedIn or download my resume.",
+      style: { variant: "band", align: "center", actions: true },
+      items: [
+        { label: "LinkedIn", value: LINKEDIN, size: 200 },
+        { label: "Connecting Dots", value: CDOTS_WEBSITE, size: 180 },
+      ],
+      backgroundClass: "bg-gradient-2-top",
+      topWaveType: "1-hill",
     },
 
     // FOOTER
@@ -311,9 +337,9 @@ export const mockSiteConfig: SiteConfig = {
             },
             {
               label: "Connecting Dots",
-              href: "https://www.connectingdotsforlatinx.com",
+              href: CDOTS_WEBSITE,
             },
-            { label: "Email", href: "mailto:hello@connectingdotsforlatinx.com" },
+            { label: "Email", href: `mailto:${EMAIL}` },
           ],
         },
       ],

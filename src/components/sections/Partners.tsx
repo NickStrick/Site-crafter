@@ -48,7 +48,7 @@ export default function Partners({ id, title, subtitle, items, style, background
   const radius = rounded === '2xl' ? 'rounded-3xl' : rounded === 'lg' ? 'rounded-xl' : 'rounded-2xl';
   const gridCols =
     columns === 2 ? 'grid-cols-1 md:grid-cols-2' : columns === 4 ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4' : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3';
-
+  console.log('Partners section render with items:', items);
   return (
     <section
       id={id}
@@ -92,7 +92,7 @@ export default function Partners({ id, title, subtitle, items, style, background
                     {p.links.map((l, idx) => (
                       <a key={idx} href={l.href} target="_blank" rel="noreferrer" className="btn btn-inverted px-3 py-2 text-sm">
                         <FontAwesomeIcon icon={iconFor(l.type)} />
-                        <span className="sr-only">{l.type}</span>
+                        <span className="sr-only">{l.customLabel?l.customLabel:l.type}</span>
                       </a>
                     ))}
                   </div>

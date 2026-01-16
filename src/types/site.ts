@@ -1,4 +1,5 @@
 // src/types/site.ts
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 export type ThemePreset =
   | 'ocean'
   | 'sunset'
@@ -10,6 +11,8 @@ export type ThemePreset =
   | 'grove'
   | 'forest-earthy'
   | 'lavender'
+  | 'irish'
+  | 'splunk'
   | 'sue';  // new
 
 export type Theme = {
@@ -56,6 +59,8 @@ export type SectionBase = {
   visible?: boolean;
   editable?: boolean;
   backgroundClass?: string; // custom bg class (e.g. "bg-gradient-to-r from-blue-500 to-green-500")
+  topWaveType?: string;
+  bottomWaveType?: string;
 };
 
 export type AnySection =
@@ -165,7 +170,7 @@ export type ContactSection = SectionBase & {
   address?: string;
   mapEmbedUrl?: string;
   backgroundUrl?: string; // optional background image
-  socials?: { label: string; href: string }[];
+  socials?: { label: string; href: string; customIcon?: IconDefinition }[];
 };
 
 export type SchedulingSection = SectionBase & {
@@ -309,11 +314,17 @@ export type ShareSection = SectionBase & {
   /** one or more QR codes */
   items: ShareItem[];
   style?: ShareStyle;
+  value?: string;
+  /** QR code size in pixels */
+  size?: number; // default 220
+  /** Add a CTA button to open the link (useful on desktop for preview) */
+  showOpen?: boolean;
 };
 
 export type PartnerLink = {
   type: 'instagram' | 'facebook' | 'linkedin' | 'website' | 'youtube' | 'tiktok' | 'linktree';
   href: string;
+  customLabel?: string;
 };
 
 export type PartnerItem = {
