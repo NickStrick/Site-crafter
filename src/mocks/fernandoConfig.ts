@@ -210,6 +210,44 @@ export const mockSiteConfig: SiteConfig = {
       },
     },
 
+    // PERSONS (Team/Mentors/Speakers)
+    {
+      id: "persons",
+      type: "persons",
+      visible: true,
+      title: "Mentors & Team",
+      subtitle: "The dedicated leaders and mentors who make our community thrive",
+      items: [
+        {
+          name: "Omar Rayas",
+          title: "Co-Founder & Mentor",
+          description: "Passionate about empowering Latinx professionals through mentorship and community building.",
+          avatarUrl: "configs/jose-ortiz/assets/fernando&omar.png",
+          badges: ["Leadership", "Mentorship", "Community Organizer"],
+        },
+        {
+          name: "Community Leader",
+          title: "Education Partner",
+          description: "Dedicated to advancing educational opportunities and supporting emerging leaders.",
+          badges: ["Education", "Advocacy", "Mentorship"],
+        },
+        {
+          name: "Nonprofit Partner",
+          title: "Mentor & Organizer",
+          description: "Bringing faith and inclusivity to community development and social impact initiatives.",
+          badges: ["Faith-Based Organizing", "Social Impact", "Leadership"],
+        },
+      ],
+      style: {
+        columns: 3,
+        cardVariant: "default",
+        rounded: "xl",
+        align: "center",
+      },
+      topWaveType: "1-hill",
+      backgroundClass: "bg-[var(--bg)]",
+    },
+
     // GALLERY
     {
       id: "events",

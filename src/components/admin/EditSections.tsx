@@ -24,6 +24,7 @@ import EditScheduling from './fields/SchedulingEditor';
 import EditNewsletter from './fields/NewsletterEditor';
 import EditDisclaimer from './fields/DisclaimerEditor';
 import EditProductListings from './fields/EditProductListings';
+import EditPersons from './fields/PersonsEditor';
 
 // -----------------------------
 // Shared types & helpers
@@ -70,7 +71,8 @@ export const SECTION_EDITORS: Partial<Record<AnySection['type'], EditorComponent
   scheduling: EditScheduling as EditorComponent<AnySection>,
   newsletter: EditNewsletter as EditorComponent<AnySection>,
   disclaimer: EditDisclaimer as EditorComponent<AnySection>,
-  productListings: EditProductListings as EditorComponent<AnySection>
+  productListings: EditProductListings as EditorComponent<AnySection>,
+  persons: EditPersons as EditorComponent<AnySection>
   // Add more as you implement them…
 };
 

@@ -27,6 +27,7 @@ import GalleryClient from './sections/Gallery.client';
 import Socials from './sections/Socials';
 import Video from './sections/Video';
 import ProductListings from './sections/ProductListings';
+import Persons from './sections/Persons';
 
 // Exhaustiveness helper (nice to have)
 function assertNever(x: never): never {
@@ -116,6 +117,9 @@ export function SectionRenderer({ section }: { section: AnySection }) {
     }
     case 'productListings':{
       return <ProductListings key={section.id} {...section} />;
+    }
+    case 'persons': {
+      return <Persons {...section} />;
     }
     default: {
       // if you ever add a new type and forget to handle it,

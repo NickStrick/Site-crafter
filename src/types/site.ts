@@ -53,6 +53,7 @@ export type SectionBase = {
     | 'socials'
     | 'video'
     | 'productListings'
+    | 'persons'
     ;
 
   // visible/editable flags to support your builder UI
@@ -85,7 +86,8 @@ export type AnySection =
   | GallerySection
   | SocialsSection
   | VideoSection
-  | ProductListingsSection; 
+  | ProductListingsSection
+  | PersonsSection; 
   ;
 // add this near other shared types
 export type HeaderStyle = {
@@ -547,4 +549,28 @@ export type ProductListingsSection = SectionBase & {
   style?: ProductListingsStyle;
   showAllThreshold?: number;     // default 3 — show "Show all" if > threshold
   buyCtaFallback?: string;       // default "Buy Now"
+};
+
+export type PersonItem = {
+  name: string;
+  title?: string;              // e.g., "CEO", "Senior Developer", "Mentor"
+  description?: string;        // bio or description
+  avatarUrl?: string;          // image URL
+  badges?: string[];           // qualifications, labels, certifications
+};
+
+export type PersonsStyle = {
+  columns?: 2 | 3 | 4;        // grid columns (default responsive)
+  cardVariant?: 'default' | 'ink'; // card style
+  rounded?: 'lg' | 'xl' | '2xl';   // rounded corners
+  align?: 'left' | 'center';       // text alignment
+};
+
+export type PersonsSection = SectionBase & {
+  id: string;
+  type: 'persons';
+  title?: string;              // header
+  subtitle?: string;           // description
+  items: PersonItem[];
+  style?: PersonsStyle;
 };

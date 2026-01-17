@@ -22,7 +22,8 @@ import type {
   GallerySection,
   SocialsSection,
   VideoSection,
-  ProductListingsSection
+  ProductListingsSection,
+  PersonsSection
 } from '@/types/site';
 
 const newId = (p: string) => `${p}-${Math.random().toString(36).slice(2, 7)}`;
@@ -373,6 +374,20 @@ export const SECTION_REGISTRY: SectionRegistry = {
     }),
     // No Editor yet — your ConfigModal will show "No editor implemented…" until we add one.
   } as SectionRegistryItem<ProductListingsSection>,
+
+  persons: {
+    label: 'Persons',
+    allowed: true,
+    create: (): PersonsSection => ({
+      id: newId('persons'),
+      type: 'persons',
+      visible: true,
+      title: 'Our Team',
+      subtitle: 'Meet the people behind our success.',
+      items: [],
+      style: { columns: 3, cardVariant: 'default', rounded: 'xl', align: 'center' },
+    }),
+  },
 };
 
 // Helper to get an array of allowed types
