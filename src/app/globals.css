@@ -129,7 +129,7 @@ body[data-theme="lavender"] {
 body[data-theme="splunk"] {
   --primary: #ff0f7b;   /* neon green */
   --accent:  #fc790e;   /* magenta */
-  --bg:      #181818; 
+  --bg:      #251a1f; 
   --bg-2    : #750035;
   --fg:      #e5e7eb;   /* light gray text */
   --muted:   #9ca3af;

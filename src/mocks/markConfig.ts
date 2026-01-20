@@ -283,6 +283,7 @@ export const mockSiteConfig: SiteConfig = {
         { type: "linkedin", href: LINKEDIN, label: "LinkedIn" },
         { type: "email", href: `mailto:${EMAIL}`, label: "Email" },
       ],
+      bottomWaveType: "1-hill",
       style: { background: "band", rounded: "xl", size: "lg", gap: "md", align: "center" },
     },
 
@@ -302,6 +303,7 @@ export const mockSiteConfig: SiteConfig = {
         { label: "Stricker Digital", href: STRICKER_DIGITAL, customIcon: faGlobe },
       ],
       backgroundUrl: backdrop.src,
+      
     },
 
     // ======================
@@ -319,6 +321,7 @@ export const mockSiteConfig: SiteConfig = {
         { label: "LinkedIn", value: LINKEDIN, size: 180 },
       ],
       backgroundClass: "bg-gradient-2-top",
+      topWaveType: "1-hill",
     },
 
     // ======================
