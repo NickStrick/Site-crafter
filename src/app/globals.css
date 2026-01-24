@@ -581,6 +581,8 @@ body[data-theme="grove"]  {
   padding: 0.4rem;
   border: 2px solid var(--muted);
   border-radius: 4px;
+  color:black;
+  background-color: white;
 }
 
 .move-btn{
@@ -590,6 +592,7 @@ input:read-only{
   background-color: transparent;
   border:1px solid gray !important;
   outline: none !important;
+  color: var(--text-1)
 }
 input:read-only:focus{
   cursor: not-allowed;

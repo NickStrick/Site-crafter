@@ -130,7 +130,7 @@ export default function Partners({ id, title, subtitle, items, style, background
                     {p.links.map((l, idx) => (
                       <a key={idx} href={l.href} target="_blank" rel="noreferrer" className="btn btn-inverted">
                         <FontAwesomeIcon icon={iconFor(l.type)} />
-                        <span className="ml-1 capitalize">{l.type}</span>
+                        <span className="ml-1 capitalize">{l.customLabel?l.customLabel:l.type}</span>
                       </a>
                     ))}
                   </div>
