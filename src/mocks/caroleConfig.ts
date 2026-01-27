@@ -19,18 +19,24 @@ import flowertable2 from "../../public/carole/flowertable2.jpg";
 import flowerwall from "../../public/carole/flowerwall.jpg";
 import flowerwall2 from "../../public/carole/flowerwall2.jpg";
 import flowerwall3 from "../../public/carole/flowerwall3.jpg";
-import logoMain from "../../public/carole/logo-main.jpg";
+import fallDecor1 from "../../public/carole/fallDecor1.jpg";
+import fallDecor2 from "../../public/carole/fallDecor2.jpg";
+import logoMain from "../../public/carole/booth.jpg";
+import logoWhite from "../../public/carole/logo-main.jpg";
 import logo2 from "../../public/carole/logo2.png";
 import carole from "../../public/carole/carole2.jpg";
+
+import review1 from "../../public/carole/reveiw1.png"
+import review2 from "../../public/carole/review2.png"
 
 const phoneHref = "tel:17732094805";
 
 export const mockSiteConfig: SiteConfig = {
-  theme: { preset: "lavender", radius: "full" },
+  theme: { preset: "lavender", radius: "xl" },
   meta: {
-    title: "CM Florals — Floral Design by Carole Murray",
+    title: "CM Florals — Floral Design & Gifts",
     description:
-      "CM Florals creates joyful floral design for weddings, holidays, celebrations and everyday gifting across Chicago. Founded by Carole Murray.",
+      "CM Florals creates joyful floral design for weddings, holidays, celebrations and everyday gifting across Chicago. Founding Florist Carole Murray.",
     favicon: logo2.src,
   },
   sections: [
@@ -40,12 +46,13 @@ export const mockSiteConfig: SiteConfig = {
       id: "hdr",
       type: "header",
       logoText: "CM Florals",
+      logoImage: logoWhite.src,
       links: [
-        { label: "Home", href: "/" },
+        { label: "Home", href: "#top" },
         { label: "About", href: "#create" },
         { label: "Founder", href: "#about" },
         { label: "Contact", href: "#contact" },
-        { label: "Pay", href: "#pay" },
+        { label: "Order & Pay", href: "#pay" },
       ],
       cta: { label: "Call Now", href: phoneHref },
       style: { sticky: true, blur: true, elevation: "sm", transparent: false },
@@ -56,12 +63,13 @@ export const mockSiteConfig: SiteConfig = {
       visible: true,
       id: "hero",
       type: "hero",
-      eyebrow: "CM Florals • Floral Design",
-      title: "Floral Design for Chicagoans",
+      eyebrow: "CM Florals • Floral Design • Gifts",
+      title: "Floral Design and Gifts for Chicago",
       subtitle:
         "Custom florals for celebrations, weddings, holidays, and everyday gifting. Crafted with warmth and color to fit your story. Founded by Carole Murray.",
       primaryCta: { label: "Call for services", href: phoneHref },
-      secondaryCta: { label: "DM on Insta or Tiktok", href: "#socials" },
+      // secondaryCta: { label: "DM on Insta or Tiktok", href: "#socials" },
+       secondaryCta: { label: "Find us at Ogilvie / Accenture Tower", href: "#contact" },
       imageUrl: logoMain.src,
     },
 
@@ -145,11 +153,13 @@ export const mockSiteConfig: SiteConfig = {
       { imageUrl: flower9.src,      alt: "Arrangement 9" },
       {imageUrl: logo2.src,      alt: "Arrangement 0" },
       { imageUrl: flower10.src,      alt: "Arrangement 10" },
-    
+      { imageUrl: fallDecor1.src,      alt: "fall decor" },
+      { imageUrl: fallDecor2.src,      alt: "fall decor alt" },
       { imageUrl: flowerwall.src,   alt: "Flower wall" },
         
       { imageUrl: flowertable2.src, alt: "Table setup" },
     ],
+    bottomWaveType: "1-hill",
 },
 
     {
@@ -162,7 +172,55 @@ export const mockSiteConfig: SiteConfig = {
       overlay: true,
       height: "md",
     },
-
+     // ======================
+    // TESTIMONIALS
+    // ======================
+    {
+      visible: true,
+      id: "testimonials",
+      type: "testimonials",
+      title: "What Customers Experience",
+      topWaveType: "1-hill",
+      bottomWaveType: "1-hill",
+      subtitle: "We strive to help our cusomters connect with loved ones through the art of gift giving.",
+      items: [
+        {
+          quote:
+            "Carole is true artist! Even in a pinch, she arranges the most beautiful combination of flowers and colors, making every bouquet lovely and truly unique. Her flowers are fresh and long-lasting. CM is our go-to!",
+          name: "Maggie Ghobrial",
+          role: "Customer",
+          avatarUrl: review1.src
+        },
+        
+        {
+          quote:
+            "Carole makes amazing bouquets! My girlfriend loves them ❤️❤️❤️❤️",
+          name: "Arnav Sinha",
+          role: "Customer",
+        },
+        {
+          quote:
+            "The Love and care that Carole puts into her bouquets is apparent from their beauty, creativeness, and quality! You can expect exactly what she promises, gorgeous and creative mastery of the art of florals through decades of experience!",
+          name: "Nick Stricker",
+          role: "Customer & Partner",
+          avatarUrl: review2.src
+        },
+        {
+          quote:
+            "I know very little about flowers, but I said it's my wife's birthday, I said she likes hydrangeas, set my budget, and I received an absolutely stunning bouquet a few minutes later. My wife loves them! I'm so thankful that we UP commuters have such a gifted florist at OTC!",
+          name: "Jonathan Walker",
+          role: "Customer",
+        },
+        
+      ],
+      style: {
+        variant: "carousel",
+columns: 2,
+        showQuoteIcon: true,
+        rounded: "xl",
+        background: "band",
+      },
+    },
     // ABOUT FOUNDER
     {
       visible: true,
@@ -173,6 +231,7 @@ export const mockSiteConfig: SiteConfig = {
         "Grew up in the Chicago suburbs, inspired by the natural prairie fields of Illinois. I have worked in the Chicago floral industry for 45 years — from neighborhood shops to destination assignments in Las Vegas and Hawaii. I love training beginners and getting them excited to enter the world of floral design. I look at life as an opportunity to make people smile.",
       imageUrl: carole.src,
       backgroundClass: 'bg-gradient-1',
+      
     },
     {
   visible: true,
@@ -189,6 +248,7 @@ export const mockSiteConfig: SiteConfig = {
   ],
   style: { background: "band", rounded: "xl", size: "lg", gap: "md", align: "center" }
 },
+
     {
       visible: true,
       id: "book",
@@ -206,11 +266,11 @@ export const mockSiteConfig: SiteConfig = {
       id: "contact",
       type: "contact",
       title: "How to Find Us",
-      email: "carolemurray37@gmail.com",
-      address: "Greater Chicago area, IL",
+      email: "shop@cmfloralsandgifts.com",
+      address: "Ogilvie / Accenture Tower, 500 W Madison St, Chicago, IL 60661",
         phone: { label: "(773) 209-4805", href: phoneHref },
       backgroundUrl: booth.src,
-      // mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2970.4544466085986!2d-87.64308727391516!3d41.8830827712412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2cc71c0b855f%3A0xb098c28fb3a60491!2sOgilvie%20Transportation%20Center!5e0!3m2!1sen!2sus!4v1757250851078!5m2!1sen!2sus" ,
+      mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2970.4544466085986!2d-87.64308727391516!3d41.8830827712412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2cc71c0b855f%3A0xb098c28fb3a60491!2sOgilvie%20Transportation%20Center!5e0!3m2!1sen!2sus!4v1757250851078!5m2!1sen!2sus" ,
       socials: [
         
         { label: "LinkedIn", href: "https://www.linkedin.com/in/carole-murray-61458b20a/" },
@@ -223,7 +283,7 @@ export const mockSiteConfig: SiteConfig = {
       visible: true,
       id: "pay",
       type: "cta",
-      title: "Need to make a payment?",
+      title: "Want to complete an order or make a payment?",
       body:
         "Visit our Venmo page to complete your transaction.",
       cta: { label: "Pay Now", href: "https://venmo.com/u/Carole-Murray-9" },
@@ -260,10 +320,19 @@ export const mockSiteConfig: SiteConfig = {
             { label: "Contact", href: "#contact" },
           ],
         },
+         {
+          title: "Info",
+          links: [
+            { label: "CM Florals & Gifts", href: '/' },
+            { label: "500 W Madison St, Chicago, IL 60661", href: "https://maps.app.goo.gl/uHEar2C6fxQPoHUo6" },
+            { label: "(773) 209-4805", href: phoneHref },   
+            { label: "Hours: Mon–Fri 9am–5pm", href: "#" },
+          ],
+        },
         {
           title: "Connect",
           links: [
-            { label: "Call (773) 209-4805", href: phoneHref },
+            { label: "shop@cmfloralsandgifts.com", href: 'mailto:shop@cmfloralsandgifts.com' },
             { label: "Instagram", href: "https://www.instagram.com/carolemurray37/" },
             { label: "TikTok", href: "https://www.tiktok.com/@carolemurray87" },   
             { label: "LinkedIn", href: "https://www.linkedin.com/in/carole-murray-61458b20a/" },

@@ -15,7 +15,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 // import { mockSiteConfig } from "@/mocks/siteConfig";
-import { mockSiteConfig } from "@/mocks/markConfig";
+import { mockSiteConfig } from "@/mocks/caroleConfig";
 
 export const metadata: Metadata = {
   title: mockSiteConfig.meta?.title || "Stricker Digital Websites",
@@ -70,7 +70,7 @@ export default async function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-app`}>
         <SiteProvider initial={config}>
-          <main className="overflow-hidden">{children}</main>
+          <main className="overflow-hidden"><div id="top"></div>{children}</main>
           {showThemeSwitcher && <ThemeSwitcher />}
 
           {/* ✅ Admin overlay (toggle with Ctrl/Cmd + Alt + A OR Ctrl/Cmd + Shift + A)

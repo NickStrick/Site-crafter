@@ -112,10 +112,10 @@ body[data-theme="candy"] {
   --text-accent: white;
 }
 body[data-theme="lavender"] {
-  --primary: #a66cec;    /* vibrant lavender/purple */
-  --accent:  #d26cec;    /* metallic gold */
-  --bg:      #f9f7fb;    /* soft lavender-tinted white */
-  --bg-2:    #fdeb9b;    /* gentle lavender wash */
+--primary: rgb(255, 39, 190);    /* vibrant lavender/purple */
+  --accent:  #9a01c9;    /* metallic gold */
+  --bg:      #fafce9;    /* soft lavender-tinted white */
+  --bg-2:    #fdb3e9;    /* gentle lavender wash */
   --fg:      #2d2d2d;    /* dark gray for text */
   --muted:   #9b67cc;    /* muted warm gray */
 
@@ -233,15 +233,15 @@ body[data-theme="grove"]  {
     .card-2 { background-image: linear-gradient(
           to bottom right,
           var(--bg) 0%,
-          var(--accent) 40%,
-          var(--accent) 70%,
-          var(--accent) 100%
+          var(--primary) 40%,
+          var(--primary) 70%,
+          var(--primary) 100%
       );
       background-size: calc(200% + 4px) calc(100% + 4px);
       background-position: 0% 100%; max-width: 400px; margin: 0 auto;
       border-radius: var(--round-xl);
       box-shadow: var(--elev-2);
-      border: 2px solid var(--accent);
+      border: 2px solid var(--primary);
     }
     .card-invert { background-image: linear-gradient(
           to bottom right,
@@ -454,7 +454,7 @@ body[data-theme="grove"]  {
   }
   .bg-gradient-2 {
     background-image: linear-gradient(to bottom, var(--bg) 50%, var(--bg-2) 100%);
-    background-size: calc(200% + 4px) calc(160% + 4px);
+    background-size: calc(200% + 4px) calc(100% + 4px);
       background-position: 0% 28%;
   }
   .bg-gradient-2-top {
