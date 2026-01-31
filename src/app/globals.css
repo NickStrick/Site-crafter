@@ -518,7 +518,7 @@ body[data-theme="grove"]  {
       background-position: 0% 0%;
       animation: btnunhover 2s ;
       animation-play-state: paused;
-      color:white;
+      color:var(--primary);
   }
   .btn-small {
     @apply inline-block px-4 py-2 text-sm font-semibold rounded-full transition duration-300;
@@ -696,4 +696,8 @@ button[disabled]{
 .feature-image{
   max-height: 300px;
     object-fit: cover;
+}
+.card-solid{
+    background-color: var(--bg);
+    color: var(--text-1);
 }
