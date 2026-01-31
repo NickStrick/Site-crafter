@@ -107,7 +107,7 @@ export default function ProductListings({
 
                   {/* Image */}
                   {thumb ? (
-                    <Image src={thumb} alt={p.name} className="w-full h-auto rounded-xl mb-4 mt-3" width={400} height={300} />
+                    <Image src={thumb} alt={p.name} className="w-full h-auto rounded-xl mb-4 mt-3 feature-image" width={400} height={300} />
                   ) : (
                     <div className="w-full aspect-[4/3] bg-black/10 rounded-xl mb-4" />
                   )}

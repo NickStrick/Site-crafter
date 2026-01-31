@@ -518,7 +518,7 @@ body[data-theme="grove"]  {
       background-position: 0% 0%;
       animation: btnunhover 2s ;
       animation-play-state: paused;
-      color:var(--primary);
+      color:white;
   }
   .btn-small {
     @apply inline-block px-4 py-2 text-sm font-semibold rounded-full transition duration-300;
@@ -687,4 +687,13 @@ button:disabled,
 button[disabled]{
   background-color: gray !important;
   cursor: not-allowed !important;
+}
+.admin-image-preview{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.feature-image{
+  max-height: 300px;
+    object-fit: cover;
 }

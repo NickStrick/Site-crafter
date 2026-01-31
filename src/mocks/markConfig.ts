@@ -19,6 +19,11 @@ import blog3 from "../../public/mark/blog3.jpg";
 import blog4 from "../../public/mark/blog4.jpg";
 import blog5 from "../../public/mark/blog5.jpg";
 import nature from "../../public/mark/nature.jpg";
+
+import testimonal1 from "../../public/mark/testimonials/1.jpg";
+import testimonal2 from "../../public/mark/testimonials/2.jpg";
+import testimonal3 from "../../public/mark/testimonials/3.jpg";
+import testimonal4 from "../../public/mark/testimonials/4.jpg";
 // -------------------------------------------------------------
 
 const SUBSTACK_BLOG = "https://stricker.substack.com/";
@@ -52,7 +57,7 @@ export const mockSiteConfig: SiteConfig = {
         { label: "Teachings", href: "#teach" },
         { label: "About", href: "#about" },
         { label: "Products", href: "#products" },
-        { label: "Partners", href: "#partners" },
+        { label: "Testimonials", href: "#testimonials" },
         { label: "Philosophy", href: "#about-philosophy" },
       ],
       // Primary CTA = Substack blog
@@ -72,7 +77,7 @@ export const mockSiteConfig: SiteConfig = {
       subtitle:
         "I write and teach practical frameworks for mastering new technologies, passing exams, and building durable learning habits. Staff Solutions Engineer (Splunk) and longtime instructor of emerging technologies.",
       primaryCta: { label: "Read my Substack", href: SUBSTACK_BLOG },
-      secondaryCta: { label: "View Offers", href: "#products" },
+      secondaryCta: { label: "Browse Products", href: "#products" },
       imageUrl: headshot.src,
     },
 
@@ -246,7 +251,7 @@ export const mockSiteConfig: SiteConfig = {
       type: "about",
       title: "About Mark",
       body:
-        "I'm Mark Stricker - an emerging technology educator and solutions engineer. I taught college classes on emerging technologies, and I've spent 10+ years scoping, selling, demonstrating, and implementing enterprise solutions.\n\nI specialize in cloud and SaaS solutions, security solutions, and ITSM/ITOM. I've worked with Fortune 500 commercial customers, public sector / DoD clients, state and local government, and higher education.\n\nToday, I write and teach practical frameworks for learning new technologies, earning certifications, and passing exams - without burnout.",
+        "I'm Mark Stricker - an emerging technology educator and solutions engineer. I've taught clients and college students on emerging technologies, and I've spent 10+ years scoping, selling, demonstrating, and implementing enterprise solutions.\n\nI specialize in cloud and SaaS solutions, security solutions, and ITSM/ITOM. I've worked with Fortune 500 commercial customers, public sector / DoD clients, state and local government, and higher education.\n\nToday, I write and teach practical frameworks for learning new technologies, earning certifications, and passing exams - without burnout.",
       imageUrl: headshot2.src,
       bullets: [
         "10+ years enterprise solutions experience",
@@ -305,9 +310,9 @@ export const mockSiteConfig: SiteConfig = {
       visible: true,
       id: "products",
       type: "productListings",
-      title: "Handcrafted Guides & Resources",
+      title: "Handcrafted Resources",
       subtitle: "Expert designed Learning Strategies, philosophy, and practical frameworks.",
-      style: { columns: 1, cardVariant: "default", showBadges: true },
+      style: { columns: 2, cardVariant: "default", showBadges: true },
       showAllThreshold: 20,
       buyCtaFallback: "Buy Now",
       cartActive: true,
@@ -321,7 +326,6 @@ export const mockSiteConfig: SiteConfig = {
           subtitle: "A learning philosophy for building momentum, confidence, and repeatable progress.",
           sku: "CMF-R6",
           price: 5500,
-          compareAtPrice: 6500,
           currency: "USD",
           thumbnailUrl: blog1.src,
           images: [
@@ -335,6 +339,36 @@ export const mockSiteConfig: SiteConfig = {
           ],
           badges: ["Bestseller", "New"],
           tags: ["study guide", "learning", "self-improvement"],
+          stock: "in_stock",
+          quantityAvailable: 99,
+          digital: false,
+          weightKg: 1.2,
+          widthCm: 24,
+          heightCm: 36,
+          depthCm: 24,
+          ctaLabel: "Buy Now",
+          maxQuantity: 99,
+        },
+        {
+          id: "PDF-002",
+          name: "BioHacks: Science Backed Longevity & Vitality",
+          subtitle: "Practical biohacks for enhancing longevity, vitality, and overall well-being.",
+          sku: "CMF-R6",
+          price: 3500,
+          compareAtPrice: 4500,
+          currency: "USD",
+          thumbnailUrl: blog4.src,
+          images: [
+            { url: blog4.src, alt: "BioHacks: longevity & Vitality 1" },
+          ],
+          summary: " A concise guide to adopting the 'BioHacks: longevity & Vitality' mindset and strategies.",
+          description:
+            "biohacks that provide a step-by-step approach to enhancing longevity and vitality effectively. It includes practical tips, exercises, and real-world examples to help individuals improve their well-being and achieve their health goals.",
+          features: ["Comprehensive biohacking strategies", "Practical exercises", "Real-world examples"],
+          specs: [
+          ],
+          badges: ["Bestseller", "Discount", "Limited Edition"],
+          tags: ["biohacks", "longevity", "well-being"],
           stock: "in_stock",
           quantityAvailable: 99,
           digital: false,
@@ -398,6 +432,46 @@ export const mockSiteConfig: SiteConfig = {
   muted: false,
   loop: false,
 },
+    {
+      visible: true,
+      id: "testimonials",
+      type: "testimonials",
+      title: "Testimonials",
+      subtitle: "What colleagues and leaders have shared about working with Mark",
+      bottomWaveType: "1-hill",
+      style: { variant: "card", columns: 2, rounded: "xl", background: "band" },
+      items: [
+        {
+          avatarUrl: testimonal1.src,
+          name: "Randal Locke",
+          role: "Technical Sales Leader - Service Desk Manager - ITIL v3 Expert",
+          quote:
+            "Mark does a great job of understanding what the client is looking for, asking detailed questions to drill into realistic capabilities, and then putting a plan together with the client to achieve those goals. He is very good in front of a client and easily gains their trust with his interpersonal capabilities as well as his understanding in the Service Management and Asset Management industries. Mark would be an asset to any organization.",
+        },
+        {
+          avatarUrl: testimonal2.src,
+          name: "Julia Ferguson",
+          role: "Designer, Continual Improver, Community Builder",
+          quote:
+            "Mark is hard-working, intelligent, broad-thinking, trust-worthy, and also a genuinely nice guy. These traits were recognized early-on in the years we worked together at CA Technologies and I recommended him for several promotions that gave him increasing levels of responsibility. He never disappointed. Mark has a rare combination of strong creative, \"soft\" skills and deep technical knowledge that makes him an excellent problem-solver and analyst. He's a quick study and never stops learning and embracing new ideas. If I were building a team and looking for someone to lead it, Mark would be among my top choices.",
+        },
+        {
+          avatarUrl: testimonal3.src,
+          name: "Bill Messick",
+          role: "Former ITSM Senior Consultant (Retired)",
+          quote:
+            "Mark was the architect on a large enterprise-wide project involving several CA applications, any one of which would have been a sizable project by itself. His encyclopedic knowledge of CA products and other IT technologies, as well as his exceptional work ethic and willingness to help other team members with technical challenges, helped to inspire and energize the whole project team.",
+        },
+        {
+          avatarUrl: testimonal4.src,
+          name: "June Wang",
+          role: "Sr. Consultant at CA, a Broadcom Company",
+          quote:
+            "I have worked with Mark for the past year. Mark has been a tremendous asset to our team. He is an important contributor to our USARC project along with other teammates. He consistently delivers high quality work, meets or exceeds deadlines, and assists his co-workers at every opportunity with his broad technical knowledge. When under an especially strict timeline on that project, he worked a lot of overtime to ensure the client was pleased. Mark exemplifies good character and he is a trustworthy, reliable worker who goes extra miles to get job done and has made so many clients very happy.",
+        },
+      ],
+    },
+
 
     // ======================
     // SOCIALS
@@ -444,13 +518,11 @@ export const mockSiteConfig: SiteConfig = {
       type: "about",
       title: "Philosophy, education, and family",
       body:
-        `My work is grounded in philosophy and lifelong learning. I draw inspiration from Alan Watts and Zen Buddhism the quiet clarity, presence, and humility needed to navigate complexity. I also admire Neil deGrasse Tyson’s ability to make advanced ideas accessible, and Tony Robbins’ focus on discipline, energy, and momentum.
+        `I’m rooted in philosophy and lifelong learning, heavily influenced by Zen Buddhism, Alan Watts, and the kind of thinking that reminds you to slow down, breathe, and maybe stop overthinking everything for five minutes. I spend a lot of time in nature for the same reason, it’s honest, humbling, and wildly good at putting things back into perspective. I also admire Tony Robbins’ obsession with discipline, energy, and momentum… which explains a lot about my calendar and my caffeine intake.
 
-Those influences shape how I show up as an educator and practitioner: bold, compassionate, and practical. I aim to take the best of what these leaders embody while forging my own path in cutting-edge technology, cybersecurity, and AI.
+I work in technology, cybersecurity, and AI, and I’m also a lifelong health hacker—constantly experimenting with habits, routines, and data to stay sharp, energized, and human in a world that doesn’t always encourage balance.
 
-At the center of everything is family. My love for my family fuels my commitment to integrity, patience, and service. The work I do teaching, mentoring, and helping others grow with confidence is an extension of that care.
-
-That’s the throughline of my career: philosophy as my compass, education as my craft, and family as the foundation that gives the mission meaning.`,
+At the center of it all is love and family. They keep me grounded, patient, and real. Everything I do, teaching, mentoring, building, and learning, is an extension of that love. That’s the throughline of my work: philosophy as a compass, nature as a reset button, and service as the way forward.`,
       imageUrl: nature.src,
       align: "right",
       backgroundClass: "bg-gradient-2",
@@ -490,7 +562,7 @@ That’s the throughline of my career: philosophy as my compass, education as my
             { label: "Teachings", href: "#teach" },
             { label: "About", href: "#about" },
             { label: "Products", href: "#products" },
-            { label: "Partners", href: "#partners" },
+            { label: "Testimonials", href: "#testimonials" },
             { label: "Philosophy", href: "#about-philosophy" },
           ],
         },
