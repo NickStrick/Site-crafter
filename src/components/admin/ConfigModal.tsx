@@ -283,7 +283,7 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
   const selected = draft.sections[selectedIndex];
 
   return (
-    <div className="fixed edit-modal inset-0 z-[1200] bg-black/50 flex items-center justify-center p-4">
+    <div className="fixed edit-modal inset-0 z-[12000] bg-black/50 flex items-center justify-center p-4">
       <div className="card p-4 relative w-fit !max-w-full pr-[70px] overflow-hidden card-screen-height">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">

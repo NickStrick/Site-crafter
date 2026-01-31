@@ -18,6 +18,7 @@ import blog2 from "../../public/mark/blog2.jpg";
 import blog3 from "../../public/mark/blog3.jpg";
 import blog4 from "../../public/mark/blog4.jpg";
 import blog5 from "../../public/mark/blog5.jpg";
+import nature from "../../public/mark/nature.jpg";
 // -------------------------------------------------------------
 
 const SUBSTACK_BLOG = "https://stricker.substack.com/";
@@ -31,7 +32,7 @@ const EMAIL = "markanthonystricker@gmail.com";
 export const mockSiteConfig: SiteConfig = {
   theme: { preset: "splunk", radius: "xl" },
   meta: {
-    title: "Mark Stricker — Emerging Tech Educator & Solutions Engineer",
+    title: "Mark Stricker   Emerging Tech Educator & Solutions Engineer",
     description:
       "Mark Stricker writes and teaches about emerging technologies, certification strategy, and learning systems. Staff Solutions Engineer at Splunk and longtime instructor.",
     favicon: logoMark.src,
@@ -46,13 +47,13 @@ export const mockSiteConfig: SiteConfig = {
       type: "header",
       logoText: "Mark Stricker",
       links: [
-        { label: "Home", href: "/" },
-        { label: "Read the Blog", href: "#blog" },
-        { label: "What I Teach", href: "#teach" },
+        { label: "Home", href: "#top" },
+        { label: "Blog", href: "#blog" },
+        { label: "Teachings", href: "#teach" },
         { label: "About", href: "#about" },
-        { label: "YouTube", href: "#youtube" },
+        { label: "Products", href: "#products" },
         { label: "Partners", href: "#partners" },
-        { label: "Contact", href: "#contact" },
+        { label: "Philosophy", href: "#about-philosophy" },
       ],
       // Primary CTA = Substack blog
       cta: { label: "Read my Blog", href: SUBSTACK_BLOG },
@@ -71,7 +72,7 @@ export const mockSiteConfig: SiteConfig = {
       subtitle:
         "I write and teach practical frameworks for mastering new technologies, passing exams, and building durable learning habits. Staff Solutions Engineer (Splunk) and longtime instructor of emerging technologies.",
       primaryCta: { label: "Read my Substack", href: SUBSTACK_BLOG },
-      secondaryCta: { label: "About Mark", href: "#about" },
+      secondaryCta: { label: "View Offers", href: "#products" },
       imageUrl: headshot.src,
     },
 
@@ -141,7 +142,7 @@ export const mockSiteConfig: SiteConfig = {
         {
           title: "Emerging technologies (applied)",
           body:
-            "Practical explanations that connect new tech to real business use cases—built for professionals who need clarity, not hype.",
+            "Practical explanations that connect new tech to real business use cases built for professionals who need clarity, not hype.",
           imageUrl: tech.src,
           imageSize: "md",
           meta: [
@@ -152,7 +153,7 @@ export const mockSiteConfig: SiteConfig = {
         {
           title: "Certification & exam strategy",
           body:
-            "Study systems, practice structures, and mindset habits designed to help you pass confidently—and retain what you learn.",
+            "Study systems, practice structures, and mindset habits designed to help you pass confidently and retain what you learn.",
           meta: [
             { label: "Outcome", value: "Pass exams + keep the knowledge" },
             { label: "Approach", value: "Systems over cramming" },
@@ -161,7 +162,7 @@ export const mockSiteConfig: SiteConfig = {
         {
           title: "Solutions engineering perspective",
           body:
-            "A practitioner view from enterprise solution work—how to scope, sell, demo, and implement effectively.",
+            "A practitioner view from enterprise solution work how to scope, sell, demo, and implement effectively.",
           meta: [
             { label: "Experience", value: "Enterprise solutions" },
             { label: "Domains", value: "Cloud / SaaS, Security, ITSM/ITOM" },
@@ -172,25 +173,93 @@ export const mockSiteConfig: SiteConfig = {
     },
 
     // ======================
+    // AI SKILLS
+    // ======================
+    {
+      visible: true,
+      id: "ai-skills",
+      type: "skills",
+      title: "AI in the field",
+      subtitle:
+        "Bold, practical use of AI to strengthen cybersecurity, observability, and customer outcomes.",
+      columns: 3,
+      items: [
+        {
+          title: "ChatGPT",
+          body:
+            "Rapid synthesis and clear customer-ready explanations for complex security and cloud concepts.",
+        },
+        {
+          title: "Gemini",
+          body:
+            "Multi-modal reasoning and structured analysis to speed up research and solution design.",
+        },
+        {
+          title: "Gumroad",
+          body:
+            "Applied AI exploration for new threat-hunting workflows and security playbooks.",
+        },
+        {
+          title: "CrowdStrike Falcon",
+          body:
+            "Endpoint telemetry and AI-driven detection to harden environments against advanced threats.",
+        },
+        {
+          title: "Microsoft Security Copilot",
+          body:
+            "Copilot-assisted investigations, summarization, and response acceleration.",
+        },
+        {
+          title: "Darktrace ActiveAI Security Platform",
+          body:
+            "Self-learning AI for detection and autonomous response in dynamic environments.",
+        },
+      ],
+      backgroundClass: "bg-gradient-3",
+    },
+
+    // ======================
+    // STATS
+    // ======================
+    {
+      visible: true,
+      id: "stats",
+      type: "stats",
+      title: "Field snapshots",
+      subtitle: "Real-world experience guiding modern security teams.",
+      style: { align: "center", columns: 4, divider: "line", color: "primary" },
+      items: [
+        { value: 1130, label: "LinkedIn followers" },
+        { value: 10, label: "Years in enterprise solutions", suffix: "+" },
+        { value: 6, label: "Years at Splunk", suffix: "+" },
+        { value: 9, label: "Roles at Splunk" },
+      ],
+    },
+
+    // ======================
     // ABOUT
     // ======================
+
     {
       visible: true,
       id: "about",
       type: "about",
       title: "About Mark",
       body:
-        "I’m Mark Stricker—an emerging technology educator and solutions engineer. I taught college classes on emerging technologies, and I’ve spent 10+ years scoping, selling, demonstrating, and implementing enterprise solutions.\n\nI specialize in cloud and SaaS solutions, security solutions, and ITSM/ITOM. I’ve worked with Fortune 500 commercial customers, public sector / DoD clients, state and local government, and higher education.\n\nToday, I write and teach practical frameworks for learning new technologies, earning certifications, and passing exams—without burnout.",
+        "I'm Mark Stricker - an emerging technology educator and solutions engineer. I taught college classes on emerging technologies, and I've spent 10+ years scoping, selling, demonstrating, and implementing enterprise solutions.\n\nI specialize in cloud and SaaS solutions, security solutions, and ITSM/ITOM. I've worked with Fortune 500 commercial customers, public sector / DoD clients, state and local government, and higher education.\n\nToday, I write and teach practical frameworks for learning new technologies, earning certifications, and passing exams - without burnout.",
       imageUrl: headshot2.src,
       bullets: [
         "10+ years enterprise solutions experience",
-        "Cloud/SaaS • Security • ITSM/ITOM",
+        "Cloud/SaaS - Security - ITSM/ITOM",
         "Teaching emerging technologies since the 1990s",
         "Educator mindset: frameworks, habits, outcomes",
       ],
       align: "left",
-      backgroundClass: "bg-gradient-3",
+      backgroundClass: "bg-[var(--bg)]",
     },
+
+
+   
 
     // ======================
     // CTA (Primary: subscribe/read)
@@ -214,7 +283,7 @@ export const mockSiteConfig: SiteConfig = {
       type: "cta",
       title: "YouTube (coming soon)",
       body:
-        "Short lessons that complement the blog—learning systems, certification strategy, and emerging tech explainers.",
+        "Short lessons that complement the blog learning systems, certification strategy, and emerging tech explainers.",
       cta: { label: "Go to Chanel", href: YOUTUBE },
     },
     // {
@@ -223,7 +292,7 @@ export const mockSiteConfig: SiteConfig = {
     //   type: "video",
     //   title: "YouTube (coming soon)",
     //   subtitle:
-    //     "Short lessons that complement the blog—learning systems, certification strategy, and emerging tech explainers.",
+    //     "Short lessons that complement the blog learning systems, certification strategy, and emerging tech explainers.",
     //   // placeholder; replace with channel URL when ready
     //   source: { type: "url", href: "https://www.youtube.com/" },
     //   style: { aspect: "16/9", rounded: "xl", shadow: "md", background: "band" },
@@ -232,6 +301,53 @@ export const mockSiteConfig: SiteConfig = {
     //   muted: false,
     //   loop: false,
     // },
+    {
+      visible: true,
+      id: "products",
+      type: "productListings",
+      title: "Handcrafted Guides & Resources",
+      subtitle: "Expert designed Learning Strategies, philosophy, and practical frameworks.",
+      style: { columns: 1, cardVariant: "default", showBadges: true },
+      showAllThreshold: 20,
+      buyCtaFallback: "Buy Now",
+      cartActive: true,
+      paymentType: "externalLink",
+      
+      externalPaymentUrl: "https://venmo.com/u/Mark-Stricker-2?txn=pay&note=Purchase&amount=",
+      products: [
+        {
+          id: "PDF-001",
+          name: "Study Guide: Learn Like a Hero",
+          subtitle: "A learning philosophy for building momentum, confidence, and repeatable progress.",
+          sku: "CMF-R6",
+          price: 5500,
+          compareAtPrice: 6500,
+          currency: "USD",
+          thumbnailUrl: blog1.src,
+          images: [
+            { url: blog1.src, alt: "Study Guide: Learn Like a Hero 1" },
+          ],
+          summary: " A concise guide to adopting the 'Learn Like a Hero' mindset and strategies.",
+          description:
+            "This study guide provides a step-by-step approach to mastering new skills and knowledge effectively. It includes practical tips, exercises, and real-world examples to help learners build confidence and achieve their learning goals.",
+          features: ["Comprehensive learning strategies", "Practical exercises", "Real-world examples"],
+          specs: [
+          ],
+          badges: ["Bestseller", "New"],
+          tags: ["study guide", "learning", "self-improvement"],
+          stock: "in_stock",
+          quantityAvailable: 99,
+          digital: false,
+          weightKg: 1.2,
+          widthCm: 24,
+          heightCm: 36,
+          depthCm: 24,
+          ctaLabel: "Buy Now",
+          maxQuantity: 99,
+        },
+
+      ],
+    },
 
     // ======================
     // PARTNERS
@@ -268,6 +384,20 @@ export const mockSiteConfig: SiteConfig = {
         },
       ],
     },
+    {
+  visible: true,
+  id: 'promo',
+  type: 'video',
+  title: 'Introducing Splunk, my favorite workplace ever',
+  subtitle: 'the Data-to-Everything™ Platform',
+  source: { type: 'url', href: 'https://youtu.be/1eg8zUGalCg?si=FLqwI_wbMhxi9QtY' },
+  // posterUrl: 'configs/carole/assets/poster.jpg', // optional (S3 key or full URL)
+  style: { aspect: '16/9', rounded: 'xl', shadow: 'lg', background: 'default' },
+  controls: true,
+  autoplay: false,
+  muted: false,
+  loop: false,
+},
 
     // ======================
     // SOCIALS
@@ -305,6 +435,27 @@ export const mockSiteConfig: SiteConfig = {
       backgroundUrl: backdrop.src,
       
     },
+     // ======================
+    // ABOUT (PHILOSOPHY + FAMILY)
+    // ======================
+    {
+      visible: true,
+      id: "about-philosophy",
+      type: "about",
+      title: "Philosophy, education, and family",
+      body:
+        `My work is grounded in philosophy and lifelong learning. I draw inspiration from Alan Watts and Zen Buddhism the quiet clarity, presence, and humility needed to navigate complexity. I also admire Neil deGrasse Tyson’s ability to make advanced ideas accessible, and Tony Robbins’ focus on discipline, energy, and momentum.
+
+Those influences shape how I show up as an educator and practitioner: bold, compassionate, and practical. I aim to take the best of what these leaders embody while forging my own path in cutting-edge technology, cybersecurity, and AI.
+
+At the center of everything is family. My love for my family fuels my commitment to integrity, patience, and service. The work I do teaching, mentoring, and helping others grow with confidence is an extension of that care.
+
+That’s the throughline of my career: philosophy as my compass, education as my craft, and family as the foundation that gives the mission meaning.`,
+      imageUrl: nature.src,
+      align: "right",
+      backgroundClass: "bg-gradient-2",
+      topWaveType: "1-hill",
+    },
 
     // ======================
     // SHARE (QR)
@@ -321,7 +472,6 @@ export const mockSiteConfig: SiteConfig = {
         { label: "LinkedIn", value: LINKEDIN, size: 180 },
       ],
       backgroundClass: "bg-gradient-2-top",
-      topWaveType: "1-hill",
     },
 
     // ======================
@@ -335,10 +485,13 @@ export const mockSiteConfig: SiteConfig = {
         {
           title: "Explore",
           links: [
-            { label: "Read the Blog", href: "#blog" },
-            { label: "What I Teach", href: "#teach" },
+            { label: "Home", href: "#top" },
+            { label: "Blog", href: "#blog" },
+            { label: "Teachings", href: "#teach" },
             { label: "About", href: "#about" },
-            { label: "YouTube", href: "#youtube" },
+            { label: "Products", href: "#products" },
+            { label: "Partners", href: "#partners" },
+            { label: "Philosophy", href: "#about-philosophy" },
           ],
         },
         {

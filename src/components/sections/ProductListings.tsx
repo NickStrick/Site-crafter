@@ -79,7 +79,7 @@ export default function ProductListings({
           </div>
         </motion.div>
 
-        <div className={`grid gap-6 sm:grid-cols-${Math.min(cols, 2)} lg:grid-cols-3`}>
+        <div className={`grid gap-6 sm:grid-cols-${Math.min(cols, 2)} lg:grid-cols-${cols}`}>
           {visible.map((p, i) => {
             const thumb = resolveAssetUrl(p.thumbnailUrl ?? p.images?.[0]?.url);
             const priceStr = formatPrice(p.price, p.currency ?? 'USD');
@@ -126,7 +126,7 @@ export default function ProductListings({
                   </header>
 
                   {/* Actions */}
-                  <div className="grid grid-cols-2 gap-2 mt-auto">
+                  <div className="flex gap-2 mt-auto">
                     {detailsEnabled?<button
                       className={cls(
                         'btn mt-6 w-full justify-center',

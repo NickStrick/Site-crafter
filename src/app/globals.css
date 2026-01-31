@@ -662,7 +662,7 @@ max-height: calc(100vh - 135px);
 .cart-icon{
 
 }
-@media (max-width: 1268px) {
+@media (max-width: 1408px) {
   .cart-icon{
     top:64px;
     border-bottom-right-radius: 0;
