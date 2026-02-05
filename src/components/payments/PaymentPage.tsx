@@ -394,13 +394,6 @@ export default function PaymentPage({
                       value={deliveryAddress}
                       onChange={(e) => setDeliveryAddress(e.target.value)}
                     />
-                    <label className="mt-3 flex items-center gap-2 text-sm text-gray-600">
-                      <input
-                        type="checkbox"
-                        checked={deliveryConfirmed}
-                        onChange={(e) => setDeliveryConfirmed(e.target.checked)}
-                      />
-                    </label>
                   </div>
                 )}
                 <div className="grid gap-4">
