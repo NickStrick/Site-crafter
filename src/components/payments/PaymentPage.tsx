@@ -1,9 +1,9 @@
 // src/components/payments/PaymentPage.tsx
 'use client';
 
-import { useState, type ChangeEvent } from 'react';
+import { useState, useEffect, type ChangeEvent } from 'react';
 import PaymentForm from './PaymentForm';
-import { X, Plus, Trash2, CheckCircle } from 'lucide-react';
+import { X, Plus, Trash2, CheckCircle, ArrowBigLeft } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import type { CheckoutInput, GoogleFormOptions } from '@/types/site';
 
@@ -49,6 +49,18 @@ export default function PaymentPage({
     const value = (customValues[f.id] ?? '').trim();
     return value.length === 0;
   });
+  const hasDetailsStep = Boolean(checkoutInputs && checkoutInputs.length > 0);
+  const steps = ([
+    hasDetailsStep ? { key: 'details', label: 'Details' } : null,
+    { key: 'payment', label: 'Payment' },
+  ].filter(Boolean) as Array<{ key: 'details' | 'payment'; label: string }>);
+  const [stepIndex, setStepIndex] = useState(0);
+
+  useEffect(() => {
+    if (stepIndex >= steps.length) {
+      setStepIndex(Math.max(0, steps.length - 1));
+    }
+  }, [stepIndex, steps.length]);
 
   if (!isCheckoutOpen) return null;
 
@@ -223,11 +235,15 @@ export default function PaymentPage({
                 </div>
               </div>
             )}
-            {checkoutInputs && checkoutInputs.length > 0 && (
-              <div className="mb-8 rounded-2xl border border-gray-100 p-6">
+            
+          </section>
+
+          <section className="max-w-[100%]" id="checkout-right-section">
+            {steps[stepIndex]?.key === 'details' && hasDetailsStep && (
+              <div className="mb-8 rounded-2xl border border-gray-100 p-6" id="checkout-details-form">
                 <h2 className="text-2xl font-bold mb-4">Order Details</h2>
                 <div className="grid gap-4">
-                  {checkoutInputs.map((field) => {
+                  {checkoutInputs?.map((field) => {
                     const commonProps = {
                       id: field.id,
                       name: field.id,
@@ -264,27 +280,30 @@ export default function PaymentPage({
                   })}
                 </div>
 
-                {/* {googleFormUrl && (
-                  <div className="mt-4 text-sm text-gray-600">
-                    Optional: also submit these details via Google Form.
-                    <a
-                      href={googleFormUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ml-2 text-emerald-700 hover:text-emerald-800 font-medium"
-                    >
-                      Open Form
-                    </a>
-                  </div>
-                )} */}
+                <button
+                  type="button"
+                  onClick={() => setStepIndex(Math.min(stepIndex + 1, steps.length - 1))}
+                  disabled={missingRequired}
+                  aria-disabled={missingRequired}
+                  className="w-full mt-6 bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-bold shadow-lg shadow-emerald-200 transition-all"
+                >
+                  Continue to Payment
+                </button>
               </div>
             )}
-          </section>
-
-          <section className="max-w-[100%]">
-            
-
+            {steps[stepIndex]?.key === 'payment' && (
+              <div id="checkout-payment-section">
             <h2 className="text-2xl font-bold mb-4 ml-4 md:ml-1">Payment</h2>
+            {hasDetailsStep && (
+              <button
+                type="button"
+                onClick={() => setStepIndex(Math.max(0, stepIndex - 1))}
+                className="flex justify-center items-center mb-4 text-sm font-medium text-emerald-700 hover:text-emerald-800"
+              >
+                <ArrowBigLeft size={28} className="text-emerald-700" />
+                <span className="ml-1 flex justify-center items-center">Back to details</span> 
+              </button>
+            )}
             {missingPaymentConfig && (
               <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
                 Payment configuration is missing. Set the {paymentType === 'clover'
@@ -316,6 +335,8 @@ export default function PaymentPage({
                 disabled={missingRequired}
               />
             ) : null}
+              </div>
+            )}
           </section>
         </div>  
       </div>
