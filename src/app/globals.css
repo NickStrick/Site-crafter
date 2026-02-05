@@ -701,3 +701,17 @@ button[disabled]{
     background-color: var(--bg);
     color: var(--text-1);
 }
+.payment-check{
+  position: absolute;
+    top: 50%;
+    right: 15%;
+    transform: translate(-50%, -50%);
+}
+@media (max-width: 928px) {
+    .payment-check{
+      position: static;
+      display: inline;
+      transform: none;
+      margin-left: 6px;
+  }
+}
