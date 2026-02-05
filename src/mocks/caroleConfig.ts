@@ -371,7 +371,7 @@ export const mockSiteConfig: SiteConfig = {
         {
           id: "cmf-rose-36",
           name: "3 Dozen Mega Valentines Day Bouquet",
-          subtitle: "Three dozen Valentineâ€™s roses",
+          subtitle: "Three dozen Valentines roses",
           sku: "CMF-R36",
           price: 20000,
           compareAtPrice: 21500,
@@ -382,7 +382,7 @@ export const mockSiteConfig: SiteConfig = {
           ],
           summary: "Three dozen roses for an unforgettable gesture.",
           description:
-            "Thirty-six red roses arranged lush and full for the ultimate Valentineâ€™s statement.",
+            "Thirty-six red roses arranged lush and full for the ultimate Valentines statement.",
           features: ["Seasonal blooms", "Hand-tied & vased", "Gift note included"],
           specs: [
           ],

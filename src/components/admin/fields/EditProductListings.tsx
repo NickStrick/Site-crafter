@@ -553,6 +553,97 @@ export default function EditProductListings({
               placeholder="0"
             />
           </div>
+
+          <div className="rounded-lg border border-gray-200 p-3 space-y-3">
+            <div className="text-sm font-semibold">Delivery Address</div>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={section.delivery?.addressCapture?.enabled === true}
+                onChange={(e) =>
+                  setSectionField('delivery', {
+                    ...section.delivery,
+                    addressCapture: {
+                      ...section.delivery?.addressCapture,
+                      enabled: e.target.checked,
+                    },
+                  })
+                }
+              />
+              <span>Enable delivery address</span>
+            </label>
+            <div className="grid md:grid-cols-3 gap-3">
+              <label className="flex items-end gap-2">
+                <input
+                  type="checkbox"
+                  checked={section.delivery?.addressCapture?.required === true}
+                  onChange={(e) =>
+                    setSectionField('delivery', {
+                      ...section.delivery,
+                      addressCapture: {
+                        ...section.delivery?.addressCapture,
+                        required: e.target.checked,
+                      },
+                    })
+                  }
+                />
+                <span>Required</span>
+              </label>
+              <div>
+                <label className="block text-sm font-medium">Save Method</label>
+                <select
+                  className="select w-full"
+                  value={section.delivery?.addressCapture?.method ?? 'googleForm'}
+                  onChange={(e) =>
+                    setSectionField('delivery', {
+                      ...section.delivery,
+                      addressCapture: {
+                        ...section.delivery?.addressCapture,
+                        method: e.target.value as 'googleForm' | 's3',
+                      },
+                    })
+                  }
+                >
+                  <option value="googleForm">Google Form</option>
+                  <option value="s3">S3</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium">Google Form Entry ID</label>
+                <input
+                  className="input w-full"
+                  value={section.delivery?.addressCapture?.googleFormEntryId ?? ''}
+                  onChange={(e) =>
+                    setSectionField('delivery', {
+                      ...section.delivery,
+                      addressCapture: {
+                        ...section.delivery?.addressCapture,
+                        googleFormEntryId: e.target.value,
+                      },
+                    })
+                  }
+                  placeholder="entry.123456"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium">S3 Prefix (optional)</label>
+              <input
+                className="input w-full"
+                value={section.delivery?.addressCapture?.s3Prefix ?? ''}
+                onChange={(e) =>
+                  setSectionField('delivery', {
+                    ...section.delivery,
+                    addressCapture: {
+                      ...section.delivery?.addressCapture,
+                      s3Prefix: e.target.value,
+                    },
+                  })
+                }
+                placeholder="orders/{siteId}/delivery/"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-3">

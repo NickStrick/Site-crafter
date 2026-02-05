@@ -602,6 +602,13 @@ export type ProductListingsSection = SectionBase & {
     type?: 'flat' | 'uber' | 'doordash';
     flatFeeCents?: number;
     mode?: 'pickup' | 'delivery' | 'both';
+    addressCapture?: {
+      enabled?: boolean;
+      required?: boolean;
+      method?: 'googleForm' | 's3';
+      googleFormEntryId?: string;
+      s3Prefix?: string;
+    };
   };
 };
 
