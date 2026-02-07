@@ -22,6 +22,12 @@ export const SiteConfigSchema = z.object({
   theme: ThemeSchema,
   meta: MetaSchema,
   sections: z.array(z.any()),
+  settings: z
+    .object({
+      general: z.any().optional(),
+      payments: z.any().optional(),
+    })
+    .optional(),
 });
 
 export type SiteConfigParsed = z.infer<typeof SiteConfigSchema>;

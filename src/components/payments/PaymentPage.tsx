@@ -6,6 +6,7 @@ import PaymentForm from './PaymentForm';
 import { X, Plus, Trash2, CheckCircle, Check, ArrowBigLeft } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import type { CheckoutInput, GoogleFormOptions } from '@/types/site';
+import { useSite } from '@/context/SiteContext';
 
 function formatPrice(cents: number, currency = 'USD') {
   return new Intl.NumberFormat('en-US', {
@@ -16,15 +17,15 @@ function formatPrice(cents: number, currency = 'USD') {
 
 export default function PaymentPage({
   token,
-  checkoutInputs,
-  googleFormUrl,
-  googleFormOptions,
-  paymentType = 'converge',
-  externalPaymentUrl,
-  supportEmail,
-  supportPhone,
-  taxes,
-  delivery,
+  checkoutInputs: checkoutInputsProp,
+  googleFormUrl: googleFormUrlProp,
+  googleFormOptions: googleFormOptionsProp,
+  paymentType: paymentTypeProp,
+  externalPaymentUrl: externalPaymentUrlProp,
+  supportEmail: supportEmailProp,
+  supportPhone: supportPhoneProp,
+  taxes: taxesProp,
+  delivery: deliveryProp,
 }: {
   token?: string;
   checkoutInputs?: CheckoutInput[];
@@ -55,6 +56,17 @@ export default function PaymentPage({
     };
   };
 }) {
+  const { config } = useSite();
+  const settingsPayments = config?.settings?.payments;
+  const checkoutInputs = checkoutInputsProp ?? settingsPayments?.checkoutInputs;
+  const googleFormUrl = googleFormUrlProp ?? settingsPayments?.googleFormUrl;
+  const googleFormOptions = googleFormOptionsProp ?? settingsPayments?.googleFormOptions;
+  const paymentType = paymentTypeProp ?? settingsPayments?.paymentType ?? 'converge';
+  const externalPaymentUrl = externalPaymentUrlProp ?? settingsPayments?.externalPaymentUrl;
+  const supportEmail = supportEmailProp ?? settingsPayments?.supportEmail;
+  const supportPhone = supportPhoneProp ?? settingsPayments?.supportPhone;
+  const taxes = taxesProp ?? settingsPayments?.taxes;
+  const delivery = deliveryProp ?? settingsPayments?.delivery;
   const { items, totalCents, currency, isCheckoutOpen, closeCheckout, addItem, removeItem } = useCart();
   const convergeToken = token ?? process.env.NEXT_PUBLIC_CONVERGE_TOKEN ?? '';
   const cloverToken = process.env.NEXT_PUBLIC_CLOVER_TOKEN ?? '';

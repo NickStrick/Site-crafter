@@ -42,6 +42,14 @@ export const mockSiteConfig: SiteConfig = {
       "Mark Stricker writes and teaches about emerging technologies, certification strategy, and learning systems. Staff Solutions Engineer at Splunk and longtime instructor.",
     favicon: logoMark.src,
   },
+  settings: {
+    general: {},
+    payments: {
+      cartActive: true,
+      paymentType: "externalLink",
+      externalPaymentUrl: "https://venmo.com/u/Mark-Stricker-2?txn=pay&note=Purchase&amount=",
+    },
+  },
   sections: [
     // ======================
     // HEADER
@@ -315,10 +323,6 @@ export const mockSiteConfig: SiteConfig = {
       style: { columns: 2, cardVariant: "default", showBadges: true },
       showAllThreshold: 20,
       buyCtaFallback: "Buy Now",
-      cartActive: true,
-      paymentType: "externalLink",
-      
-      externalPaymentUrl: "https://venmo.com/u/Mark-Stricker-2?txn=pay&note=Purchase&amount=",
       products: [
         {
           id: "PDF-001",

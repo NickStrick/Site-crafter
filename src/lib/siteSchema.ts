@@ -12,6 +12,7 @@ export const SiteConfigSchema = z.object({
       favicon: z.string().optional(),
     })
     .optional(),
+  settings: z.unknown().optional(),
 });
 
 export type SiteConfigJson = z.infer<typeof SiteConfigSchema>;

@@ -5,6 +5,7 @@ import { useSite } from '@/context/SiteContext';
 import MediaPicker from './MediaPicker';
 import { getSiteId } from '@/lib/siteId';
 import ConfigModal from './ConfigModal';
+import SettingsModal from './SettingsModal';
 
 type PickerKind = 'generic' | 'video-files' | 'video-posters';
 
@@ -13,6 +14,7 @@ export default function AdminBar() {
   const [openPicker, setOpenPicker] = useState(false);
   const [kind, setKind] = useState<PickerKind>('generic');
   const [showConfig, setShowConfig] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const siteId = getSiteId();
   const bucket = process.env.NEXT_PUBLIC_S3_DEFAULT_BUCKET;
@@ -45,6 +47,14 @@ export default function AdminBar() {
             title="Edit site config (sections, fields, media links)"
           >
             Edit Sections
+          </button>
+
+          <button
+            className="btn btn-inverted"
+            onClick={() => setShowSettings(true)}
+            title="Edit site settings (payments, general)"
+          >
+            Settings
           </button>
 
           <button
@@ -101,6 +111,9 @@ export default function AdminBar() {
 
       {/* Config editor modal */}
       {showConfig && <ConfigModal onClose={() => setShowConfig(false)} />}
+
+      {/* Settings editor modal */}
+      {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
     </div>
   );
 }

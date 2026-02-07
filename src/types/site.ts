@@ -207,10 +207,16 @@ export type SectionalSection = SectionBase & {
 
 
 
+export type SiteSettings = {
+  general?: Record<string, unknown>;
+  payments?: PaymentsSettings;
+};
+
 export type SiteConfig = {
   theme: SiteStyle;
   sections: AnySection[];
   meta?: { title?: string; description?: string; favicon?: string };
+  settings?: SiteSettings;
 };
 
 
@@ -572,16 +578,7 @@ export type GoogleFormOptions = {
   totalEntryId?: string;
 };
 
-export type ProductListingsSection = SectionBase & {
-  id: string;
-  type: 'productListings';
-  title?: string;
-  subtitle?: string;
-  products: Product[];
-  style?: ProductListingsStyle;
-  showAllThreshold?: number;     // default 3 — show "Show all" if > threshold
-  buyCtaFallback?: string;       // default "Buy Now"
-  detailsEnabled?: boolean;        // default false
+export type PaymentsSettings = {
   cartActive?: boolean;        // default false
   checkoutInputs?: CheckoutInput[];
   googleFormUrl?: string;
@@ -610,6 +607,18 @@ export type ProductListingsSection = SectionBase & {
       s3Prefix?: string;
     };
   };
+};
+
+export type ProductListingsSection = SectionBase & {
+  id: string;
+  type: 'productListings';
+  title?: string;
+  subtitle?: string;
+  products: Product[];
+  style?: ProductListingsStyle;
+  showAllThreshold?: number;     // default 3 — show "Show all" if > threshold
+  buyCtaFallback?: string;       // default "Buy Now"
+  detailsEnabled?: boolean;        // default false
 };
 
 export type PersonItem = {
