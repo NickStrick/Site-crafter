@@ -13,7 +13,25 @@ export type ThemePreset =
   | 'lavender'
   | 'irish'
   | 'splunk'
-  | 'sue';  // new
+  | 'sue'
+  | 'custom';  // user-defined
+
+export const THEME_PRESETS: ThemePreset[] = [
+  'ocean',
+  'sunset',
+  'forest',
+  'slate',
+  'festival',
+  'candy',
+  'neon',
+  'grove',
+  'forest-earthy',
+  'lavender',
+  'irish',
+  'splunk',
+  'sue',
+  'custom',
+];
 
 export type Theme = {
   preset: ThemePreset;
@@ -21,10 +39,27 @@ export type Theme = {
   accent?: string;
   radius?: 'sm' | 'md' | 'lg' | 'xl';
 };
+export type ThemeColors = {
+  primary?: string;
+  accent?: string;
+  bg?: string;
+  bg2?: string;
+  fg?: string;
+  muted?: string;
+  text1?: string;
+  text2?: string;
+};
 export type SiteStyle = {
   preset: ThemePreset;
   primary?: string;   
   accent?: string;
+  bg?: string;
+  bg2?: string;
+  fg?: string;
+  muted?: string;
+  text1?: string;
+  text2?: string;
+  colors?: ThemeColors;
   radius?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
 };
 

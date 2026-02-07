@@ -6,6 +6,7 @@ import MediaPicker from './MediaPicker';
 import { getSiteId } from '@/lib/siteId';
 import ConfigModal from './ConfigModal';
 import SettingsModal from './SettingsModal';
+import AdminThemePanel from './AdminThemePanel';
 
 type PickerKind = 'generic' | 'video-files' | 'video-posters';
 
@@ -15,6 +16,7 @@ export default function AdminBar() {
   const [kind, setKind] = useState<PickerKind>('generic');
   const [showConfig, setShowConfig] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showThemePanel, setShowThemePanel] = useState(false);
 
   const siteId = getSiteId();
   const bucket = process.env.NEXT_PUBLIC_S3_DEFAULT_BUCKET;
@@ -38,7 +40,7 @@ export default function AdminBar() {
   return (
     <div data-admin-ui="true">
       <div className="fixed right-4 top-4 z-[10000]">
-        <div className="card card-solid px-4 py-3 flex flex-wrap items-center gap-3">
+        <div className="card card-solid card-full px-4 py-3 flex flex-wrap items-center gap-3">
           <span className="font-semibold">Admin Mode</span>
 
           <button
@@ -55,6 +57,14 @@ export default function AdminBar() {
             title="Edit site settings (payments, general)"
           >
             Settings
+          </button>
+
+          <button
+            className={showThemePanel ? 'btn btn-primary' : 'btn btn-inverted'}
+            onClick={() => setShowThemePanel((v) => !v)}
+            title="Toggle theme switcher"
+          >
+            Theme
           </button>
 
           <button
@@ -114,6 +124,9 @@ export default function AdminBar() {
 
       {/* Settings editor modal */}
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
+
+      {/* Theme switcher panel */}
+      {showThemePanel && <AdminThemePanel />}
     </div>
   );
 }

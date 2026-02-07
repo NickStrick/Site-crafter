@@ -6,7 +6,6 @@ import "./globals.css";
 import { SiteProvider } from "@/context/SiteContext";
 import { CartProvider } from "@/context/CartContext";
 import type { SiteConfig } from "@/types/site";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import GlobalHashLinkHandler from "@/components/GlobalHashLinkHandler";
 
 // ✅ Admin UI (client) — keyboard toggle + bar
@@ -63,8 +62,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const config = await getSiteConfig();
-  const showThemeSwitcher = process.env.NEXT_PUBLIC_THEME_SWITCHER === "1";
-
   return (
     <html lang="en">
       <head>
@@ -75,8 +72,6 @@ export default async function RootLayout({
           <CartProvider>
             <GlobalHashLinkHandler />
             <main className="overflow-hidden"><div id="top"></div>{children}</main>
-            {showThemeSwitcher && <ThemeSwitcher />}
-
           {/* ✅ Admin overlay (toggle with Ctrl/Cmd + Alt + A OR Ctrl/Cmd + Shift + A)
               Also supports ?admin=1 and persists via localStorage */}
             <AdminGate>

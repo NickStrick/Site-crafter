@@ -36,8 +36,15 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
   const [draft, setDraft] = useState<SiteConfig | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const originalRef = useRef<SiteConfig | null>(null);
+  const previewDraftRef = useRef<SiteConfig | null>(null);
+  const [isPreviewing, setIsPreviewing] = useState(false);
+  const ignoreConfigSyncRef = useRef(false);
 
   useEffect(() => {
+    if (ignoreConfigSyncRef.current) {
+      ignoreConfigSyncRef.current = false;
+      return;
+    }
     if (config) {
       const copy = deepClone(config);
       setDraft(copy);
@@ -213,6 +220,33 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
     setSelectedIndex(0);
   }, []);
 
+  const startPreview = useCallback(() => {
+    if (!draft) return;
+    const snapshot = deepClone(draft);
+    previewDraftRef.current = snapshot;
+    ignoreConfigSyncRef.current = true;
+    setConfig(snapshot);
+    setIsPreviewing(true);
+  }, [draft, setConfig]);
+
+  const returnToEditor = useCallback(() => {
+    if (previewDraftRef.current) {
+      ignoreConfigSyncRef.current = true;
+      setConfig(previewDraftRef.current);
+    }
+    setIsPreviewing(false);
+  }, [setConfig]);
+
+  const undoChanges = useCallback(() => {
+    if (!originalRef.current) return;
+    const restored = deepClone(originalRef.current);
+    ignoreConfigSyncRef.current = true;
+    setConfig(restored);
+    setDraft(restored);
+    previewDraftRef.current = null;
+    setIsPreviewing(false);
+  }, [setConfig]);
+
   // ---------------------------
   // Single-section editor renderer
   // ---------------------------
@@ -294,6 +328,24 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
     );
   }
 
+  if (isPreviewing) {
+    return (
+      <div className="fixed inset-0 z-[12000] pointer-events-none">
+        <div className="fixed top-[90px] right-4 z-[12010] pointer-events-auto">
+          <div className="card card-solid px-4 py-3 flex items-center gap-3">
+            <div className="text-sm text-muted">Previewing draft</div>
+            <button className="btn btn-ghost" onClick={undoChanges}>
+              Undo Changes
+            </button>
+            <button className="btn btn-primary" onClick={returnToEditor}>
+              Return to editor
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const selected = draft.sections[selectedIndex];
 
   return (
@@ -304,6 +356,11 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
           <div className="font-semibold text-lg">Edit Site Content</div>
           <div className="flex items-center gap-2 save-config-btns">
             {error && <div className="text-red-600 text-sm mr-3">{error}</div>}
+            {isDirty && (
+              <button className="btn btn-inverted" onClick={startPreview}>
+                Preview
+              </button>
+            )}
             {isDirty && (
               <button className="btn btn-ghost" onClick={onRestore}>
                 Restore
