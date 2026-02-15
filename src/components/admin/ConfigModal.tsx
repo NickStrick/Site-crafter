@@ -9,6 +9,7 @@ import { SECTION_REGISTRY, getAllowedSectionTypes } from './configRegistry';
 import { getEditorForSection } from './EditSections';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import AdminAIChatPanel from './AdminAIChatPanel';
 
 // -----------------------------
 // Utilities
@@ -17,6 +18,20 @@ function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
 }
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
+function mergeDeep<T>(base: T, patch: Partial<T>): T {
+  if (patch === null || typeof patch !== 'object') return patch as T;
+  if (Array.isArray(patch)) return patch as T;
+  const result = { ...(base as Record<string, unknown>) } as Record<string, unknown>;
+  Object.entries(patch as Record<string, unknown>).forEach(([key, value]) => {
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      const baseVal = (result as Record<string, unknown>)[key];
+      result[key] = mergeDeep(baseVal as Record<string, unknown>, value as Record<string, unknown>);
+    } else {
+      result[key] = value;
+    }
+  });
+  return result as T;
+}
 
 // -----------------------------
 // Props
@@ -316,7 +331,7 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
   if (!draft) {
     return (
       <div className="fixed inset-0 z-[1200] bg-black/50 flex items-center justify-center p-4">
-        <div className="card p-6">
+        <div className="card admin-card p-6">
           <div className="text-sm text-muted">Loading config…</div>
           <div className="mt-4 text-right">
             <button className="btn btn-ghost" onClick={onClose}>
@@ -332,7 +347,7 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
     return (
       <div className="fixed inset-0 z-[12000] pointer-events-none">
         <div className="fixed top-[90px] right-4 z-[12010] pointer-events-auto">
-          <div className="card card-solid px-4 py-3 flex items-center gap-3">
+          <div className="card card-solid admin-card px-4 py-3 flex items-center gap-3">
             <div className="text-sm text-muted">Previewing draft</div>
             <button className="btn btn-ghost" onClick={undoChanges}>
               Undo Changes
@@ -350,7 +365,7 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
 
   return (
     <div className="fixed edit-modal inset-0 z-[12000] bg-black/50 flex items-center justify-center p-4">
-      <div className="card card-solid p-4 relative w-fit !max-w-full pr-[70px] overflow-hidden card-screen-height">
+      <div className="card card-solid admin-card p-4 relative w-fit !max-w-full pr-[70px] overflow-hidden card-screen-height">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <div className="font-semibold text-lg">Edit Site Content</div>
@@ -374,7 +389,19 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
             </button>
           </div>
         </div>
+            <div className="p-4 border-b">
+          <AdminAIChatPanel
+            mode="inline"
+            title="AI (Edit Sections)"
+            placeholder="Ask AI to update sections, content, or theme..."
+            config={draft}
+            onApplyPatch={(patch) => {
+              setDraft((prev) => (prev ? mergeDeep(prev, patch) : prev));
+            }}
+          />
+        </div>
 
+        
         {/* Body */}
         <div className="grid md:grid-cols-3 gap-0">
           {/* Left: Sections list (select one) */}
@@ -390,7 +417,7 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
                     // type="button"
                     onClick={() => setSelectedIndex(i)}
                     className={[
-                      'card card-solid p-3 w-full text-left flex items-start justify-between gap-2 transition hover:cursor-pointer',
+                      'card card-solid admin-card p-3 w-full text-left flex items-start justify-between gap-2 transition hover:cursor-pointer',
                       isSelected ? 'outline outline-2 outline-primary bg-black/5' : 'hover:bg-black/5',
                     ].join(' ')}
                     aria-current={isSelected ? 'true' : undefined}
@@ -456,9 +483,9 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
           </div>
 
           {/* Right: Only the selected editor */}
-          <div className="md:col-span-2 p-4 space-y-4 right-editor-container">
+          <div className="md:col-span-2 p-4 space-y-4">
             {selected ? (
-              <div key={selected.id} className="card card-solid p-4 space-y-3 right-editor-card">
+              <div key={selected.id} className="card card-solid admin-card p-4 space-y-3 right-editor-card">
                 {renderEditor(selected, selectedIndex, (next) => updateSection(selectedIndex, next))}
               </div>
             ) : (
@@ -471,7 +498,7 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
       {/* Media Picker Overlay */}
       {pickerOpen && (
         <div className="fixed inset-0 z-[1300] bg-black/60 flex items-center justify-center p-4">
-          <div className="card card-solid p-4 relative w-fit max-w-[95vw] pr-[70px] max-h-[90vh] overflow-auto">
+          <div className="card card-solid admin-card p-4 relative w-fit max-w-[95vw] pr-[70px] max-h-[90vh] overflow-auto">
             <button
               onClick={handleCancelPick}
               className="absolute right-3 top-3 btn btn-ghost"

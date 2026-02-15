@@ -1,0 +1,26 @@
+{
+  "name": "orders-email-lambda",
+  "private": true,
+  "version": "0.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && esbuild src/handler.ts --bundle --platform=node --target=node18 --format=cjs --outfile=dist/index.js --sourcemap",
+    "typecheck": "tsc --noEmit",
+    "zip": "npm run build && cd dist && bestzip orders-email.zip index.js index.js.map",
+    "tree": "node -e \"const {execSync}=require('child_process'); try{console.log(execSync('powershell -NoProfile -Command \"Get-ChildItem -Recurse -Force | Select-Object FullName\"',{stdio:'pipe'}).toString())}catch{console.log('') }\""
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.896.0",
+    "@aws-sdk/lib-dynamodb": "^3.896.0",
+    "@aws-sdk/util-dynamodb": "^3.896.0",
+    "@resend/node": "npm:resend@^6.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "bestzip": "^2.2.1",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.3"
+  }
+}
+

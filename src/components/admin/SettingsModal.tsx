@@ -4,12 +4,28 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CheckoutInput, CheckoutInputOption, PaymentsSettings, SiteConfig } from '@/types/site';
 import { useSite } from '@/context/SiteContext';
 import { getSiteId } from '@/lib/siteId';
+import AdminAIChatPanel from './AdminAIChatPanel';
 
 // -----------------------------
 // Utilities
 // -----------------------------
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
+}
+
+function mergeDeep<T>(base: T, patch: Partial<T>): T {
+  if (patch === null || typeof patch !== 'object') return patch as T;
+  if (Array.isArray(patch)) return patch as T;
+  const result = { ...(base as Record<string, unknown>) } as Record<string, unknown>;
+  Object.entries(patch as Record<string, unknown>).forEach(([key, value]) => {
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      const baseVal = (result as Record<string, unknown>)[key];
+      result[key] = mergeDeep(baseVal as Record<string, unknown>, value as Record<string, unknown>);
+    } else {
+      result[key] = value;
+    }
+  });
+  return result as T;
 }
 
 function rid() {
@@ -79,6 +95,8 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'general' | 'payments'>('payments');
+  const [testEmailSending, setTestEmailSending] = useState(false);
+  const [testEmailResult, setTestEmailResult] = useState<{ ok: boolean; message: string } | null>(null);
 
   useEffect(() => {
     if (config) {
@@ -92,6 +110,29 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
     () => draft?.settings?.payments ?? {},
     [draft?.settings?.payments]
   );
+
+  const general = useMemo<Record<string, unknown>>(
+    () => draft?.settings?.general ?? {},
+    [draft?.settings?.general]
+  );
+
+  const businessDisplayName = useMemo(
+    () => (typeof general.businessDisplayName === 'string' ? general.businessDisplayName : ''),
+    [general.businessDisplayName]
+  );
+
+  const businessNotificationEmail = useMemo(
+    () => (typeof general.businessNotificationEmail === 'string' ? general.businessNotificationEmail : ''),
+    [general.businessNotificationEmail]
+  );
+
+  const updateGeneral = useCallback((patch: Record<string, unknown>) => {
+    setDraft((prev) => {
+      if (!prev) return prev;
+      const nextGeneral = { ...(prev.settings?.general ?? {}), ...patch };
+      return { ...prev, settings: { ...(prev.settings ?? {}), general: nextGeneral } };
+    });
+  }, []);
 
   const [localCheckoutInputs, setLocalCheckoutInputs] = useState<LocalCheckoutInput[]>([]);
 
@@ -195,10 +236,45 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
     setDraft(restored);
   }, []);
 
+  const sendTestOrderEmail = useCallback(async () => {
+    setTestEmailSending(true);
+    setTestEmailResult(null);
+    try {
+      const res = await fetch('/api/admin/orders/email-test', {
+        method: 'POST',
+        headers: { 'x-local-admin': '1', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          businessDisplayName,
+          businessNotificationEmail,
+        }),
+      });
+      const text = await res.text();
+      if (!res.ok) throw new Error(text || `HTTP ${res.status}`);
+
+      let orderId = '';
+      try {
+        const json = JSON.parse(text) as { order?: { orderId?: string } };
+        orderId = json?.order?.orderId ?? '';
+      } catch {
+        // ignore
+      }
+
+      setTestEmailResult({
+        ok: true,
+        message: orderId ? `Created test order: ${orderId}` : 'Created test order.',
+      });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to create test order.';
+      setTestEmailResult({ ok: false, message: msg });
+    } finally {
+      setTestEmailSending(false);
+    }
+  }, [businessDisplayName, businessNotificationEmail]);
+
   if (!draft) {
     return (
       <div className="fixed inset-0 z-[1200] bg-black/50 flex items-center justify-center p-4">
-        <div className="card p-6">
+        <div className="card admin-card p-6">
           <div className="text-sm text-muted">Loading settings...</div>
           <div className="mt-4 text-right">
             <button className="btn btn-ghost" onClick={onClose}>
@@ -212,7 +288,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
 
   return (
     <div className="fixed edit-modal inset-0 z-[12000] bg-black/50 flex items-center justify-center p-4">
-      <div className="card card-solid p-4 relative w-full max-w-5xl !max-w-full overflow-hidden card-screen-height">
+      <div className="card admin-card card-solid p-4 relative w-full max-w-5xl !max-w-full overflow-hidden card-screen-height">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <div className="font-semibold text-lg">Edit Site Settings</div>
@@ -232,15 +308,27 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
           </div>
         </div>
 
+        <div className="p-4 border-b">
+          <AdminAIChatPanel
+            mode="inline"
+            title="AI (Settings)"
+            placeholder="Ask AI to update payments, checkout fields, or other settings..."
+            config={draft}
+            onApplyPatch={(patch) => {
+              setDraft((prev) => (prev ? mergeDeep(prev, patch) : prev));
+            }}
+          />
+        </div>
+
         {/* Tabs */}
         <div className="px-4 pt-4">
           <div className="flex justify-center gap-6 border-b">
             <button
               className={[
-                'px-4 py-2 -mb-px text-sm font-semibold transition-colors border-b-2',
+                'px-4 py-2 -mb-px text-sm font-semibold transition-colors border-b-4',
                 activeTab === 'general'
-                  ? 'border-emerald-600 text-black'
-                  : 'border-transparent text-gray-600 hover:text-black hover:border-gray-300',
+                  ? 'border-[var(--admin-primary)] text-white'
+                  : 'border-transparent text-gray-200  hover:text-[var(--admin-primary)]',
               ].join(' ')}
               onClick={() => setActiveTab('general')}
             >
@@ -248,10 +336,10 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
             </button>
             <button
               className={[
-                'px-4 py-2 -mb-px text-sm font-semibold transition-colors border-b-2',
+                'px-4 py-2 -mb-px text-sm font-semibold transition-colors border-b-4',
                 activeTab === 'payments'
-                  ? 'border-emerald-600 text-black'
-                  : 'border-transparent text-gray-600 hover:text-black hover:border-gray-300',
+                  ? 'border-[var(--admin-primary)] text-white'
+                  : 'border-transparent text-gray-200  hover:text-[var(--admin-primary)]',
               ].join(' ')}
               onClick={() => setActiveTab('payments')}
             >
@@ -263,16 +351,76 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
         {/* Body */}
         <div className="p-4 overflow-auto">
           {activeTab === 'general' && (
-            <div className="card card-solid card-full p-4 space-y-3 w-full">
+            <div className="card admin-card card-solid card-full p-4 space-y-3 w-full">
               <div className="font-semibold">General</div>
-              <div className="text-sm text-muted">
-                No general settings configured yet. This section is reserved for site-level settings.
+
+              <div className="card admin-card card-solid card-full p-4 space-y-3">
+                <div className="font-semibold">Emailing</div>
+                <div className="text-sm text-muted">
+                  Used for order confirmation + notification emails (DynamoDB Streams → Lambda → Resend).
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium">Business Display Name</label>
+                    <input
+                      className="input w-full"
+                      value={businessDisplayName}
+                      onChange={(e) => updateGeneral({ businessDisplayName: e.target.value })}
+                      placeholder="Sapling Sites"
+                    />
+                    <div className="text-xs text-muted mt-1">
+                      Shows in the customer email “From” name.
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium">Business Notification Email</label>
+                    <input
+                      className="input w-full"
+                      value={businessNotificationEmail}
+                      onChange={(e) => updateGeneral({ businessNotificationEmail: e.target.value })}
+                      placeholder="orders@yourbusiness.com"
+                    />
+                    <div className="text-xs text-muted mt-1">
+                      Receives new order notifications and becomes Reply-To.
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    className="btn btn-primary"
+                    onClick={sendTestOrderEmail}
+                    disabled={testEmailSending}
+                    aria-disabled={testEmailSending}
+                    title="Creates a 1¢ test order using Business Notification Email as both customer + business email."
+                  >
+                    {testEmailSending ? 'Sending...' : 'Send Test Email'}
+                  </button>
+                  <div className="text-xs text-muted">
+                    Creates a 1¢ test order with the business email as both To addresses.
+                  </div>
+                </div>
+
+                {testEmailResult && (
+                  <div
+                    className={[
+                      'text-sm rounded-lg px-3 py-2 border',
+                      testEmailResult.ok
+                        ? 'border-emerald-700/40 bg-emerald-900/20 text-emerald-200'
+                        : 'border-red-700/40 bg-red-900/20 text-red-200',
+                    ].join(' ')}
+                  >
+                    {testEmailResult.message}
+                  </div>
+                )}
               </div>
             </div>
           )}
 
           {activeTab === 'payments' && (
-            <div className="card card-solid card-full p-4 space-y-4 w-full">
+            <div className="card admin-card card-solid card-full p-4 space-y-4 w-full">
               <div className="font-semibold">Payments</div>
 
             <label className="flex items-center gap-2">
@@ -358,6 +506,14 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
                 placeholder="https://docs.google.com/forms/d/e/.../formResponse"
               />
             </div>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={payments.googleFormSubmitBeforePayment === true}
+                onChange={(e) => updatePayments('googleFormSubmitBeforePayment', e.target.checked)}
+              />
+              <span>Submit Google Form before payment step</span>
+            </label>
 
             <div className="rounded-lg border border-gray-200 p-4 space-y-3">
               <div className="text-sm font-semibold">Taxes</div>

@@ -129,7 +129,7 @@ export default function AdminThemePanel() {
 
   return (
     <div className="fixed bottom-4 left-0 right-0 z-[10000] flex justify-center">
-      <div className="card card-solid px-4 py-3 flex flex-wrap items-center gap-3">
+      <div className="card admin-card card-solid px-4 py-3 flex flex-wrap items-center gap-3">
         <div className="text-sm font-semibold">Theme</div>
         <select
           className="select min-w-[180px] text-black"
@@ -184,7 +184,7 @@ export default function AdminThemePanel() {
 
       {showColors && (
         <div className="fixed inset-0 z-[12000] bg-black/50 flex items-center justify-center p-4">
-          <div className="card card-solid p-6 relative w-full max-w-xl max-h-[90vh] overflow-auto">
+          <div className="card admin-card card-solid p-6 relative w-full max-w-xl max-h-[90vh] overflow-auto">
             <div className="flex items-center justify-between mb-4">
               <div className="font-semibold text-lg">Custom Theme Colors</div>
               <button

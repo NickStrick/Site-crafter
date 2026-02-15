@@ -617,6 +617,7 @@ export type PaymentsSettings = {
   cartActive?: boolean;        // default false
   checkoutInputs?: CheckoutInput[];
   googleFormUrl?: string;
+  googleFormSubmitBeforePayment?: boolean;
   paymentType?: 'converge' | 'clover' | 'externalLink';
   externalPaymentUrl?: string;
   googleFormOptions?: GoogleFormOptions;

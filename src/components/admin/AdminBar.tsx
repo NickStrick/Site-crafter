@@ -7,16 +7,20 @@ import { getSiteId } from '@/lib/siteId';
 import ConfigModal from './ConfigModal';
 import SettingsModal from './SettingsModal';
 import AdminThemePanel from './AdminThemePanel';
+import AdminAIChatPanel from './AdminAIChatPanel';
+import OrdersModal from './OrdersModal';
 
 type PickerKind = 'generic' | 'video-files' | 'video-posters';
 
 export default function AdminBar() {
-  const { config } = useSite();
+  const { config, setConfig } = useSite();
   const [openPicker, setOpenPicker] = useState(false);
   const [kind, setKind] = useState<PickerKind>('generic');
   const [showConfig, setShowConfig] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showThemePanel, setShowThemePanel] = useState(false);
+  const [showAI, setShowAI] = useState(false);
+  const [showOrders, setShowOrders] = useState(false);
 
   const siteId = getSiteId();
   const bucket = process.env.NEXT_PUBLIC_S3_DEFAULT_BUCKET;
@@ -37,10 +41,25 @@ export default function AdminBar() {
     }
   }, [kind, siteId]);
 
+  function mergeDeep<T>(base: T, patch: Partial<T>): T {
+    if (patch === null || typeof patch !== 'object') return patch as T;
+    if (Array.isArray(patch)) return patch as T;
+    const result = { ...(base as Record<string, unknown>) } as Record<string, unknown>;
+    Object.entries(patch as Record<string, unknown>).forEach(([key, value]) => {
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        const baseVal = (result as Record<string, unknown>)[key];
+        result[key] = mergeDeep(baseVal as Record<string, unknown>, value as Record<string, unknown>);
+      } else {
+        result[key] = value;
+      }
+    });
+    return result as T;
+  }
+
   return (
     <div data-admin-ui="true">
       <div className="fixed right-4 top-4 z-[10000]">
-        <div className="card card-solid card-full px-4 py-3 flex flex-wrap items-center gap-3">
+        <div className="card admin-card card-solid card-full px-4 py-3 flex flex-wrap items-center gap-3">
           <span className="font-semibold">Admin Mode</span>
 
           <button
@@ -68,11 +87,27 @@ export default function AdminBar() {
           </button>
 
           <button
+            className={showAI ? 'btn btn-primary' : 'btn btn-inverted'}
+            onClick={() => setShowAI((v) => !v)}
+            title="AI assistant"
+          >
+            AI
+          </button>
+
+          <button
+            className={showOrders ? 'btn btn-primary' : 'btn btn-inverted'}
+            onClick={() => setShowOrders((v) => !v)}
+            title="Manage orders"
+          >
+            Orders
+          </button>
+
+          {/* <button
             className="btn btn-inverted"
             onClick={() => { setKind('generic'); setOpenPicker(true); }}
           >
             Media Files
-          </button>
+          </button> */}
 
           {hasVideo && (
             <>
@@ -98,7 +133,7 @@ export default function AdminBar() {
       {/* Media Picker modal */}
       {openPicker && (
         <div className="fixed inset-0 z-[11000] bg-black/50 flex items-center justify-center p-4">
-          <div className="card card-solid p-4 relative w-fit !max-w-full pr-[70px] max-h-[100vh] overflow-auto">
+          <div className="card admin-card card-solid p-4 relative w-fit !max-w-full pr-[70px] max-h-[100vh] overflow-auto">
             <button
               onClick={() => setOpenPicker(false)}
               className="absolute right-3 top-3 btn btn-ghost"
@@ -127,6 +162,22 @@ export default function AdminBar() {
 
       {/* Theme switcher panel */}
       {showThemePanel && <AdminThemePanel />}
+
+      {/* AI assistant drawer */}
+      {showAI && config && (
+        <AdminAIChatPanel
+          title="AI Assistant"
+          config={config}
+          onApplyPatch={(patch) => {
+            const next = mergeDeep(config, patch);
+            setConfig(next);
+          }}
+          onClose={() => setShowAI(false)}
+        />
+      )}
+
+      {/* Orders modal */}
+      {showOrders && <OrdersModal onClose={() => setShowOrders(false)} />}
     </div>
   );
 }

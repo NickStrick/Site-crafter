@@ -55,7 +55,10 @@ export const mockSiteConfig: SiteConfig = {
     favicon: logo2.src,
   },
   settings: {
-    general: {},
+    general: {
+      businessDisplayName: "CM Florals",
+      businessNotificationEmail: "nickolasstricker@gmail.com",
+    },
     payments: {
       cartActive: true,
       paymentType: "clover",
@@ -84,9 +87,10 @@ export const mockSiteConfig: SiteConfig = {
         itemsEntryId: "entry.918647669",
         totalEntryId: "entry.65280150",
       },
+      googleFormSubmitBeforePayment: true,
       externalPaymentUrl: "https://venmo.com/u/Carole-Murray-9",
       googleFormUrl:
-        "https://docs.google.com/forms/d/1NgHLz-cE-xzqcehqCNcr9C-OLnxzbo2kz1147S5rMWQ/formResponse",
+        "https://docs.google.com/forms/d/e/1FAIpQLScPLQtqUSiP_CFn1frA3nArkkue_jTWeiE2ZVto6NHOheStrg/formResponse",
       checkoutInputs: [
         {
           id: "customer-name",

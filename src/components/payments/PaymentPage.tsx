@@ -1,7 +1,7 @@
 // src/components/payments/PaymentPage.tsx
 'use client';
 
-import { useState, useEffect, type ChangeEvent } from 'react';
+import { useState, useEffect, useRef, type ChangeEvent } from 'react';
 import PaymentForm from './PaymentForm';
 import { X, Plus, Trash2, CheckCircle, Check, ArrowBigLeft } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
@@ -58,9 +58,21 @@ export default function PaymentPage({
 }) {
   const { config } = useSite();
   const settingsPayments = config?.settings?.payments;
+  const settingsGeneral = (config?.settings?.general ?? {}) as Record<string, unknown>;
+  const businessDisplayName =
+    (typeof settingsGeneral.businessDisplayName === 'string' ? settingsGeneral.businessDisplayName : '').trim() ||
+    (config?.meta?.title ?? '').trim() ||
+    (process.env.NEXT_PUBLIC_SITE_ID ?? '').trim();
+  const businessNotificationEmail =
+    (typeof settingsGeneral.businessNotificationEmail === 'string'
+      ? settingsGeneral.businessNotificationEmail
+      : '').trim() ||
+    (settingsPayments?.supportEmail ?? '').trim();
   const checkoutInputs = checkoutInputsProp ?? settingsPayments?.checkoutInputs;
   const googleFormUrl = googleFormUrlProp ?? settingsPayments?.googleFormUrl;
   const googleFormOptions = googleFormOptionsProp ?? settingsPayments?.googleFormOptions;
+  const googleFormSubmitBeforePayment =
+    settingsPayments?.googleFormSubmitBeforePayment === true;
   const paymentType = paymentTypeProp ?? settingsPayments?.paymentType ?? 'converge';
   const externalPaymentUrl = externalPaymentUrlProp ?? settingsPayments?.externalPaymentUrl;
   const supportEmail = supportEmailProp ?? settingsPayments?.supportEmail;
@@ -80,7 +92,21 @@ export default function PaymentPage({
   const [purchaseComplete, setPurchaseComplete] = useState(false);
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [deliveryConfirmed, setDeliveryConfirmed] = useState(true);
-  const hasDetailsStep = Boolean(checkoutInputs && checkoutInputs.length > 0);
+  const [googleFormSubmitted, setGoogleFormSubmitted] = useState(false);
+  const [orderSaved, setOrderSaved] = useState(false);
+  const orderIdRef = useRef<string>(typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
+  const emailField: CheckoutInput = {
+    id: 'email',
+    label: 'Email',
+    type: 'email',
+    required: true,
+    placeholder: 'you@example.com',
+  };
+  const effectiveCheckoutInputs = [
+    emailField,
+    ...(checkoutInputs ?? []).filter((field) => field.id !== 'email' && !field.hidden),
+  ];
+  const hasDetailsStep = effectiveCheckoutInputs.length > 0;
   const steps = ([
     hasDetailsStep ? { key: 'details', label: 'Details' } : null,
     { key: 'payment', label: 'Payment' },
@@ -117,7 +143,7 @@ export default function PaymentPage({
     needsDeliveryAddress &&
     (deliveryAddress.trim().length === 0 || !deliveryConfirmed) &&
     addressRequired;
-  const requiredFields = (checkoutInputs ?? []).filter((f) => f.required);
+  const requiredFields = effectiveCheckoutInputs.filter((f) => f.required);
   if (addressRequired && needsDeliveryAddress) {
     requiredFields.push({ id: 'deliveryAddress', required: true } as CheckoutInput);
   }
@@ -192,7 +218,7 @@ export default function PaymentPage({
     if (!googleFormUrl) return;
 
     const formData = new FormData();
-    const fields = checkoutInputs?.filter((f) => f.googleFormEntryId) ?? [];
+  const fields = effectiveCheckoutInputs.filter((f) => f.googleFormEntryId) ?? [];
     fields.forEach((f) => {
       const value = customValues[f.id];
       if (typeof value === 'string' && value.length > 0) {
@@ -228,9 +254,87 @@ export default function PaymentPage({
     } catch {
       // no-op: form submission is best-effort in no-cors mode
     }
+    console.log('save order')
+    await saveOrderToS3();
+    setGoogleFormSubmitted(true);
   };
+
+  const saveOrderToS3 = async () => {
+    if (orderSaved) return;
+    const customerEmail =
+      (customValues.email as string) ||
+      (customValues.customerEmail as string) ||
+      '';
+    if (!customerEmail.trim()) {
+      console.warn('[orders] missing customer email; skipping order save');
+      return;
+    }
+
+    const customerName =
+      (customValues['customer-name'] as string) ||
+      (customValues.name as string) ||
+      (customValues.fullName as string) ||
+      (customValues.customerName as string) ||
+      '';
+
+    const payload = {
+      businessId: process.env.NEXT_PUBLIC_SITE_ID ?? '',
+      customerEmail,
+      customerName: customerName || undefined,
+      businessDisplayName: businessDisplayName || undefined,
+      businessNotificationEmail: businessNotificationEmail || undefined,
+      items: items.map((item) => ({
+        ...item,
+        price: Number((item.price / 100).toFixed(2)),
+        total: Number(((item.price * item.quantity) / 100).toFixed(2)),
+      })),
+      total: Number((totalWithFeesCents / 100).toFixed(2)),
+      currency,
+      orderId: orderIdRef.current,
+      fulfillment,
+      deliveryAddress: deliveryAddress.trim() || undefined,
+      taxes: {
+        ...(taxes ?? {}),
+        subtotalCents: totalCents,
+        taxCents,
+        totalCents: totalWithFeesCents,
+      },
+      delivery: {
+        enabled: delivery?.enabled ?? false,
+        type: delivery?.type ?? 'flat',
+        mode: deliveryMode,
+        fulfillment,
+        address: deliveryAddress.trim(),
+        addressConfirmed: deliveryConfirmed === true,
+        flatFeeCents: deliveryFeeCents,
+      },
+      customer: customValues,
+      checkoutInputs: effectiveCheckoutInputs ?? [],
+      payment: {
+        type: paymentType,
+        externalPaymentUrl: externalPaymentUrl ?? '',
+      },
+    };
+
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        setOrderSaved(true);
+      }
+    } catch {
+      // best-effort fallback; avoid blocking checkout
+    }
+  };
+
   const submitCheckoutSideEffects = async () => {
-    await submitToGoogleForm();
+    // await saveOrderToS3();
+    if (!googleFormSubmitBeforePayment || !googleFormSubmitted) {
+      await submitToGoogleForm();
+    }
     await submitDeliveryAddress();
   };
   console.log('PaymentPage config:', { paymentType, paymentToken, paymentScriptUrl });
@@ -415,7 +519,7 @@ export default function PaymentPage({
                   </div>
                 )}
                 <div className="grid gap-4">
-                  {checkoutInputs?.map((field) => {
+                  {effectiveCheckoutInputs.map((field) => {
                     const commonProps = {
                       id: field.id,
                       name: field.id,
@@ -454,7 +558,12 @@ export default function PaymentPage({
 
                   <button
                     type="button"
-                    onClick={() => setStepIndex(Math.min(stepIndex + 1, steps.length - 1))}
+                    onClick={async () => {
+                      if (googleFormSubmitBeforePayment && !googleFormSubmitted) {
+                        await submitToGoogleForm();
+                      }
+                      setStepIndex(Math.min(stepIndex + 1, steps.length - 1));
+                    }}
                     disabled={missingRequired || missingDeliveryAddress}
                     aria-disabled={missingRequired || missingDeliveryAddress}
                     className="w-full mt-6 bg-emerald-600 hover:bg-emerald-700 text-white py-4 font-bold shadow-lg shadow-emerald-200 transition-all rounded-[999px]"

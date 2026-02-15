@@ -12,6 +12,20 @@
   --muted:   #8b0000;
   --text-1: black;
   --text-2: white;
+
+  /* Admin Colors  */
+  /* --admin-bg: #240029;
+  --admin-bg-2: #0f0f0f;
+  --admin-primary:  #ec00c5;
+  --admin-accent: #7401c0;
+  --admin-text: #ffffff;
+   --admin-muted: #ffffff; */
+   --admin-bg: #0b1b13;
+  --admin-bg-2: #082416;
+  --admin-primary:  #65a30d;
+  --admin-accent: #16a34a;
+  --admin-text: #ffffff;
+   --admin-muted: #ffffff;
 }
 
 .loading-span{
@@ -194,6 +208,7 @@ body[data-theme="grove"]  {
   /* keep your theme vars; just add helpers */
   --elev-1: 0 10px 30px rgba(0,0,0,.12);
   --elev-2: 0 18px 60px rgba(0,0,0,.18);
+  --admin-elev: 0px 0px 21px -4px rgba(223, 107, 252, 0.18);
   --round-xl: clamp(14px, 1.6vw, 22px);
 }
 
@@ -609,6 +624,14 @@ max-height: calc(100vh - 135px);
 .save-config-btns{
   position: fixed;
     right: calc(4% + 40px);
+  background-color: var(--admin-bg-2);
+  height: fit-content;
+  border-radius: calc(var(--radius) + 2px);
+  min-height: 0;
+  padding:5px;
+}
+.save-config-btns .btn-ghost{
+   background-color: var(--admin-bg-2);
 }
 .fa-trash{
   color:rgb(255, 90, 90);
@@ -713,4 +736,51 @@ button[disabled]{
       transform: none;
       margin-left: 6px;
   }
+}
+.admin-card{
+  background-image: linear-gradient(
+          to bottom right,
+          var(--admin-bg) 0%,
+          var(--admin-bg-2) 40%,
+          var(--admin-bg-2) 70%,
+          var(--admin-bg-2) 100%
+      );
+      background-size: calc(200% + 4px) calc(100% + 4px);
+      background-position: 0% 100%;
+      color: var(--admin-text); max-width: 2000px; margin: 0 auto;
+      border-radius: var(--round-xl);
+      box-shadow: var(--admin-elev);
+      border: 1px solid var(--admin-accent);
+}
+.admin-card .btn-ghost{
+  border-color:var(--admin-text);
+  color:var(--admin-text);
+}
+.admin-card .text-muted{
+  color:var(--admin-muted);
+}
+.admin-card input:read-only{
+  color:var(--admin-muted);
+  border:none !important;
+  outline:none;
+}
+.admin-card .btn-primary{
+    background: var(--admin-primary);
+    background-image: linear-gradient(
+          to bottom right,
+          var(--admin-accent) 0%,
+          var(--admin-accent) 40%,
+          var(--admin-primary) 70%,
+          var(--admin-primary) 100%
+      );
+      background-size: calc(200% + 4px) calc(200% + 4px);
+      background-position: 60% 100%;
+    color: var(--admin-text);
+}
+.admin-card .btn-inverted{
+      background: var(--admin-text);
+    color: var(--admin-primary);
+}
+.admin-card select{
+  color:black;
 }
