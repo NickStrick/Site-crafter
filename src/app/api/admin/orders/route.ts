@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   if (denied) return denied;
 
   const { searchParams } = req.nextUrl;
-  const envSiteId = process.env.NEXT_PUBLIC_SITE_ID || '';
+  const envSiteId = (process.env.NEXT_PUBLIC_SITE_ID || '').trim();
   const requestedId = (searchParams.get('businessId') || '').trim();
   const businessId = envSiteId || requestedId;
   if (!businessId.trim()) {

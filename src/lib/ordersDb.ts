@@ -127,6 +127,10 @@ export async function listOrdersByBusiness(
   businessId: string,
   options: ListOrdersOptions = {}
 ): Promise<{ items: OrderRecord[]; nextToken: string | null }> {
+  const biz = (businessId || '').trim();
+  if (!biz) {
+    return { items: [], nextToken: null };
+  }
   const limit = typeof options.limit === 'number' ? options.limit : 25;
   const scanForward = options.scanForward ?? false;
   const fromISO = options.fromISO || '0000-01-01T00:00:00.000Z';
@@ -140,7 +144,7 @@ export async function listOrdersByBusiness(
       KeyConditionExpression:
         'businessId = :b AND createdAtOrderId BETWEEN :fromKey AND :toKey',
       ExpressionAttributeValues: {
-        ':b': businessId,
+        ':b': biz,
         ':fromKey': fromKey,
         ':toKey': toKey,
       },
