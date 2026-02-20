@@ -5,27 +5,13 @@ import type { CheckoutInput, CheckoutInputOption, PaymentsSettings, SiteConfig }
 import { useSite } from '@/context/SiteContext';
 import { getSiteId } from '@/lib/siteId';
 import AdminAIChatPanel from './AdminAIChatPanel';
+import { applySiteConfigPatch } from '@/lib/siteConfigPatch';
 
 // -----------------------------
 // Utilities
 // -----------------------------
 function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
-}
-
-function mergeDeep<T>(base: T, patch: Partial<T>): T {
-  if (patch === null || typeof patch !== 'object') return patch as T;
-  if (Array.isArray(patch)) return patch as T;
-  const result = { ...(base as Record<string, unknown>) } as Record<string, unknown>;
-  Object.entries(patch as Record<string, unknown>).forEach(([key, value]) => {
-    if (value && typeof value === 'object' && !Array.isArray(value)) {
-      const baseVal = (result as Record<string, unknown>)[key];
-      result[key] = mergeDeep(baseVal as Record<string, unknown>, value as Record<string, unknown>);
-    } else {
-      result[key] = value;
-    }
-  });
-  return result as T;
 }
 
 function rid() {
@@ -312,22 +298,22 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
           <AdminAIChatPanel
             mode="inline"
             title="AI (Settings)"
-            placeholder="Ask AI to update payments, checkout fields, or other settings..."
-            config={draft}
-            onApplyPatch={(patch) => {
-              setDraft((prev) => (prev ? mergeDeep(prev, patch) : prev));
-            }}
-          />
-        </div>
+              placeholder="Ask AI to update payments, checkout fields, or other settings..."
+              config={draft}
+              onApplyPatch={(patch) => {
+                setDraft((prev) => (prev ? applySiteConfigPatch(prev, patch) : prev));
+              }}
+            />
+          </div>
 
         {/* Tabs */}
         <div className="px-4 pt-4">
           <div className="flex justify-center gap-6 border-b">
             <button
               className={[
-                'px-4 py-2 -mb-px text-sm font-semibold transition-colors border-b-4',
+                'px-4 py-2 -mb-px text-sm font-semibold transition-colors border-b-4 admin-tab',
                 activeTab === 'general'
-                  ? 'border-[var(--admin-primary)] text-white'
+                  ? 'border-transparent text-white active'
                   : 'border-transparent text-gray-200  hover:text-[var(--admin-primary)]',
               ].join(' ')}
               onClick={() => setActiveTab('general')}
@@ -336,9 +322,9 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
             </button>
             <button
               className={[
-                'px-4 py-2 -mb-px text-sm font-semibold transition-colors border-b-4',
+                'px-4 py-2 -mb-px text-sm font-semibold transition-colors border-b-4 admin-tab',
                 activeTab === 'payments'
-                  ? 'border-[var(--admin-primary)] text-white'
+                  ? ' border-transparent text-white active'
                   : 'border-transparent text-gray-200  hover:text-[var(--admin-primary)]',
               ].join(' ')}
               onClick={() => setActiveTab('payments')}

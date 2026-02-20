@@ -128,7 +128,7 @@ export default function AdminThemePanel() {
   }
 
   return (
-    <div className="fixed bottom-4 left-0 right-0 z-[10000] flex justify-center">
+    <div className="fixed bottom-2 min-h-[69px] right-0 z-[10000] flex justify-center">
       <div className="card admin-card card-solid px-4 py-3 flex flex-wrap items-center gap-3">
         <div className="text-sm font-semibold">Theme</div>
         <select
@@ -180,6 +180,16 @@ export default function AdminThemePanel() {
             Edit colors
           </button>
         )}
+        {themeDirty && (
+        <div className="">
+          <div className="flex items-center gap-2">
+            {error && <div className="text-sm text-red-600 bg-white/90 px-3 py-2 rounded-lg border">{error}</div>}
+            <button className="btn btn-primary" onClick={saveTheme} disabled={saving}>
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+          </div>
+        </div>
+      )}
       </div>
 
       {showColors && (
@@ -231,20 +241,12 @@ export default function AdminThemePanel() {
                 Apply
               </button>
             </div>
+            
           </div>
         </div>
       )}
 
-      {themeDirty && (
-        <div className="fixed bottom-4 right-4 z-[11000]">
-          <div className="flex items-center gap-2">
-            {error && <div className="text-sm text-red-600 bg-white/90 px-3 py-2 rounded-lg border">{error}</div>}
-            <button className="btn btn-primary" onClick={saveTheme} disabled={saving}>
-              {saving ? 'Saving...' : 'Save'}
-            </button>
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 }

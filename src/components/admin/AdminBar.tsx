@@ -9,6 +9,8 @@ import SettingsModal from './SettingsModal';
 import AdminThemePanel from './AdminThemePanel';
 import AdminAIChatPanel from './AdminAIChatPanel';
 import OrdersModal from './OrdersModal';
+import { applySiteConfigPatch } from '@/lib/siteConfigPatch';
+import type { SiteConfig } from '@/types/site';
 
 type PickerKind = 'generic' | 'video-files' | 'video-posters';
 
@@ -17,6 +19,11 @@ export default function AdminBar() {
   const [openPicker, setOpenPicker] = useState(false);
   const [kind, setKind] = useState<PickerKind>('generic');
   const [showConfig, setShowConfig] = useState(false);
+  const [configInitialPatch, setConfigInitialPatch] = useState<Partial<SiteConfig> | null>(null);
+  const [configOpenInPreview, setConfigOpenInPreview] = useState(false);
+  const [configExternalPatch, setConfigExternalPatch] = useState<Partial<SiteConfig> | null>(null);
+  const [configExternalPatchNonce, setConfigExternalPatchNonce] = useState(0);
+  const [configExternalPatchPreview, setConfigExternalPatchPreview] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showThemePanel, setShowThemePanel] = useState(false);
   const [showAI, setShowAI] = useState(false);
@@ -41,21 +48,6 @@ export default function AdminBar() {
     }
   }, [kind, siteId]);
 
-  function mergeDeep<T>(base: T, patch: Partial<T>): T {
-    if (patch === null || typeof patch !== 'object') return patch as T;
-    if (Array.isArray(patch)) return patch as T;
-    const result = { ...(base as Record<string, unknown>) } as Record<string, unknown>;
-    Object.entries(patch as Record<string, unknown>).forEach(([key, value]) => {
-      if (value && typeof value === 'object' && !Array.isArray(value)) {
-        const baseVal = (result as Record<string, unknown>)[key];
-        result[key] = mergeDeep(baseVal as Record<string, unknown>, value as Record<string, unknown>);
-      } else {
-        result[key] = value;
-      }
-    });
-    return result as T;
-  }
-
   return (
     <div data-admin-ui="true">
       <div className="fixed right-4 top-4 z-[10000]">
@@ -64,19 +56,20 @@ export default function AdminBar() {
 
           <button
             className="btn btn-primary"
-            onClick={() => setShowConfig(true)}
+            onClick={() => {
+              setConfigInitialPatch(null);
+              setConfigOpenInPreview(false);
+              setConfigExternalPatch(null);
+              setConfigExternalPatchNonce(0);
+              setConfigExternalPatchPreview(false);
+              setShowConfig(true);
+            }}
             title="Edit site config (sections, fields, media links)"
           >
             Edit Sections
           </button>
 
-          <button
-            className="btn btn-inverted"
-            onClick={() => setShowSettings(true)}
-            title="Edit site settings (payments, general)"
-          >
-            Settings
-          </button>
+          
 
           <button
             className={showThemePanel ? 'btn btn-primary' : 'btn btn-inverted'}
@@ -100,6 +93,14 @@ export default function AdminBar() {
             title="Manage orders"
           >
             Orders
+          </button>
+
+          <button
+            className="btn btn-inverted"
+            onClick={() => setShowSettings(true)}
+            title="Edit site settings (payments, general)"
+          >
+            Settings
           </button>
 
           {/* <button
@@ -155,7 +156,23 @@ export default function AdminBar() {
       )}
 
       {/* Config editor modal */}
-      {showConfig && <ConfigModal onClose={() => setShowConfig(false)} />}
+      {showConfig && (
+        <ConfigModal
+          initialPatch={configInitialPatch}
+          openInPreview={configOpenInPreview}
+          externalPatch={configExternalPatch}
+          externalPatchNonce={configExternalPatchNonce}
+          externalPatchPreview={configExternalPatchPreview}
+          onClose={() => {
+            setShowConfig(false);
+            setConfigInitialPatch(null);
+            setConfigOpenInPreview(false);
+            setConfigExternalPatch(null);
+            setConfigExternalPatchNonce(0);
+            setConfigExternalPatchPreview(false);
+          }}
+        />
+      )}
 
       {/* Settings editor modal */}
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
@@ -169,8 +186,12 @@ export default function AdminBar() {
           title="AI Assistant"
           config={config}
           onApplyPatch={(patch) => {
-            const next = mergeDeep(config, patch);
-            setConfig(next);
+            // Use the same draft+preview flow as "Edit Sections" instead of mutating live config.
+            // This keeps the changes unsaved until the user explicitly saves from the preview overlay.
+            setConfigExternalPatch(patch);
+            setConfigExternalPatchPreview(true);
+            setConfigExternalPatchNonce((n) => n + 1);
+            setShowConfig(true);
           }}
           onClose={() => setShowAI(false)}
         />

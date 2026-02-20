@@ -35,6 +35,8 @@ export async function POST(req: Request) {
     'You are a SiteConfig editor assistant.',
     'Return a JSON object ONLY with keys: "reply" (string) and optional "patch" (object).',
     'The "patch" should be a partial SiteConfig to apply as a deep-merge.',
+    'For sections edits: set patch.sections to an array of sections to add/update by id (do NOT send the full current sections array).',
+    'To delete a section: include { "id": "...", "_delete": true } in patch.sections.',
     'Do not include code fences or extra text outside JSON.',
     'If no patch is needed, omit "patch".',
   ].join(' ');

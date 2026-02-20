@@ -15,6 +15,7 @@ type AdminAIChatPanelProps = {
   placeholder?: string;
   config: SiteConfig;
   onApplyPatch?: (patch: Partial<SiteConfig>) => void;
+  onApplied?: () => void;
   onClose?: () => void;
 };
 
@@ -42,14 +43,6 @@ function rid() {
   return Math.random().toString(36).slice(2);
 }
 
-function safeStringify(value: unknown) {
-  try {
-    return JSON.stringify(value, null, 2);
-  } catch {
-    return 'Unable to serialize config.';
-  }
-}
-
 type AiResponse = {
   reply?: string;
   patch?: Partial<SiteConfig> | null;
@@ -57,16 +50,15 @@ type AiResponse = {
 
 export default function AdminAIChatPanel({
   mode = 'drawer',
-  title = 'AI Assistant',
+  title = 'AI Assistant (beta - in testing)',
   placeholder = 'Describe your edit request...',
   config,
   onApplyPatch,
+  onApplied,
   onClose,
 }: AdminAIChatPanelProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
-  const [patchText, setPatchText] = useState('');
-  const [showContext, setShowContext] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [inlineExpanded, setInlineExpanded] = useState(false);
@@ -117,7 +109,10 @@ export default function AdminAIChatPanel({
         addMessage('assistant', data.reply);
       }
       if (data.patch) {
-        setPatchText(JSON.stringify(data.patch, null, 2));
+        if (onApplyPatch) {
+          onApplyPatch(data.patch);
+          onApplied?.();
+        }
       }
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'AI request failed.';
@@ -127,32 +122,9 @@ export default function AdminAIChatPanel({
     }
   }
 
-  function handleApplyPatch() {
-    if (!onApplyPatch) return;
-    setError(null);
-    try {
-      const parsed = JSON.parse(patchText) as Partial<SiteConfig>;
-      onApplyPatch(parsed);
-      setPatchText('');
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Invalid JSON.';
-      setError(msg);
-    }
-  }
-
-  async function copyContext() {
-    const payload = safeStringify(contextPayload);
-    try {
-      await navigator.clipboard.writeText(payload);
-      addMessage('assistant', 'Context copied to clipboard.');
-    } catch {
-      addMessage('assistant', 'Unable to copy context.');
-    }
-  }
-
   const shellClass =
     mode === 'drawer'
-      ? 'fixed top-0 right-0 h-full w-[360px] md:w-[420px]  admin-card shadow-2xl border-l z-[12000] flex flex-col'
+      ? 'fixed top-[168px] right-5 h-[580px] w-[360px] md:w-[420px]  admin-card shadow-2xl border-l z-[12000] flex flex-col'
       : mode === 'panel'
         ? 'h-full w-full  admin-card border-l flex flex-col'
         : 'w-full admin-card border rounded-xl flex flex-col';
@@ -172,15 +144,11 @@ export default function AdminAIChatPanel({
             )}
           </div>
 
-          <div className="px-4 py-3 ">
-            <button className="btn btn-inverted mr-2" onClick={() => setShowContext((v) => !v)}>
-              {showContext ? 'Hide Context' : 'Show Context'}
-            </button>
-            <button className="btn btn-ghost" onClick={copyContext}>
-              Copy Context
-            </button>
-            {isLoading && <span className="ml-2 text-xs text-muted">Thinking...</span>}
-          </div>
+          {isLoading && (
+            <div className="px-4 py-3 ">
+              <span className="ml-2 text-xs text-muted">Thinking...</span>
+            </div>
+          )}
         </>
       )}
 
@@ -204,28 +172,13 @@ export default function AdminAIChatPanel({
               {isLoading ? 'Sending...' : 'Send'}
             </button>
           </div>
-          {mode !== 'inline' && error && <div className="text-xs text-red-600 mt-2">{error}</div>}
+          {error && <div className="text-xs text-red-600 mt-2">{error}</div>}
         </div>
       )}
 
-      {isExpanded && mode === 'inline' && (
+      {isExpanded && mode === 'inline' && isLoading && (
         <div className="px-4 py-2 border-b flex items-center gap-2">
-          <button className="btn btn-inverted" onClick={() => setShowContext((v) => !v)}>
-            {showContext ? 'Hide Context' : 'Show Context'}
-          </button>
-          <button className="btn btn-ghost" onClick={copyContext}>
-            Copy Context
-          </button>
-          {isLoading && <span className="text-xs text-muted">Thinking...</span>}
-        </div>
-      )}
-
-      {isExpanded && showContext && (
-        <div className="px-4 py-3 border-b">
-          <div className="text-xs text-muted mb-2">Structure + Current SiteConfig</div>
-          <pre className="text-xs bg-black/5 p-3 rounded-lg max-h-[220px] overflow-auto">
-            {safeStringify(contextPayload)}
-          </pre>
+          <span className="text-xs text-muted">Thinking...</span>
         </div>
       )}
 
@@ -246,7 +199,7 @@ export default function AdminAIChatPanel({
               key={m.id}
               className={[
                 'rounded-lg px-3 py-2 text-sm',
-                m.role === 'user' ? 'bg-emerald-50 text-emerald-900' : 'bg-black/5 text-black',
+                m.role === 'user' ? 'bg-emerald-50 text-emerald-900' : 'bg-black/5 text-white',
               ].join(' ')}
             >
               <div className="text-xs opacity-60 mb-1">{m.role === 'user' ? 'You' : 'AI'}</div>
@@ -257,21 +210,9 @@ export default function AdminAIChatPanel({
       </div>
       )}
 
-      {isExpanded && onApplyPatch && (mode !== 'inline' || patchText.trim().length > 0) && (
-        <div className="px-4 py-3 border-t">
-          <div className="text-sm font-semibold mb-2">Proposed Changes (JSON)</div>
-          <textarea
-            className="input w-full min-h-[120px]"
-            value={patchText}
-            onChange={(e) => setPatchText(e.target.value)}
-            placeholder='{"sections":[...]}'
-          />
-          {error && <div className="text-xs text-red-600 mt-2">{error}</div>}
-          <div className="mt-2 flex justify-end">
-            <button className="btn btn-primary" onClick={handleApplyPatch}>
-              Apply to Draft
-            </button>
-          </div>
+      {isExpanded && mode !== 'inline' && error && (
+        <div className="px-4 py-2 border-t">
+          <div className="text-xs text-red-600">{error}</div>
         </div>
       )}
 

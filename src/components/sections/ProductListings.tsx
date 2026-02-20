@@ -82,7 +82,7 @@ export default function ProductListings({
           </div>
         </motion.div>
 
-        <div className={`grid gap-6 sm:grid-cols-${Math.min(cols, 2)} lg:grid-cols-${cols}`}>
+        <div className={`grid gap-1 sm:grid-cols-${Math.min(cols, 2)} lg:grid-cols-${cols}`}>
           {visible.map((p, i) => {
             const thumb = resolveAssetUrl(p.thumbnailUrl ?? p.images?.[0]?.url);
             const priceStr = formatPrice(p.price, p.currency ?? 'USD');

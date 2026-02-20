@@ -8,8 +8,9 @@ import MediaPicker from './MediaPicker';
 import { SECTION_REGISTRY, getAllowedSectionTypes } from './configRegistry';
 import { getEditorForSection } from './EditSections';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faChevronDown, faTrash } from '@fortawesome/free-solid-svg-icons';
 import AdminAIChatPanel from './AdminAIChatPanel';
+import { applySiteConfigPatch } from '@/lib/siteConfigPatch';
 
 // -----------------------------
 // Utilities
@@ -18,32 +19,30 @@ function deepClone<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj)) as T;
 }
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
-function mergeDeep<T>(base: T, patch: Partial<T>): T {
-  if (patch === null || typeof patch !== 'object') return patch as T;
-  if (Array.isArray(patch)) return patch as T;
-  const result = { ...(base as Record<string, unknown>) } as Record<string, unknown>;
-  Object.entries(patch as Record<string, unknown>).forEach(([key, value]) => {
-    if (value && typeof value === 'object' && !Array.isArray(value)) {
-      const baseVal = (result as Record<string, unknown>)[key];
-      result[key] = mergeDeep(baseVal as Record<string, unknown>, value as Record<string, unknown>);
-    } else {
-      result[key] = value;
-    }
-  });
-  return result as T;
-}
 
 // -----------------------------
 // Props
 // -----------------------------
 export type ConfigModalProps = {
   onClose: () => void;
+  initialPatch?: Partial<SiteConfig> | null;
+  openInPreview?: boolean;
+  externalPatch?: Partial<SiteConfig> | null;
+  externalPatchNonce?: number;
+  externalPatchPreview?: boolean;
 };
 
 // -----------------------------
 // Component
 // -----------------------------
-export default function ConfigModal({ onClose }: ConfigModalProps) {
+export default function ConfigModal({
+  onClose,
+  initialPatch = null,
+  openInPreview = false,
+  externalPatch = null,
+  externalPatchNonce = 0,
+  externalPatchPreview = false,
+}: ConfigModalProps) {
   const { config, setConfig } = useSite();
   const siteId = getSiteId();
 
@@ -53,7 +52,10 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
   const originalRef = useRef<SiteConfig | null>(null);
   const previewDraftRef = useRef<SiteConfig | null>(null);
   const [isPreviewing, setIsPreviewing] = useState(false);
+  const pendingAutoPreviewRef = useRef(false);
   const ignoreConfigSyncRef = useRef(false);
+  const initialPatchAppliedRef = useRef(false);
+  const lastExternalPatchNonceRef = useRef<number>(0);
 
   useEffect(() => {
     if (ignoreConfigSyncRef.current) {
@@ -67,6 +69,43 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
       setSelectedIndex(0); // default to first section on open/load
     }
   }, [config]);
+
+  const startPreview = useCallback(() => {
+    if (!draft) return;
+    const snapshot = deepClone(draft);
+    previewDraftRef.current = snapshot;
+    ignoreConfigSyncRef.current = true;
+    setConfig(snapshot);
+    setIsPreviewing(true);
+  }, [draft, setConfig]);
+
+  useEffect(() => {
+    if (!pendingAutoPreviewRef.current) return;
+    if (!draft) return;
+    pendingAutoPreviewRef.current = false;
+    startPreview();
+  }, [draft, startPreview]);
+
+  useEffect(() => {
+    if (initialPatchAppliedRef.current) return;
+    if (!draft) return;
+    if (!initialPatch) return;
+
+    initialPatchAppliedRef.current = true;
+    pendingAutoPreviewRef.current = openInPreview;
+    setDraft((prev) => (prev ? applySiteConfigPatch(prev, initialPatch) : prev));
+  }, [draft, initialPatch, openInPreview]);
+
+  useEffect(() => {
+    if (!draft) return;
+    if (!externalPatch) return;
+    if (externalPatchNonce <= 0) return;
+    if (lastExternalPatchNonceRef.current === externalPatchNonce) return;
+
+    lastExternalPatchNonceRef.current = externalPatchNonce;
+    pendingAutoPreviewRef.current = externalPatchPreview;
+    setDraft((prev) => (prev ? applySiteConfigPatch(prev, externalPatch) : prev));
+  }, [draft, externalPatch, externalPatchNonce, externalPatchPreview]);
 
   // keep selectedIndex in bounds whenever sections length changes
   useEffect(() => {
@@ -235,15 +274,6 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
     setSelectedIndex(0);
   }, []);
 
-  const startPreview = useCallback(() => {
-    if (!draft) return;
-    const snapshot = deepClone(draft);
-    previewDraftRef.current = snapshot;
-    ignoreConfigSyncRef.current = true;
-    setConfig(snapshot);
-    setIsPreviewing(true);
-  }, [draft, setConfig]);
-
   const returnToEditor = useCallback(() => {
     if (previewDraftRef.current) {
       ignoreConfigSyncRef.current = true;
@@ -260,7 +290,8 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
     setDraft(restored);
     previewDraftRef.current = null;
     setIsPreviewing(false);
-  }, [setConfig]);
+    onClose();
+  }, [onClose, setConfig]);
 
   // ---------------------------
   // Single-section editor renderer
@@ -349,10 +380,13 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
         <div className="fixed top-[90px] right-4 z-[12010] pointer-events-auto">
           <div className="card card-solid admin-card px-4 py-3 flex items-center gap-3">
             <div className="text-sm text-muted">Previewing draft</div>
+            <button className="btn btn-primary" onClick={onSave} disabled={!canSave || saving}>
+              {saving ? 'Saving…' : 'Save'}
+            </button>
             <button className="btn btn-ghost" onClick={undoChanges}>
               Undo Changes
             </button>
-            <button className="btn btn-primary" onClick={returnToEditor}>
+            <button className="btn btn-inverted" onClick={returnToEditor}>
               Return to editor
             </button>
           </div>
@@ -396,7 +430,8 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
             placeholder="Ask AI to update sections, content, or theme..."
             config={draft}
             onApplyPatch={(patch) => {
-              setDraft((prev) => (prev ? mergeDeep(prev, patch) : prev));
+              pendingAutoPreviewRef.current = true;
+              setDraft((prev) => (prev ? applySiteConfigPatch(prev, patch) : prev));
             }}
           />
         </div>
@@ -466,7 +501,6 @@ export default function ConfigModal({ onClose }: ConfigModalProps) {
             {/* Quick add (dynamic) */}
             <div className="pt-4 border-t">
               <div className="text-sm opacity-70 mb-2">
-                <FontAwesomeIcon icon={faPlus} className="text-xs" />
                 Add section</div>
               <div className="flex flex-wrap gap-2">
                 {getAllowedSectionTypes().map((t) => (
