@@ -80,14 +80,15 @@ export default function PaymentPage({
   const taxes = taxesProp ?? settingsPayments?.taxes;
   const delivery = deliveryProp ?? settingsPayments?.delivery;
   const { items, totalCents, currency, isCheckoutOpen, closeCheckout, addItem, removeItem } = useCart();
-  const convergeToken = token ?? process.env.NEXT_PUBLIC_CONVERGE_TOKEN ?? '';
+  const [convergeToken, setConvergeToken] = useState('');
+  const [convergeTokenStatus, setConvergeTokenStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
   const cloverToken = process.env.NEXT_PUBLIC_CLOVER_TOKEN ?? '';
   const convergeScriptUrl = process.env.NEXT_PUBLIC_CONVERGE_IFRAME_URL ?? '';
   const cloverScriptUrl = process.env.NEXT_PUBLIC_CLOVER_IFRAME_URL ?? '';
   const paymentToken = paymentType === 'clover' ? cloverToken : convergeToken;
   const paymentScriptUrl = paymentType === 'clover' ? cloverScriptUrl : convergeScriptUrl;
   const missingPaymentConfig =
-    paymentType !== 'externalLink' && (!paymentToken || !paymentScriptUrl);
+    paymentType !== 'externalLink' && (!paymentScriptUrl || (paymentType === 'clover' && !paymentToken));
   const [customValues, setCustomValues] = useState<Record<string, string>>({});
   const [purchaseComplete, setPurchaseComplete] = useState(false);
   const [deliveryAddress, setDeliveryAddress] = useState('');
@@ -133,8 +134,6 @@ export default function PaymentPage({
     }
   }, [stepIndex, steps.length]);
 
-  if (!isCheckoutOpen) return null;
-
   const addressCaptureEnabled = delivery?.addressCapture?.enabled === true;
   const addressRequired = delivery?.addressCapture?.required !== false;
   const needsDeliveryAddress =
@@ -164,6 +163,55 @@ export default function PaymentPage({
   const taxBaseCents = taxableSubtotalCents + (taxes?.taxShipping ? deliveryFeeCents : 0);
   const taxCents = taxes?.enabled ? Math.round(taxBaseCents * (taxRate / 100)) : 0;
   const totalWithFeesCents = totalCents + taxCents + deliveryFeeCents;
+
+  useEffect(() => {
+    if (paymentType !== 'converge') return;
+    if (!isCheckoutOpen) return;
+
+    // If the parent supplied a token explicitly, trust it (e.g. server-rendered checkout).
+    if (token) {
+      setConvergeToken(token);
+      setConvergeTokenStatus('ready');
+      return;
+    }
+
+    // Dev fallback (older behavior) if you manually set a token.
+    const envToken = process.env.NEXT_PUBLIC_CONVERGE_TOKEN ?? '';
+    if (envToken) {
+      setConvergeToken(envToken);
+      setConvergeTokenStatus('ready');
+      return;
+    }
+
+    let cancelled = false;
+    (async () => {
+      setConvergeTokenStatus('loading');
+      try {
+        const res = await fetch('/api/payments/converge/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amountCents: totalWithFeesCents, currency }),
+        });
+        if (!res.ok) {
+          if (!cancelled) setConvergeTokenStatus('error');
+          return;
+        }
+        const data = (await res.json()) as { token?: string };
+        if (!cancelled && data?.token) {
+          setConvergeToken(data.token);
+          setConvergeTokenStatus('ready');
+        } else if (!cancelled) {
+          setConvergeTokenStatus('error');
+        }
+      } catch {
+        if (!cancelled) setConvergeTokenStatus('error');
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [currency, isCheckoutOpen, paymentType, token, totalWithFeesCents]);
 
   const submitDeliveryAddress = async () => {
     if (!needsDeliveryAddress) return;
@@ -337,6 +385,8 @@ export default function PaymentPage({
     }
     await submitDeliveryAddress();
   };
+
+  if (!isCheckoutOpen) return null;
   console.log('PaymentPage config:', { paymentType, paymentToken, paymentScriptUrl });
   return (
     <div className="fixed inset-0 z-[6000] flex items-center justify-center bg-black/60 backdrop-blur-sm">
@@ -585,11 +635,21 @@ export default function PaymentPage({
                 <span className="ml-1 flex justify-center items-center">Back to details</span> 
               </button>
             )}
+            {paymentType === 'converge' && convergeTokenStatus === 'loading' && (
+              <div className="mb-4 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700">
+                Loading secure payment formâ€¦
+              </div>
+            )}
+            {paymentType === 'converge' && convergeTokenStatus === 'error' && (
+              <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+                Could not initialize Converge checkout. Check `CONVERGE_MERCHANT_ID`, `CONVERGE_USER_ID`, `CONVERGE_PIN`, and `NEXT_PUBLIC_CONVERGE_IFRAME_URL`.
+              </div>
+            )}
             {missingPaymentConfig && (
               <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
                 Payment configuration is missing. Set the {paymentType === 'clover'
                   ? 'NEXT_PUBLIC_CLOVER_TOKEN and NEXT_PUBLIC_CLOVER_IFRAME_URL'
-                  : 'NEXT_PUBLIC_CONVERGE_TOKEN and NEXT_PUBLIC_CONVERGE_IFRAME_URL'} env vars.
+                  : 'CONVERGE_MERCHANT_ID / CONVERGE_USER_ID / CONVERGE_PIN (server) and NEXT_PUBLIC_CONVERGE_IFRAME_URL'} env vars.
               </div>
             )}
             {paymentType === 'externalLink' ? (
@@ -607,11 +667,18 @@ export default function PaymentPage({
               >
                 Continue to Payment
               </button>
-            ) : !missingPaymentConfig ? (
+            ) : !missingPaymentConfig && (paymentType !== 'converge' || convergeTokenStatus === 'ready') ? (
               <PaymentForm
                 token={paymentToken}
                 paymentType={paymentType}
-                onPay={submitCheckoutSideEffects}
+                onPay={
+                  paymentType === 'converge'
+                    ? async () => {
+                        await submitCheckoutSideEffects();
+                        setPurchaseComplete(true);
+                      }
+                    : submitCheckoutSideEffects
+                }
                 onCloverToken={paymentType === 'clover' ? submitCloverPayment : undefined}
                 disabled={missingRequired || missingDeliveryAddress}
               />

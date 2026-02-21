@@ -61,7 +61,7 @@ export const mockSiteConfig: SiteConfig = {
     },
     payments: {
       cartActive: true,
-      paymentType: "clover",
+      paymentType: "converge",
       supportEmail: "shop@cmfloralsandgifts.com",
       supportPhone: { label: "Call us at 773-209-4805", href: phoneHref },
       taxes: {

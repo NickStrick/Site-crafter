@@ -25,8 +25,20 @@ export default function PaymentForm({
   const missingConfig = !scriptUrl || !token;
   console.log('PaymentForm config:', { paymentType, scriptUrl, token });
   const cloverRef = useRef<any>(null);
+  const convergeRef = useRef<any>(null);
+  const convergeInitTokenRef = useRef<string>('');
+  const convergeSubmitRef = useRef<{ resolve: () => void; reject: (err: unknown) => void } | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
+
+  useEffect(() => {
+    setScriptLoaded(false);
+    if (paymentType === 'converge') {
+      convergeInitTokenRef.current = '';
+      convergeRef.current = null;
+    }
+  }, [paymentType, scriptUrl]);
 
   useEffect(() => {
     console.log('[Clover] Render', { paymentType, scriptUrl, tokenPresent: Boolean(token) });
@@ -55,12 +67,36 @@ export default function PaymentForm({
 
   const initConvergeHostedFields = () => {
     if (!token) return;
+    if (!scriptLoaded) return;
+    if (convergeInitTokenRef.current === token) return;
     if (typeof window !== 'undefined' && (window as any).ConvergeEmbedded) {
       const converge = (window as any).ConvergeEmbedded({
         token: token,
-        callback: (response: any) => console.log('Payment Response:', response),
-        error: (err: any) => console.error('Payment Error:', err),
+        callback: (response: any) => {
+          console.log('[Converge] Payment Response:', response);
+          const ok =
+            response?.ssl_result === '0' ||
+            response?.ssl_result === 0 ||
+            response?.result === '0' ||
+            response?.result === 0 ||
+            response?.approved === true;
+          if (ok) {
+            convergeSubmitRef.current?.resolve();
+          } else {
+            convergeSubmitRef.current?.reject(
+              new Error(response?.ssl_result_message || response?.message || 'Converge payment declined.')
+            );
+          }
+          convergeSubmitRef.current = null;
+        },
+        error: (err: any) => {
+          console.error('[Converge] Payment Error:', err);
+          convergeSubmitRef.current?.reject(err);
+          convergeSubmitRef.current = null;
+        },
       });
+      convergeRef.current = converge;
+      convergeInitTokenRef.current = token;
 
       converge.mount('#card-number', 'cardNumber');
       converge.mount('#card-expiry', 'cardExpiration');
@@ -183,9 +219,30 @@ export default function PaymentForm({
           console.log('[Clover] onCloverToken finished.');
         }
       } else {
-        if (onPay) {
-          await onPay();
+        const converge = convergeRef.current;
+        if (!converge) {
+          throw new Error('Converge embedded fields are not initialized. Check token + script URL.');
         }
+
+        const done = new Promise<void>((resolve, reject) => {
+          convergeSubmitRef.current = { resolve, reject };
+        });
+
+        const submitFn =
+          typeof converge.submit === 'function'
+            ? converge.submit.bind(converge)
+            : typeof converge.pay === 'function'
+              ? converge.pay.bind(converge)
+              : null;
+
+        if (!submitFn) {
+          throw new Error('Converge embedded fields library did not expose submit/pay. Check the Converge script URL.');
+        }
+
+        submitFn();
+        await done;
+
+        if (onPay) await onPay();
       }
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : 'Payment failed.');
@@ -193,6 +250,12 @@ export default function PaymentForm({
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (paymentType !== 'converge') return;
+    initConvergeHostedFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentType, token, scriptLoaded]);
 
   return (
     <div className="max-w-lg mx-auto p-5 md:p-8 bg-white rounded-3xl shadow-xl border border-gray-100">
@@ -202,6 +265,7 @@ export default function PaymentForm({
             src={scriptUrl}
             onLoad={() => {
               console.log('[Converge] Script loaded.');
+              setScriptLoaded(true);
               initConvergeHostedFields();
             }}
             onError={(e) => console.error('[Converge] Script load error', e)}
@@ -211,6 +275,7 @@ export default function PaymentForm({
             src={scriptUrl}
             onLoad={() => {
               console.log('[Clover] Script loaded.', { hasClover: typeof (window as any)?.Clover !== 'undefined' });
+              setScriptLoaded(true);
               initCloverHostedFields();
             }}
             onError={(e) => console.error('[Clover] Script load error', e)}
@@ -218,13 +283,13 @@ export default function PaymentForm({
         )
       ) : null}
 
-      {missingConfig && (
-        <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-          Payment configuration is missing. Set the {paymentType === 'converge'
-            ? 'NEXT_PUBLIC_CONVERGE_TOKEN and NEXT_PUBLIC_CONVERGE_IFRAME_URL'
+        {missingConfig && (
+          <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            Payment configuration is missing. Set the {paymentType === 'converge'
+            ? 'CONVERGE_MERCHANT_ID / CONVERGE_USER_ID / CONVERGE_PIN (server) and NEXT_PUBLIC_CONVERGE_IFRAME_URL'
             : 'NEXT_PUBLIC_CLOVER_TOKEN and NEXT_PUBLIC_CLOVER_IFRAME_URL'} env vars.
-        </div>
-      )}
+          </div>
+        )}
       {submitError && (
         <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
           {submitError}
