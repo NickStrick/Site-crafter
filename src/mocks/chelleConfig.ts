@@ -12,16 +12,8 @@ const etsyShopHref =
   import flower6 from "../../public/carole/flower6.png";
   import flower7 from "../../public/carole/flower7.png";
   import flower8 from "../../public/carole/flower8.png";
-  import flower9 from "../../public/carole/flower9.jpg";
-  import flower10 from "../../public/carole/flower10.jpg";
-  import flower11 from "../../public/carole/flower11.jpg";
-  import flowertable2 from "../../public/carole/flowertable2.jpg";
-  import flowerwall from "../../public/carole/flowerwall.jpg";
   import flowerwall2 from "../../public/carole/flowerwall2.jpg";
   import flowerwall3 from "../../public/carole/flowerwall3.jpg";
-  import fallDecor1 from "../../public/carole/fallDecor1.jpg";
-  import fallDecor2 from "../../public/carole/fallDecor2.jpg";
-  import logo2 from "../../public/carole/logo2.png";
 
 export const mockSiteConfig: SiteConfig = {
   theme: { preset: "lavender", radius: "xl" },
@@ -508,7 +500,7 @@ export const mockSiteConfig: SiteConfig = {
 },
  {
   visible: true,
-  id: "gallery",
+  id: "gallery2",
   type: "gallery",
   title: "Sourced from local Organic farms",
   subtitle: "",

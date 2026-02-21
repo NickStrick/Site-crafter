@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown, faTrash } from '@fortawesome/free-solid-svg-icons';
 import AdminAIChatPanel from './AdminAIChatPanel';
 import { applySiteConfigPatch } from '@/lib/siteConfigPatch';
+import { getAdminSectionSlots, normalizeSiteConfig } from '@/lib/siteConfigSections';
 
 // -----------------------------
 // Utilities
@@ -66,7 +67,7 @@ export default function ConfigModal({
       const copy = deepClone(config);
       setDraft(copy);
       originalRef.current = copy;
-      setSelectedIndex(0); // default to first section on open/load
+      setSelectedIndex(0); // default to header on open/load
     }
   }, [config]);
 
@@ -107,11 +108,18 @@ export default function ConfigModal({
     setDraft((prev) => (prev ? applySiteConfigPatch(prev, externalPatch) : prev));
   }, [draft, externalPatch, externalPatchNonce, externalPatchPreview]);
 
-  // keep selectedIndex in bounds whenever sections length changes
+  const slots = useMemo(() => (draft ? getAdminSectionSlots(draft) : []), [draft]);
+
+  // keep selectedIndex in bounds whenever slot count changes
   useEffect(() => {
-    if (!draft) return;
-    setSelectedIndex((i) => clamp(i, 0, Math.max(0, draft.sections.length - 1)));
-  }, [draft]);
+    if (!slots.length) {
+      setSelectedIndex(0);
+      return;
+    }
+    setSelectedIndex((i) => clamp(i, 0, Math.max(0, slots.length - 1)));
+  }, [slots.length]);
+
+  const selectedSlot = slots[selectedIndex];
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -172,8 +180,8 @@ export default function ConfigModal({
       copy.sections.splice(index, 1);
       return copy;
     });
-    // adjust selection after state updates: next tick clamp by effect; also set a best-guess now
-    setSelectedIndex((i) => (i > index ? i - 1 : i === index ? Math.max(0, i - 1) : i));
+    // keep selection safe after delete
+    setSelectedIndex(0);
   }, []);
 
   const addSection = useCallback((type: AnySection['type']) => {
@@ -198,7 +206,8 @@ export default function ConfigModal({
     if (!draft) return;
     const len = draft.sections.length;
     if (prevLenRef.current && len === prevLenRef.current + 1) {
-      setSelectedIndex(len - 1);
+      // slots: [header, ...sections, footer] -> last body section is at index `len`
+      setSelectedIndex(len);
     }
     prevLenRef.current = len;
   }, [draft?.sections.length, draft]);
@@ -218,8 +227,9 @@ export default function ConfigModal({
     });
     // keep selection attached to the moved item if it was selected
     setSelectedIndex((sel) => {
-      if (sel === from) return to;
-      if (sel === to) return from; // swapped positions
+      const selBody = sel - 1; // header occupies slot 0
+      if (selBody === from) return to + 1;
+      if (selBody === to) return from + 1; // swapped positions
       return sel;
     });
   }, []);
@@ -247,7 +257,7 @@ export default function ConfigModal({
           'Content-Type': 'application/json',
           'x-local-admin': '1',
         },
-        body: JSON.stringify(draft),
+        body: JSON.stringify(normalizeSiteConfig(draft)),
       });
 
       if (!res.ok) {
@@ -309,10 +319,12 @@ export default function ConfigModal({
           <div className="font-semibold">{section.type.toUpperCase()}</div>
           <div className="pt-2 flex items-center gap-2">
             <div className="flex-1" />
-            <button className="btn btn-ghost" onClick={() => removeSection(index)}>
-              <FontAwesomeIcon icon={faTrash} className="text-sm" />
-              Remove section
-            </button>
+            {section.type !== 'header' && section.type !== 'footer' && index >= 0 && (
+              <button className="btn btn-ghost" onClick={() => removeSection(index)}>
+                <FontAwesomeIcon icon={faTrash} className="text-sm" />
+                Remove section
+              </button>
+            )}
           </div>
         </div>
 
@@ -330,10 +342,26 @@ export default function ConfigModal({
             <label className="flex items-end gap-2">
               <input
                 type="checkbox"
-                checked={section.visible !== false}
-                onChange={(e) => onChange({ ...section, visible: e.target.checked })}
+                checked={
+                  section.type === 'header'
+                    ? (draft?.showHeader ?? true)
+                    : section.type === 'footer'
+                      ? (draft?.showFooter ?? true)
+                      : section.visible !== false
+                }
+                onChange={(e) => {
+                  if (section.type === 'header') {
+                    setDraft((prev) => (prev ? { ...prev, showHeader: e.target.checked } : prev));
+                    return;
+                  }
+                  if (section.type === 'footer') {
+                    setDraft((prev) => (prev ? { ...prev, showFooter: e.target.checked } : prev));
+                    return;
+                  }
+                  onChange({ ...section, visible: e.target.checked });
+                }}
               />
-              <span>Visible</span>
+              <span>{section.type === 'header' || section.type === 'footer' ? 'Show' : 'Visible'}</span>
             </label>
           </div>
 
@@ -395,7 +423,14 @@ export default function ConfigModal({
     );
   }
 
-  const selected = draft.sections[selectedIndex];
+  const selected =
+    selectedSlot?.kind === 'header'
+      ? draft.header
+      : selectedSlot?.kind === 'footer'
+        ? draft.footer
+        : selectedSlot?.kind === 'section'
+          ? draft.sections[selectedSlot.index]
+          : undefined;
 
   return (
     <div className="fixed edit-modal inset-0 z-[12000] bg-black/50 flex items-center justify-center p-4">
@@ -444,11 +479,13 @@ export default function ConfigModal({
             <div className="text-sm opacity-70">Sections</div>
 
             <div className="space-y-2">
-              {draft.sections.map((s, i) => {
+              {slots.map((slot, i) => {
+                const s = slot.section;
+                const isLocked = slot.kind === 'header' || slot.kind === 'footer';
                 const isSelected = i === selectedIndex;
                 return (
                   <div
-                    key={s.id}
+                    key={`${slot.kind}:${s.id}`}
                     // type="button"
                     onClick={() => setSelectedIndex(i)}
                     className={[
@@ -463,9 +500,9 @@ export default function ConfigModal({
                           className="btn btn-ghost px-2 py-1"
                           onClick={(e) => {
                             e.stopPropagation();
-                            moveUp(i);
+                            if (slot.kind === 'section') moveUp(slot.index);
                           }}
-                          disabled={i === 0}
+                          disabled={isLocked || (slot.kind === 'section' && slot.index === 0)}
                           title="Move up"
                         >
                           <FontAwesomeIcon icon={faChevronUp} className="text-xs" />
@@ -474,27 +511,40 @@ export default function ConfigModal({
                           className="btn btn-ghost px-2 py-1"
                           onClick={(e) => {
                             e.stopPropagation();
-                            moveDown(i);
+                            if (slot.kind === 'section') moveDown(slot.index);
                           }}
-                          disabled={i === draft.sections.length - 1}
+                          disabled={
+                            isLocked ||
+                            (slot.kind === 'section' && slot.index === draft.sections.length - 1)
+                          }
                           title="Move down"
                         >
                           <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
                         </button>
                       </div>
                     <div className="min-w-0">
-                      <div className="font-medium">{s.type}</div>
+                      <div className="font-medium">
+                        {s.type}
+                        {slot.kind === 'header' && ` (${slot.show ? 'shown' : 'hidden'})`}
+                        {slot.kind === 'footer' && ` (${slot.show ? 'shown' : 'hidden'})`}
+                      </div>
                       <div className="text-xs text-muted break-all">{s.id}</div>
                     </div>
                     </div>
-                    <button className="btn btn-ghost" onClick={() => removeSection(i)} title={"Remove section"}>
+                    {slot.kind === 'section' && (
+                      <button
+                        className="btn btn-ghost"
+                        onClick={() => removeSection(slot.index)}
+                        title={'Remove section'}
+                      >
                         <FontAwesomeIcon icon={faTrash} className="text-sm" />
                       </button>
+                    )}
                   </div>
                 );
               })}
               {draft.sections.length === 0 && (
-                <div className="text-muted text-sm">No sections yet.</div>
+                <div className="text-muted text-sm">No body sections yet.</div>
               )}
             </div>
 
@@ -520,7 +570,19 @@ export default function ConfigModal({
           <div className="md:col-span-2 p-4 space-y-4">
             {selected ? (
               <div key={selected.id} className="card card-solid admin-card p-4 space-y-3 right-editor-card">
-                {renderEditor(selected, selectedIndex, (next) => updateSection(selectedIndex, next))}
+                {selectedSlot?.kind === 'header'
+                  ? renderEditor(selected as AnySection, -1, (next) =>
+                      setDraft((prev) => (prev ? { ...prev, header: next as any } : prev))
+                    )
+                  : selectedSlot?.kind === 'footer'
+                    ? renderEditor(selected as AnySection, -1, (next) =>
+                        setDraft((prev) => (prev ? { ...prev, footer: next as any } : prev))
+                      )
+                    : selectedSlot?.kind === 'section'
+                      ? renderEditor(selected as AnySection, selectedSlot.index, (next) =>
+                          updateSection(selectedSlot.index, next)
+                        )
+                      : null}
               </div>
             ) : (
               <div className="text-sm text-muted">Select a section to edit.</div>

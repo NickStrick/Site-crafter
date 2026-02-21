@@ -1,4 +1,5 @@
 import type { AnySection, SiteConfig } from '@/types/site';
+import { normalizeSiteConfig } from '@/lib/siteConfigSections';
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === 'object' && !Array.isArray(value);
@@ -31,6 +32,11 @@ function applySectionsPatch(base: AnySection[], patch: unknown): AnySection[] {
     const id = sp.id;
     if (!id) continue;
 
+    // Header/footer are not reorderable sections anymore; ignore attempts to add/move them via sections patches.
+    if (sp.type === 'header' || sp.type === 'footer') {
+      continue;
+    }
+
     const idx = next.findIndex((s) => s.id === id);
     if (sp._delete) {
       if (idx >= 0) next.splice(idx, 1);
@@ -45,8 +51,17 @@ function applySectionsPatch(base: AnySection[], patch: unknown): AnySection[] {
 }
 
 export function applySiteConfigPatch(base: SiteConfig, patch: Partial<SiteConfig>): SiteConfig {
-  const { sections, ...rest } = patch as Partial<SiteConfig> & { sections?: unknown };
-  const merged = mergeDeep(base, rest);
-  if (typeof sections === 'undefined') return merged;
-  return { ...merged, sections: applySectionsPatch(base.sections, sections) };
+  const { sections, header, footer, showHeader, showFooter, ...rest } = patch as Partial<SiteConfig> & {
+    sections?: unknown;
+  };
+
+  const merged = mergeDeep(base, { ...rest, header, footer, showHeader, showFooter });
+
+  const nextSections =
+    typeof sections === 'undefined'
+      ? merged.sections
+      : applySectionsPatch(Array.isArray(base.sections) ? base.sections : [], sections);
+
+  // Ensure header/footer exist and never live inside sections.
+  return normalizeSiteConfig({ ...merged, sections: nextSections });
 }

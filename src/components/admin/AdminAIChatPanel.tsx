@@ -36,7 +36,11 @@ const SITE_CONFIG_SKELETON = {
   },
   meta: { title: '', description: '', favicon: '' },
   settings: { general: {}, payments: {} },
+  showHeader: true,
+  header: { id: 'hdr', type: 'header' },
   sections: [{ id: '...', type: '...' }],
+  showFooter: true,
+  footer: { id: 'ftr', type: 'footer' },
 };
 
 function rid() {
@@ -70,7 +74,11 @@ export default function AdminAIChatPanel({
         theme: config.theme,
         meta: config.meta,
         settings: config.settings,
+        showHeader: config.showHeader,
+        header: config.header,
         sections: config.sections,
+        showFooter: config.showFooter,
+        footer: config.footer,
       },
     };
   }, [config]);

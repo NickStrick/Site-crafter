@@ -249,7 +249,18 @@ export type SiteSettings = {
 
 export type SiteConfig = {
   theme: SiteStyle;
+  /**
+   * Header/footer are stored outside the reorderable `sections` list so they
+   * cannot be moved by users or AI patching.
+   *
+   * Legacy configs may still include header/footer inside `sections`; normalize
+   * at runtime (see `src/lib/siteConfigSections.ts`).
+   */
+  header?: HeaderSection;
+  showHeader?: boolean;
   sections: AnySection[];
+  footer?: FooterSection;
+  showFooter?: boolean;
   meta?: { title?: string; description?: string; favicon?: string };
   settings?: SiteSettings;
 };

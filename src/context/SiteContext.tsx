@@ -3,6 +3,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import type { SiteConfig, SiteStyle, ThemePreset } from '@/types/site';
+import { normalizeSiteConfig } from '@/lib/siteConfigSections';
 
 type Ctx = {
   /** Current site configuration (null only before initial mount) */
@@ -34,10 +35,10 @@ export function SiteProvider({
   initial: SiteConfig;
   children: React.ReactNode;
 }) {
-  const [config, _setConfig] = useState<SiteConfig>(initial);
+  const [config, _setConfig] = useState<SiteConfig>(() => normalizeSiteConfig(initial));
 
   // expose full-replacement setter while preserving previous API
-  const setConfig = useCallback((next: SiteConfig) => _setConfig(next), []);
+  const setConfig = useCallback((next: SiteConfig) => _setConfig(normalizeSiteConfig(next)), []);
 
   // apply data-theme + runtime CSS vars (unchanged from your version)
   useEffect(() => {
