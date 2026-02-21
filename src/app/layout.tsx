@@ -16,7 +16,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 // import { mockSiteConfig } from "@/mocks/siteConfig";
-import { mockSiteConfig } from "@/mocks/chelleConfig";
+import { mockSiteConfig } from "@/mocks/caroleConfig";
 
 export const metadata: Metadata = {
   title: mockSiteConfig.meta?.title || "Stricker Digital Websites",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 
 
 async function getSiteConfig(): Promise<SiteConfig> {
-  const useMock = process.env.NEXT_PUBLIC_USE_MOCK === "1";
+  const useMock = process.env.NEXT_PUBLIC_USE_MOCK === "1" || process.env.NEXT_PUBLIC_USE_MOCK === "2";
   if (useMock) return mockSiteConfig;
 
   const base = process.env.NEXT_PUBLIC_BASE_URL ?? "";

@@ -496,6 +496,7 @@ export default function ConfigModal({
                   >
                     <div className="flex flex-row gap-3">
                       <div className="flex flex-col gap-1">
+                        {isLocked || (slot.kind === 'section' && slot.index === 0)?<></>:
                         <button
                           className="btn btn-ghost px-2 py-1"
                           onClick={(e) => {
@@ -507,6 +508,8 @@ export default function ConfigModal({
                         >
                           <FontAwesomeIcon icon={faChevronUp} className="text-xs" />
                         </button>
+              }
+              {isLocked || (slot.kind === 'section' && slot.index === draft.sections.length - 1)?<></>:
                         <button
                           className="btn btn-ghost px-2 py-1"
                           onClick={(e) => {
@@ -521,12 +524,13 @@ export default function ConfigModal({
                         >
                           <FontAwesomeIcon icon={faChevronDown} className="text-xs" />
                         </button>
+                         }
                       </div>
                     <div className="min-w-0">
                       <div className="font-medium">
                         {s.type}
-                        {slot.kind === 'header' && ` (${slot.show ? 'shown' : 'hidden'})`}
-                        {slot.kind === 'footer' && ` (${slot.show ? 'shown' : 'hidden'})`}
+                        {slot.kind === 'header' }
+                        {slot.kind === 'footer' }
                       </div>
                       <div className="text-xs text-muted break-all">{s.id}</div>
                     </div>
