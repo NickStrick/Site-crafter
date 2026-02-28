@@ -85,19 +85,25 @@ export default function ProductDetailModal({ product, onClose }: Props) {
     selection,
   ]);
 
-  const { addItem, openCart } = useCart();
+  const { addItem, openCart, isCartOpen } = useCart();
   const { config } = useSite();
   const payments = config?.settings?.payments;
   const cartActive = payments?.cartActive === true;
   const taxes = payments?.taxes;
+  const offsetForCart = cartActive && isCartOpen;
 
   return (
-    <div className="fixed inset-0 z-[1200] bg-black/60 flex items-center justify-center p-4">
+    <div
+      className={[
+        'fixed inset-0 z-[5100] bg-black/60 flex items-center justify-center p-4 product-detail-overlay',
+        offsetForCart ? 'product-detail-overlay--with-cart' : '',
+      ].join(' ')}
+    >
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25 }}
-        className="card card-modal relative w-full max-w-3xl p-0 overflow-hidden"
+        className="card card-modal product-detail-modal relative w-full max-w-3xl p-0 overflow-hidden"
       >
         <button
           className="absolute right-3 top-3 btn btn-ghost"
@@ -110,7 +116,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
         {/* Content */}
         <div className="grid md:grid-cols-2 gap-0">
           {/* Media */}
-          <div className="p-4 md:p-6 border-b md:border-b-0 md:border-r">
+          <div className="p-4 md:p-6 border-b md:border-b-0 md:border-r border-[var(--bg-2)]">
             {mainImage ? (
               <Image
                 src={mainImage}
@@ -136,7 +142,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                       key={im.url + idx}
                       onClick={() => setMainIndex(idx)}
                       className={`rounded-lg overflow-hidden border ${
-                        isActive ? 'border-primary' : 'border-transparent opacity-90 hover:opacity-100'
+                        isActive ? 'bg-gradient-colored' : 'border-transparent opacity-90 hover:opacity-100'
                       }`}
                       aria-label={`Show image ${idx + 1}`}
                     >
@@ -155,12 +161,12 @@ export default function ProductDetailModal({ product, onClose }: Props) {
           </div>
 
           {/* Details */}
-          <div className="p-4 md:p-6 space-y-4">
+          <div className="p-4 md:p-6 space-y-4 text-[var(--text-1)]">
             <div>
               {badges && badges.length > 0 && (
                 <div className="mb-2 flex flex-wrap gap-2">
                   {badges.map((b, i) => (
-                    <span key={b + i} className="rounded-full border px-2 py-0.5 text-xs opacity-90">
+                    <span key={b + i} className="rounded-full border border-[var(--text-1)] px-2 py-0.5 text-xs opacity-90">
                       {b}
                     </span>
                   ))}
@@ -204,7 +210,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                         type="button"
                         onClick={() => setSelectedColor(c)}
                         className={`px-3 py-1 rounded-full border text-sm ${
-                          active ? 'border-primary' : 'border-black/10 hover:border-black/30'
+                          active ? 'bg-gradient-colored' : 'border-black/50 hover:border-black/60'
                         }`}
                         title={c.name}
                       >
@@ -242,7 +248,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                               type="button"
                               onClick={() => setSelectedByGroup((cur) => ({ ...cur, [g.label]: key }))}
                               className={`px-3 py-1 rounded-full border text-sm ${
-                                active ? 'border-primary' : 'border-black/10 hover:border-black/30'
+                                active ? 'bg-gradient-colored' : 'border-black/50 hover:border-black/60'
                               }`}
                             >
                               {it.label}
@@ -256,17 +262,6 @@ export default function ProductDetailModal({ product, onClose }: Props) {
               </div>
             )}
 
-            {/* Quantity */}
-            {/* <div className="space-y-2">
-              <label className="block text-sm font-medium">Quantity</label>
-              <input
-                type="number"
-                min={1}
-                className="input w-24"
-                value={quantity}
-                onChange={(e) => setQuantity(Math.max(1, Number(e.target.value) || 1))}
-              />
-            </div> */}
 
             {/* Features */}
             {product.features && product.features.length > 0 && (

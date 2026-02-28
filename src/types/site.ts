@@ -599,6 +599,7 @@ export type ProductListingsStyle = {
   columns?: 1 | 2 | 3 | 4 | 5;           // default responsive columns
   cardVariant?: 'default' | 'ink';
   showBadges?: boolean;
+  sectionType?: 'default' | 'short' | 'long';
 };
 
 export type CheckoutInputType =

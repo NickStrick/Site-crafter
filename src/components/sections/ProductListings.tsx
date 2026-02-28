@@ -8,8 +8,6 @@ import { motion } from 'framer-motion';
 import ProductDetailModal from './ProductDetailModal';
 import { resolveAssetUrl } from '@/lib/assetUrl';
 
-import CartModal from '../payments/CartModal';
-import PaymentPage from '../payments/PaymentPage';
 import { useCart } from '@/context/CartContext';
 import { useSite } from '@/context/SiteContext';
 import {
@@ -83,6 +81,7 @@ export default function ProductListings({
 
   const cardInk = style?.cardVariant === 'ink';
   const cols = style?.columns ?? 3;
+  const sectionType = style?.sectionType ?? 'default';
 
   const smGridColsClass =
     cols <= 1 ? 'sm:grid-cols-1' : 'sm:grid-cols-2';
@@ -98,23 +97,16 @@ export default function ProductListings({
             ? 'lg:grid-cols-4'
             : 'lg:grid-cols-5';
 
+  const sectionTypeClass =
+     sectionType === 'short'
+      ? 'lg:pb-1 lg:pt-1'
+      : sectionType === 'long'
+      ? 'lg:pb-3 lg:pt-3'
+      : ''
+
   return (
-    <>
-    {cartActive && <CartModal />}
-    {cartActive && (
-      <PaymentPage
-        checkoutInputs={payments?.checkoutInputs}
-        googleFormUrl={payments?.googleFormUrl}
-        googleFormOptions={payments?.googleFormOptions}
-        paymentType={payments?.paymentType}
-        externalPaymentUrl={payments?.externalPaymentUrl}
-        supportEmail={payments?.supportEmail}
-        supportPhone={payments?.supportPhone}
-        taxes={payments?.taxes}
-        delivery={payments?.delivery}
-      />
-    )}
-    <section id={id} className="section sectionAboveWavePad">
+  <>
+    <section id={id} className={`section ${sectionTypeClass}`}>
       <div className="mx-auto max-w-7xl px-4">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -150,7 +142,7 @@ export default function ProductListings({
               <AnimatedSection key={p.id + '-' + i}>
                 <div
                   className={cls(
-                    'relative h-full p-6 sm:p-7 md:p-8 card-ink card-interactive flex flex-col',
+                    'relative h-full p-6 sm:p-7 md:p-8 card-ink card-interactive flex flex-col card-hover',
                     cardInk && 'card-ink',
                     viewType === 'list' && 'cursor-pointer'
                   )}
@@ -299,7 +291,7 @@ export default function ProductListings({
                       </div>
                     </div>
                   ) : null}
-                </div>
+                  </div>
               </AnimatedSection>
             );
           })}

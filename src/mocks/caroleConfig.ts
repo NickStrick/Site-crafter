@@ -102,7 +102,7 @@ function buildSizeProducts(args: {
     thumbnailUrl: imageUrl,
     images: [{ url: imageUrl, alt: name }],
     summary: `${name}`,
-    description: `${name} in ${SIZE_LABEL[k]} size. Crafted fresh for ${categoryBadge}.`,
+    description: `${name}. Crafted fresh for ${categoryBadge}.`,
     features: ["Fresh seasonal blooms", "Gift note included"],
     badges: [categoryBadge],
     stock: "in_stock",
@@ -302,7 +302,7 @@ const productSections: ProductListingsSection[] = PRODUCT_DATA.map((cat) => ({
   title: cat.title,
   subtitle: "Handcrafted florals — pickup at Ogilvie / Accenture Tower",
   viewType: "list",
-  style: { columns: 4, cardVariant: "default", showBadges: true },
+  style: { columns: 4, cardVariant: "default", showBadges: true, sectionType: 'short' },
   showAllThreshold: 200,
   buyCtaFallback: "Buy Now",
   products: cat.items.map((p, itemIdx) =>

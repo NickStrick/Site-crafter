@@ -7,6 +7,7 @@ import { SiteProvider } from "@/context/SiteContext";
 import { CartProvider } from "@/context/CartContext";
 import type { SiteConfig } from "@/types/site";
 import GlobalHashLinkHandler from "@/components/GlobalHashLinkHandler";
+import PaymentsOverlay from "@/components/payments/PaymentsOverlay";
 
 // ✅ Admin UI (client) — keyboard toggle + bar
 import AdminGate from "@/components/admin/AdminGate";
@@ -71,6 +72,7 @@ export default async function RootLayout({
         <SiteProvider initial={config}>
           <CartProvider>
             <GlobalHashLinkHandler />
+            <PaymentsOverlay />
             <main className="overflow-hidden"><div id="top"></div>{children}</main>
           {/* ✅ Admin overlay (toggle with Ctrl/Cmd + Alt + A OR Ctrl/Cmd + Shift + A)
               Also supports ?admin=1 and persists via localStorage */}
