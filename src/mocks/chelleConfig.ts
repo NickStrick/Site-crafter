@@ -150,7 +150,7 @@ export const mockSiteConfig: SiteConfig = {
       style: { columns: 3, cardVariant: "default", showBadges: true },
       showAllThreshold: 7,
       buyCtaFallback: "Buy On Etsy",
-      detailsEnabled: false,
+      viewType: "featured",
 
       products: [
         {
