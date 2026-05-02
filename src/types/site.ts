@@ -726,6 +726,8 @@ export type SiteProduct = {
 
 export type SiteProductsConfig = {
   showFilters?: boolean;
+  /** Optional UI ordering for category tabs (first → last). */
+  categoryOrder?: string[];
   items: SiteProduct[];
 };
 

@@ -193,6 +193,7 @@ export default function ProductShop({ id, title, subtitle, topWaveType, bottomWa
   const shopConfig = config?.products;
   const allProducts = useMemo(() => shopConfig?.items ?? [], [shopConfig?.items]);
   const showFilters = shopConfig?.showFilters !== false;
+  const categoryOrder = shopConfig?.categoryOrder ?? [];
 
   const [activeTab, setActiveTab] = useState('all');
   const [search, setSearch] = useState('');
@@ -204,10 +205,21 @@ export default function ProductShop({ id, title, subtitle, topWaveType, bottomWa
   const [selectedOptions, setSelectedOptions] = useState<Record<string, Record<string, string>>>({});
   console.log('Selected options:', selectedOptions);
   const categories = useMemo(() => {
-    const seen = new Set<string>();
-    for (const p of allProducts) if (p.category) seen.add(p.category);
-    return Array.from(seen);
-  }, [allProducts]);
+    const seen: string[] = [];
+    const seenSet = new Set<string>();
+    for (const p of allProducts) {
+      if (!p.category) continue;
+      if (seenSet.has(p.category)) continue;
+      seenSet.add(p.category);
+      seen.push(p.category);
+    }
+
+    const ordered: string[] = [];
+    const orderSet = new Set(categoryOrder);
+    for (const c of categoryOrder) if (seenSet.has(c)) ordered.push(c);
+    for (const c of seen) if (!orderSet.has(c)) ordered.push(c);
+    return ordered;
+  }, [allProducts, categoryOrder]);
 
   const { minPrice, maxPrice } = useMemo(() => {
     if (!allProducts.length) return { minPrice: 0, maxPrice: 0 };
