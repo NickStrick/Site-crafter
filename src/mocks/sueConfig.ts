@@ -1,5 +1,5 @@
 // src/mocks/sueStrickerConfig.ts
-import type { SiteConfig } from "@/types/site";
+import type { SiteConfig, SiteProduct } from "@/types/site";
 
 // ---- Image imports ----
 // (Create these files under /public/sue/ or update paths to match what you have)
@@ -37,6 +37,43 @@ const phoneHref = "tel:16303361553";
 const phoneLabel = "(630) 336-1553";
 const email = "sftbllcoach@gmail.com";
 
+const shopProducts: SiteProduct[] = [
+  {
+    id: "softball-science-book-1",
+    name: "Softball Journal",
+    subtitle: "",
+    sku: "SS-BOOK-001",
+    price: 1999,
+    currency: "USD",
+    thumbnailUrl: book1.src,
+    images: [{ url: book1.src, alt: "Softball Science Book 1 cover" }],
+    summary: "A practical guide for athletes and parents.",
+    description: "",
+    features: ["Technique breakdowns", "Coaching cues", "Drills you can repeat"],
+    badges: ["Book"],
+    stock: "in_stock",
+    purchaseUrl: "https://a.co/d/gMLNFek",
+    ctaLabel: "Get a Copy",
+  },
+  {
+    id: "softball-science-book-2",
+    name: "BaseBall Journal",
+    subtitle: "",
+    sku: "SS-BOOK-002",
+    price: 1999,
+    currency: "USD",
+    thumbnailUrl: book2.src,
+    images: [{ url: book2.src, alt: "Softball Science Book 2 cover" }],
+    summary: "",
+    description: "Strategy, mindset, and advanced concepts to help athletes compete with confidence.",
+    features: ["Approach + mindset", "Game situations", "Training routines"],
+    badges: ["Book", "New"],
+    stock: "in_stock",
+    purchaseUrl: "https://a.co/d/4pzIu5s",
+    ctaLabel: "Get a Copy",
+  },
+];
+
 export const mockSiteConfig: SiteConfig = {
   theme: { preset: "sue", radius: "xl" },
   meta: {
@@ -45,6 +82,7 @@ export const mockSiteConfig: SiteConfig = {
       "Softball Science coaching and clinics led by Sue Stricker — former professional player, coach, and author. Private lessons, team training, and hitting development.",
     favicon: logoSoftballScience.src,
   },
+  products: { showFilters: false, items: shopProducts },
   sections: [
     // ======================
     // HEADER
@@ -211,44 +249,7 @@ export const mockSiteConfig: SiteConfig = {
       style: { columns: 3, cardVariant: "default", showBadges: true },
       showAllThreshold: 3,
       buyCtaFallback: "View",
-      products: [
-        {
-          id: "softball-science-book-1",
-          name: "Softball Journal",
-          subtitle: "",
-          sku: "SS-BOOK-001",
-          price: 1999,
-          currency: "USD",
-          thumbnailUrl: book1.src,
-          images: [{ url: book1.src, alt: "Softball Science Book 1 cover" }],
-          summary: "A practical guide for athletes and parents.",
-          description:
-            "",
-          features: ["Technique breakdowns", "Coaching cues", "Drills you can repeat"],
-          badges: ["Book"],
-          stock: "in_stock",
-          purchaseUrl: 'https://a.co/d/gMLNFek',
-          ctaLabel: "Get a Copy",
-        },
-        {
-          id: "softball-science-book-2",
-          name: "BaseBall Journal",
-          subtitle: "",
-          sku: "SS-BOOK-002",
-          price: 1999,
-          currency: "USD",
-          thumbnailUrl: book2.src,
-          images: [{ url: book2.src, alt: "Softball Science Book 2 cover" }],
-          summary: "",
-          description:
-            "Strategy, mindset, and advanced concepts to help athletes compete with confidence.",
-          features: ["Approach + mindset", "Game situations", "Training routines"],
-          badges: ["Book", "New"],
-          stock: "in_stock",
-          purchaseUrl: 'https://a.co/d/4pzIu5s',
-          ctaLabel: "Get a Copy",
-        },
-      ],
+      productIds: shopProducts.map((p) => p.id),
     },
 
     // ======================

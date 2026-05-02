@@ -1,5 +1,5 @@
 // src/mocks/chellesConfig.ts
-import type { SiteConfig } from "@/types/site";
+import type { SiteConfig, SiteProduct } from "@/types/site";
 
 const etsyShopHref =
   "https://www.etsy.com/shop/ChellesFiberCrafts?ref=shop-header-name&listing_id=1745550181&from_page=listing";
@@ -15,144 +15,8 @@ const etsyShopHref =
   import flowerwall2 from "../../public/carole/flowerwall2.jpg";
   import flowerwall3 from "../../public/carole/flowerwall3.jpg";
 
-export const mockSiteConfig: SiteConfig = {
-  theme: { preset: "lavender", radius: "xl" },
 
-  meta: {
-    title: "Chelle's Fiber Crafts — Knit & Crochet",
-    description: "Knit and Crochet Apparel Plushies and more!",
-    // You can also use an Etsy image as favicon if you want:
-    // favicon: "https://i.etsystatic.com/47599280/r/il/4a4927/6276586701/il_300x300.6276586701_jyp4.jpg",
-  },
-
-  settings: {
-    general: {
-      businessDisplayName: "Chelle's Fiber Crafts",
-      businessNotificationEmail: "orders@chellesfibercrafts.com", // TODO: replace
-    },
-
-    payments: {
-      cartActive: true,
-
-      // ✅ matches your type: 'converge' | 'clover' | 'externalLink'
-      // Until direct payments are integrated, you can run checkout using an external link:
-      paymentType: "externalLink",
-
-      supportEmail: "support@chellesfibercrafts.com", // TODO: replace
-      supportPhone: {
-        label: "Email support",
-        href: "mailto:support@chellesfibercrafts.com",
-      },
-
-      taxes: {
-        enabled: false,
-        ratePercent: 0,
-        taxShipping: false,
-        defaultProductTaxable: true,
-      },
-
-      delivery: {
-        enabled: true,
-        type: "flat",
-        flatFeeCents: 0, // TODO: set shipping
-        mode: "delivery",
-        addressCapture: {
-          enabled: true,
-          required: true,
-          // ✅ matches: 'googleForm' | 's3'
-          method: "s3",
-          s3Prefix: "orders/chelles-fiber-crafts/",
-        },
-      },
-
-      checkoutInputs: [
-        {
-          id: "customer-name",
-          label: "Name",
-          type: "text",
-          required: true,
-          placeholder: "Your full name",
-        },
-        {
-          id: "customer-email",
-          label: "Email",
-          type: "email",
-          required: true,
-          placeholder: "you@example.com",
-        },
-        {
-          id: "customer-phone",
-          label: "Phone",
-          type: "tel",
-          required: false,
-          placeholder: "(555) 555-5555",
-        },
-        {
-          id: "special-instructions",
-          label: "Special Instructions",
-          type: "textarea",
-          required: false,
-          placeholder: "Color requests, gift note, sizing notes, etc.",
-        },
-      ],
-    },
-  },
-
-  sections: [
-    // ======================
-    // HEADER
-    // ======================
-    {
-      visible: true,
-      id: "hdr",
-      type: "header",
-      logoText: "Chelle's Fiber Crafts",
-      // external URL ok (string)
-      logoImage:
-        "https://i.etsystatic.com/47599280/r/il/4a4927/6276586701/il_300x300.6276586701_jyp4.jpg",
-      links: [
-        { label: "Home", href: "#top" },
-        { label: "Products", href: "#products" },
-        { label: "About", href: "#about" },
-        { label: "Testimonials", href: "#testimonials" },
-        { label: "Etsy", href: etsyShopHref },
-      ],
-      cta: { label: "Shop Now", href: "#products" },
-      style: { sticky: true, blur: true, elevation: "sm", transparent: false },
-    },
-
-    // ======================
-    // HERO
-    // ======================
-    {
-      visible: true,
-      id: "hero",
-      type: "hero",
-      eyebrow: "Knit • Crochet • Plushies",
-      title: "Handmade Knit & Crochet Gifts",
-      subtitle: "Knit and Crochet Apparel Plushies and more!",
-      primaryCta: { label: "Shop Products", href: "#products" },
-      secondaryCta: { label: "View Etsy Shop", href: etsyShopHref },
-      // Using one of the Etsy listing images as hero
-      imageUrl:
-        "https://i.etsystatic.com/47599280/r/il/d491cd/6351032865/il_1000x1000.6351032865_eiz7.jpg",
-    },
-
-    // ======================
-    // PRODUCTS
-    // ======================
-    {
-      visible: true,
-      id: "products",
-      type: "productListings",
-      title: "Products",
-      subtitle: "Buy directly from our website (no need to rely solely on Etsy).",
-      style: { columns: 3, cardVariant: "default", showBadges: true },
-      showAllThreshold: 7,
-      buyCtaFallback: "Buy On Etsy",
-      viewType: "featured",
-
-      products: [
+const shopProducts: SiteProduct[] = [
         {
           id: "cfc-giant-octopus-1731259768",
           name: 'Giant Octopus Plushie (Approx. 32")',
@@ -348,7 +212,148 @@ export const mockSiteConfig: SiteConfig = {
           maxQuantity: 20,
           taxable: true,
         },
+      ];
+
+export const mockSiteConfig: SiteConfig = {
+  theme: { preset: "lavender", radius: "xl" },
+
+  meta: {
+    title: "Chelle's Fiber Crafts — Knit & Crochet",
+    description: "Knit and Crochet Apparel Plushies and more!",
+    // You can also use an Etsy image as favicon if you want:
+    // favicon: "https://i.etsystatic.com/47599280/r/il/4a4927/6276586701/il_300x300.6276586701_jyp4.jpg",
+  },
+
+  settings: {
+    general: {
+      businessDisplayName: "Chelle's Fiber Crafts",
+      businessNotificationEmail: "orders@chellesfibercrafts.com", // TODO: replace
+    },
+
+    payments: {
+      cartActive: true,
+
+      // ✅ matches your type: 'converge' | 'clover' | 'externalLink'
+      // Until direct payments are integrated, you can run checkout using an external link:
+      paymentType: "externalLink",
+
+      supportEmail: "support@chellesfibercrafts.com", // TODO: replace
+      supportPhone: {
+        label: "Email support",
+        href: "mailto:support@chellesfibercrafts.com",
+      },
+
+      taxes: {
+        enabled: false,
+        ratePercent: 0,
+        taxShipping: false,
+        defaultProductTaxable: true,
+      },
+
+      delivery: {
+        enabled: true,
+        type: "flat",
+        flatFeeCents: 0, // TODO: set shipping
+        mode: "delivery",
+        addressCapture: {
+          enabled: true,
+          required: true,
+          // ✅ matches: 'googleForm' | 's3'
+          method: "s3",
+          s3Prefix: "orders/chelles-fiber-crafts/",
+        },
+      },
+
+      checkoutInputs: [
+        {
+          id: "customer-name",
+          label: "Name",
+          type: "text",
+          required: true,
+          placeholder: "Your full name",
+        },
+        {
+          id: "customer-email",
+          label: "Email",
+          type: "email",
+          required: true,
+          placeholder: "you@example.com",
+        },
+        {
+          id: "customer-phone",
+          label: "Phone",
+          type: "tel",
+          required: false,
+          placeholder: "(555) 555-5555",
+        },
+        {
+          id: "special-instructions",
+          label: "Special Instructions",
+          type: "textarea",
+          required: false,
+          placeholder: "Color requests, gift note, sizing notes, etc.",
+        },
       ],
+    },
+  },
+
+  products: { showFilters: true, items: shopProducts },
+
+  sections: [
+    // ======================
+    // HEADER
+    // ======================
+    {
+      visible: true,
+      id: "hdr",
+      type: "header",
+      logoText: "Chelle's Fiber Crafts",
+      // external URL ok (string)
+      logoImage:
+        "https://i.etsystatic.com/47599280/r/il/4a4927/6276586701/il_300x300.6276586701_jyp4.jpg",
+      links: [
+        { label: "Home", href: "#top" },
+        { label: "Products", href: "#products" },
+        { label: "About", href: "#about" },
+        { label: "Testimonials", href: "#testimonials" },
+        { label: "Etsy", href: etsyShopHref },
+      ],
+      cta: { label: "Shop Now", href: "#products" },
+      style: { sticky: true, blur: true, elevation: "sm", transparent: false },
+    },
+
+    // ======================
+    // HERO
+    // ======================
+    {
+      visible: true,
+      id: "hero",
+      type: "hero",
+      eyebrow: "Knit • Crochet • Plushies",
+      title: "Handmade Knit & Crochet Gifts",
+      subtitle: "Knit and Crochet Apparel Plushies and more!",
+      primaryCta: { label: "Shop Products", href: "#products" },
+      secondaryCta: { label: "View Etsy Shop", href: etsyShopHref },
+      // Using one of the Etsy listing images as hero
+      imageUrl:
+        "https://i.etsystatic.com/47599280/r/il/d491cd/6351032865/il_1000x1000.6351032865_eiz7.jpg",
+    },
+
+    // ======================
+    // PRODUCTS
+    // ======================
+    {
+      visible: true,
+      id: "products",
+      type: "productListings",
+      title: "Products",
+      subtitle: "Buy directly from our website (no need to rely solely on Etsy).",
+      style: { columns: 3, cardVariant: "default", showBadges: true },
+      showAllThreshold: 7,
+      buyCtaFallback: "Buy On Etsy",
+      viewType: "featured",
+
+      productIds: shopProducts.map((p) => p.id),
     },
 
     // ======================

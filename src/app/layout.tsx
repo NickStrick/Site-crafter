@@ -17,7 +17,8 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 // import { mockSiteConfig } from "@/mocks/siteConfig";
-import { mockSiteConfig } from "@/mocks/caroleConfig";
+// import { mockSiteConfig } from "@/mocks/caroleConfig";
+import { mockSiteConfig } from "@/mocks/mockMaster";
 
 export const metadata: Metadata = {
   title: mockSiteConfig.meta?.title || "Stricker Digital Websites",
